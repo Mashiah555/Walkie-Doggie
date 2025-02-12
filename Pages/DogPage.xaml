@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Walkie_Doggie.Pages.DogPage"
+             Title="לואי">
+    <VerticalStackLayout>
+
+        <Frame Style="{StaticResource OutterFrame}">
+            <StackLayout>
+                
+                <Label Style="{StaticResource Header}"
+                       Text="הסטטיסטיקות שלך"/>
+
+                <Frame Style="{StaticResource InnerFrame}">
+                    <StackLayout>
+                        
+                        <Label Style="{StaticResource SubHeader}"
+                               Text="הטיול האחרון"/>
+
+                        <Label Text="{Binding LastWalk}"/>
+                        <Label Text="{Binding LastWalkTime}"
+                               Style="{StaticResource Context}"/>
+
+                        <Label Text="{Binding PoopedText}" 
+                               Margin="0,10,0,0"/>
+                        <Label Text="{Binding NotesText}"
+                               Style="{StaticResource Context}"/>
+
+                    </StackLayout>
+                </Frame>
+
+                <Frame Style="{StaticResource InnerFrame}">
+                    <StackLayout>
+
+                        <Label Style="{StaticResource SubHeader}"
+                               Text="הארוחה האחרונה"/>
+
+                        <Label Text="{Binding LastFeed}"/>
+                        <Label Text="{Binding LastFeedTime}"
+                               Style="{StaticResource Context}"/>
+
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </Frame>
+
+    </VerticalStackLayout>
+</ContentPage>
