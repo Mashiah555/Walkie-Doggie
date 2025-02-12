@@ -11,22 +11,22 @@
     <TabBar>
         <!-- Walks Page (Default Tab) -->
         <ShellContent Title="טיולים" 
-                      Icon="walks_icon.png" 
+                      Icon="{AppThemeBinding Light=walks_light.png, Dark=walks_dark.png}" 
                       ContentTemplate="{DataTemplate pages:WalksPage}" />
 
         <!-- Louie Page -->
         <ShellContent Title="לואי" 
-                      Icon="dog_icon.png" 
+                      Icon="{AppThemeBinding Light=dog_light.png, Dark=dog_dark.png}" 
                       ContentTemplate="{DataTemplate pages:DogPage}" />
 
         <!-- Statistics Page -->
         <ShellContent Title="סטטיסטיקות" 
-                      Icon="stats_icon.png" 
+                      Icon="{AppThemeBinding Light=stats_light.png, Dark=stats_dark.png}" 
                       ContentTemplate="{DataTemplate pages:StatsPage}" />
 
         <!-- Settings Page -->
         <ShellContent Title="הגדרות" 
-                      Icon="settings_icon.png" 
+                      Icon="{AppThemeBinding Light=settings_light.png, Dark=settings_dark.png}"  
                       ContentTemplate="{DataTemplate pages:SettingsPage}" />
     </TabBar>
     
