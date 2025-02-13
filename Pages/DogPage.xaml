@@ -9,7 +9,7 @@
             <StackLayout>
                 
                 <Label Style="{StaticResource Header}"
-                       Text="הסטטיסטיקות שלך"/>
+                       Text="המצב של לואי"/>
 
                 <Frame Style="{StaticResource InnerFrame}">
                     <StackLayout>
@@ -26,6 +26,9 @@
                         <Label Text="{Binding NotesText}"
                                Style="{StaticResource Context}"/>
 
+                        <Button Text="עדכון יציאה לטיול"
+                                Clicked="ButtonWalk_Clicked"/>
+
                     </StackLayout>
                 </Frame>
 
@@ -38,6 +41,8 @@
                         <Label Text="{Binding LastFeed}"/>
                         <Label Text="{Binding LastFeedTime}"
                                Style="{StaticResource Context}"/>
+
+                        <Button Text="עדכון על האכלה"/>
 
                     </StackLayout>
                 </Frame>

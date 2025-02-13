@@ -14,12 +14,12 @@
                       Icon="{AppThemeBinding Light=walks_light.png, Dark=walks_dark.png}" 
                       ContentTemplate="{DataTemplate pages:WalksPage}" />
 
-        <!-- Louie Page -->
+        <!-- Dog Page -->
         <ShellContent Title="לואי" 
                       Icon="{AppThemeBinding Light=dog_light.png, Dark=dog_dark.png}" 
                       ContentTemplate="{DataTemplate pages:DogPage}" />
 
-        <!-- Statistics Page -->
+        <!-- Stats Page -->
         <ShellContent Title="סטטיסטיקות" 
                       Icon="{AppThemeBinding Light=stats_light.png, Dark=stats_dark.png}" 
                       ContentTemplate="{DataTemplate pages:StatsPage}" />

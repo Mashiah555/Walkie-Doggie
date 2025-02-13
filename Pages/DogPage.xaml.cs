@@ -6,4 +6,9 @@ public partial class DogPage : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private void ButtonWalk_Clicked(object sender, EventArgs e)
+    {
+
+    }
 }
