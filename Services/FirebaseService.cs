@@ -1,12 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Threading.Channels;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
-using Grpc.Auth;
 using Walkie_Doggie.Helpers;
 
 public class FirebaseService
@@ -14,6 +8,7 @@ public class FirebaseService
     private static FirestoreDb? _firestoreDb;
     private const string UsersCollection = "Users";
     private const string WalksCollection = "Walks";
+    private const string FeedsCollection = "Feeds";
 
     #region Firebase Operations
     public FirebaseService()
@@ -62,7 +57,7 @@ public class FirebaseService
     }
 
     // ➤ Get All Users from Firestore
-    public async Task<List<UserModel>> GetUsersAsync()
+    public async Task<List<UserModel>> GetAllUsersAsync()
     {
         var users = new List<UserModel>();
         QuerySnapshot snapshot = await _firestoreDb!.Collection(UsersCollection).GetSnapshotAsync();
@@ -103,11 +98,28 @@ public class FirebaseService
         }
     }
 
+    // ➤ Get the last walk from Firestore
+    public async Task<WalkModel> GetLastWalkAsync()
+    {
+        QuerySnapshot snapshot = await _firestoreDb!
+            .Collection(WalksCollection)
+            .OrderByDescending("WalkTime")
+            .Limit(1)
+            .GetSnapshotAsync();
+
+        return snapshot.Documents.Count > 0 ? 
+            snapshot.Documents[0].ConvertTo<WalkModel>() : 
+            throw new Exception("There are no walks saved in the database yet!");
+    }
+
     // ➤ Get All Walks from Firestore
-    public async Task<List<WalkModel>> GetWalksAsync()
+    public async Task<List<WalkModel>> GetAllWalksAsync()
     {
         var walks = new List<WalkModel>();
-        QuerySnapshot snapshot = await _firestoreDb!.Collection(WalksCollection).OrderBy("WalkTime").GetSnapshotAsync();
+        QuerySnapshot snapshot = await _firestoreDb!
+            .Collection(WalksCollection)
+            .OrderBy("WalkTime")
+            .GetSnapshotAsync();
 
         foreach (var doc in snapshot.Documents)
         {

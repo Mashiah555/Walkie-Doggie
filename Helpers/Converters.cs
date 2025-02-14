@@ -1,5 +1,4 @@
 ﻿using Google.Cloud.Firestore;
-using System;
 namespace Walkie_Doggie.Helpers;
 
 public static class Converters
@@ -22,4 +21,25 @@ public static class Converters
     {
         return TimeZoneInfo.ConvertTimeFromUtc(timestamp.ToDateTime(), IsraelTimeZone);
     }
+
+    /// <summary>
+    /// Converts DateTime to string form.
+    /// </summary>
+    public static string ConvertToString(object value)
+    {
+        if (value is null)
+            return string.Empty;
+
+        if (value is DateTime dateTime)
+            return dateTime.ToString("dd/MM/yyyy HH:mm");
+
+        if (value is Timestamp timestamp)
+            return ConvertToDateTime(timestamp).ToString("dd/MM/yyyy HH:mm");
+
+        if (value is TimeSpan timeSpan)
+            return timeSpan.ToString(@"hh\:mm");
+
+        return string.Empty;
+    }
 }
+

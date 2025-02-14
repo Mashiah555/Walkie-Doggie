@@ -4,7 +4,7 @@
 public class WalkModel
 {
     [FirestoreProperty]
-    public string WalkerName { get; set; }  // User who took the walk
+    public required string WalkerName { get; set; }  // User who took the walk
 
     [FirestoreProperty]
     public Timestamp WalkTime { get; set; } // Firestore Timestamp (date & time)
@@ -13,5 +13,5 @@ public class WalkModel
     public bool IsPooped { get; set; }      // Whether the dog pooped
 
     [FirestoreProperty]
-    public string Notes { get; set; }       // Optional notes about the walk
+    public string? Notes { get; set; }       // Optional notes about the walk
 }

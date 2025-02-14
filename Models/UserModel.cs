@@ -4,7 +4,7 @@
 public class UserModel
 {
     [FirestoreProperty]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     [FirestoreProperty]
     public int TotalWalks { get; set; }

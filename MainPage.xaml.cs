@@ -29,7 +29,7 @@ namespace Walkie_Doggie
             string notes = "Dog had fun!"; // Get from UI input
             await _db.AddWalkAsync(walkerName, DateTime.Now, isPooped, notes);
 
-            var walks = await _db.GetWalksAsync();
+            var walks = await _db.GetAllWalksAsync();
             foreach (var walk in walks)
             {
                 await DisplayAlert("Walks List", $"{walk.WalkerName} walked on {Converters.ConvertToDateTime(walk.WalkTime)} - Pooped: {walk.IsPooped}", "OK");

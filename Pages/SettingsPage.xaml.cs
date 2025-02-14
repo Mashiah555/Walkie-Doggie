@@ -22,15 +22,15 @@ namespace Walkie_Doggie.Pages
             switch (picker.SelectedItem)
             {
                 case "Light":
-                    Application.Current.UserAppTheme = AppTheme.Light;
+                    Application.Current!.UserAppTheme = AppTheme.Light;
                     Preferences.Set("AppTheme", "Light");
                     break;
                 case "Dark":
-                    Application.Current.UserAppTheme = AppTheme.Dark;
+                    Application.Current!.UserAppTheme = AppTheme.Dark;
                     Preferences.Set("AppTheme", "Dark");
                     break;
                 case "System Default":
-                    Application.Current.UserAppTheme = AppTheme.Unspecified;
+                    Application.Current!.UserAppTheme = AppTheme.Unspecified;
                     Preferences.Set("AppTheme", "System");
                     break;
             }

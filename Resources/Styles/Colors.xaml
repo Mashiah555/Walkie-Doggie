@@ -22,7 +22,7 @@
     <Color x:Key="SecondaryColorDark">MediumSlateBlue</Color> <!--7B68EE-->
     <Color x:Key="ActionTextColorDark">black</Color>
     <Color x:Key="PrimaryTextColorDark">whitesmoke</Color>
-    <Color x:Key="SecondaryTextColorDark">gray</Color>
+    <Color x:Key="SecondaryTextColorDark">darkgray</Color>
     <Color x:Key="ErrorColorDark">#FF453A</Color>
     <Color x:Key="WarningColorDark">#FFD60A</Color>
 
