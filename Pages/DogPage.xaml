@@ -19,34 +19,34 @@
                 <Frame Grid.Row="1" Grid.ColumnSpan="2"
                        Style="{StaticResource InnerFrame}">
                     <StackLayout>
-                        
+
                         <Label x:Name="LastWalkTime" 
                                Text="אין עדיין טיולים במערכת" 
                                HorizontalOptions="End"/>
 
                         <Label x:Name="LastWalkPassedTime"
                                Style="{StaticResource Context}"/>
-                        
+
                     </StackLayout>
                 </Frame>
 
                 <!--Last Walk Pooping-->
                 <Frame Grid.Row="2" Grid.Column="1"
                        Style="{StaticResource InnerFrame}">
-                    
+
                     <Label x:Name="LastWalkPooped" />
                 </Frame>
 
-                <!--Last Walk Walker-->
+                <!--Last Walker-->
                 <Frame Grid.Row="2" Grid.Column="0"
                        Style="{StaticResource InnerFrame}">
 
-                    <Label x:Name="LastWalkWalker" />
+                    <Label x:Name="LastWalker" />
                 </Frame>
 
                 <!--Last Walk Notes-->
                 <Frame Grid.Row="3" Grid.ColumnSpan="2"
-                       x:Name="NotesFrame"
+                       x:Name="WalkNotesFrame"
                        Style="{StaticResource InnerFrame}">
 
                     <Label x:Name="LastWalkNotes" />
@@ -60,20 +60,58 @@
             </Grid>
         </Frame>
 
-        <!--Feeding Frame-->
+        <!--Feed Frame-->
         <Frame Style="{StaticResource OutterFrame}">
-            <StackLayout>
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+                  ColumnDefinitions="*,*">
 
-                <Label Style="{StaticResource SubHeader}"
-                               Text="הארוחה האחרונה"/>
+                <Label Grid.Row="0" Grid.ColumnSpan="2"
+                       Text="הארוחה האחרונה"
+                       Style="{StaticResource SubHeader}"/>
 
-                <Label Text="{Binding LastFeed}"/>
-                <Label Text="{Binding LastFeedTime}"
+                <!--Last Walk Time-->
+                <Frame Grid.Row="1" Grid.ColumnSpan="2"
+                       Style="{StaticResource InnerFrame}">
+                    <StackLayout>
+
+                        <Label x:Name="LastFeedTime" 
+                               Text="אין עדיין האכלות במערכת" 
+                               HorizontalOptions="End"/>
+
+                        <Label x:Name="LastFeedPassedTime"
                                Style="{StaticResource Context}"/>
 
-                <Button Text="עדכון על האכלה"/>
+                    </StackLayout>
+                </Frame>
 
-            </StackLayout>
+                <!--Last Feed Amount-->
+                <Frame Grid.Row="2" Grid.Column="1"
+                       Style="{StaticResource InnerFrame}">
+
+                    <Label x:Name="LastFeedAmount" />
+                </Frame>
+
+                <!--Last Feeder-->
+                <Frame Grid.Row="2" Grid.Column="0"
+                       Style="{StaticResource InnerFrame}">
+
+                    <Label x:Name="LastFeeder" />
+                </Frame>
+
+                <!--Last Feed Notes-->
+                <Frame Grid.Row="3" Grid.ColumnSpan="2"
+                       x:Name="FeedNotesFrame"
+                       Style="{StaticResource InnerFrame}">
+
+                    <Label x:Name="LastFeedNotes" />
+                </Frame>
+
+                <!--Add Feed Button-->
+                <Button Grid.Row="4" Grid.ColumnSpan="2"
+                Text="עדכון על ארוחה חדשה"
+                Clicked="ButtonFeed_Clicked"/>
+
+            </Grid>
         </Frame>
 
     </VerticalStackLayout>

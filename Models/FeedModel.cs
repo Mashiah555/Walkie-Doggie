@@ -10,5 +10,8 @@ public class FeedModel
     public Timestamp FeedTime { get; set; } // Firestore Timestamp (date & time)
 
     [FirestoreProperty]
+    public int FeedAmount { get; set; }      // Amount of food given
+
+    [FirestoreProperty]
     public string? Notes { get; set; }       // Optional notes about the feeding
 }

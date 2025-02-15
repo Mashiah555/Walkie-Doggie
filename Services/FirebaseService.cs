@@ -60,12 +60,12 @@ public class FirebaseService
     public async Task<List<UserModel>> GetAllUsersAsync()
     {
         var users = new List<UserModel>();
-        QuerySnapshot snapshot = await _firestoreDb!.Collection(UsersCollection).GetSnapshotAsync();
+        QuerySnapshot snapshot = await _firestoreDb!
+            .Collection(UsersCollection)
+            .GetSnapshotAsync();
 
         foreach (var doc in snapshot.Documents)
-        {
             users.Add(doc.ConvertTo<UserModel>());
-        }
 
         return users;
     }
@@ -73,7 +73,7 @@ public class FirebaseService
 
     #region Walk CRUD Operations
     // ➤ Add a Walk Record
-    public async Task AddWalkAsync(string walkerName, DateTime walkTime, bool isPooped, string notes)
+    public async Task AddWalkAsync(string walkerName, DateTime walkTime, bool isPooped, string? notes)
     {
         await _firestoreDb!
             .Collection(WalksCollection)
@@ -122,11 +122,55 @@ public class FirebaseService
             .GetSnapshotAsync();
 
         foreach (var doc in snapshot.Documents)
-        {
             walks.Add(doc.ConvertTo<WalkModel>());
-        }
 
         return walks;
     }
     #endregion Walk CRUD Operations
+
+    #region Feed CRUD Operations
+    // ➤ Add a Feed Record
+    public async Task AddFeedAsync(string feederName, DateTime feedTime, int feedAmount, string? notes)
+    {
+        await _firestoreDb!
+            .Collection(FeedsCollection)
+            .Document($"{feederName}_{feedTime:ddMMyyyy_HHmmss}")
+            .SetAsync(new FeedModel
+            {
+                FeederName = feederName,
+                FeedTime = Converters.ConvertToTimestamp(feedTime),
+                FeedAmount = feedAmount,
+                Notes = notes
+            });
+    }
+
+    // ➤ Get the last walk from Firestore
+    public async Task<FeedModel> GetLastFeedAsync()
+    {
+        QuerySnapshot snapshot = await _firestoreDb!
+            .Collection(FeedsCollection)
+            .OrderByDescending("FeedTime")
+            .Limit(1)
+            .GetSnapshotAsync();
+
+        return snapshot.Documents.Count > 0 ?
+            snapshot.Documents[0].ConvertTo<FeedModel>() :
+            throw new Exception("There are no feedings saved in the database yet!");
+    }
+
+    // ➤ Get All Walks from Firestore
+    public async Task<List<FeedModel>> GetAllFeedsAsync()
+    {
+        var feeds = new List<FeedModel>();
+        QuerySnapshot snapshot = await _firestoreDb!
+            .Collection(FeedsCollection)
+            .OrderBy("FeedTime")
+            .GetSnapshotAsync();
+
+        foreach (var doc in snapshot.Documents)
+            feeds.Add(doc.ConvertTo<FeedModel>());
+
+        return feeds;
+    }
+    #endregion Feed CRUD Operations
 }

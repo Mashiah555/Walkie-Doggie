@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="Walkie_Doggie.Popups.MessagePopup">
+
+    <Frame Style="{StaticResource InnerFrame}">
+        <Grid RowDefinitions="*,Auto"
+              ColumnDefinitions="*,Auto"
+              RowSpacing="5" ColumnSpacing="5">
+            
+            <Label Grid.Row="0" Grid.Column="0"
+                   x:Name="MessageContent"
+                   VerticalOptions="Center" 
+                   HorizontalOptions="Center" />
+
+            <StackLayout Grid.Row="1" Grid.ColumnSpan="2"
+                         Orientation="Horizontal" Spacing="5">
+                
+                <Button x:Name="Button1"/>
+                <Button x:Name="Button2"/>
+                <Button x:Name="Button3"/>
+                <Button x:Name="Button4"/>
+
+            </StackLayout>
+        </Grid>
+    </Frame>
+</toolkit:Popup>

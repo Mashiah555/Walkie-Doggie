@@ -77,7 +77,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Popups\" />
 	  <Folder Include="ViewModels\" />
 	</ItemGroup>
 
@@ -92,6 +91,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\WalksPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Popups\MessagePopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

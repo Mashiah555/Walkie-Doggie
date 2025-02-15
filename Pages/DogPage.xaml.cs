@@ -6,17 +6,17 @@ public partial class DogPage : ContentPage
 {
     private readonly FirebaseService _db;
 
-    public string LastWalk { get; set; } = "אין עדיין טיולים במערכת";
-
     public DogPage()
     {
         InitializeComponent();
         _db = new FirebaseService();
 
-        InitializeData();
+        InitializeLastWalkData();
+        InitializeLastFeedData();
     }
 
-    private async void InitializeData()
+    #region Data Initialization
+    private async void InitializeLastWalkData()
     {
         var lastWalk = await _db.GetLastWalkAsync();
 
@@ -28,19 +28,51 @@ public partial class DogPage : ContentPage
 
         LastWalkPooped.Text = lastWalk.IsPooped ? "לואי עשה קקי בטיול" : "לואי לא עשה קקי";
 
-        LastWalkWalker.Text = lastWalk.WalkerName;
+        LastWalker.Text = lastWalk.WalkerName;
 
         if (lastWalk.Notes is not null)
         {
-            NotesFrame.IsVisible = true;
+            WalkNotesFrame.IsVisible = true;
             LastWalkNotes.Text = lastWalk.Notes;
         }
         else
-            NotesFrame.IsVisible = false;
+            WalkNotesFrame.IsVisible = false;
     }
 
+    private async void InitializeLastFeedData()
+    {
+        var lastFeed = await _db.GetLastFeedAsync();
+
+        LastFeedTime.Text = "קיבל אוכל בפעם האחרונה בשעה " +
+            Converters.ConvertToString(lastFeed.FeedTime);
+
+        LastFeedPassedTime.Text = "עברו מאז " + Converters.ConvertToString(
+            DateTime.UtcNow - Converters.ConvertToDateTime(lastFeed.FeedTime)) + " שעות";
+
+        LastFeedAmount.Text = lastFeed.FeedAmount.ToString() + " גרם";
+
+        LastFeeder.Text = lastFeed.FeederName;
+
+        if (lastFeed.Notes is not null)
+        {
+            FeedNotesFrame.IsVisible = true;
+            LastFeedNotes.Text = lastFeed.Notes;
+        }
+        else
+            FeedNotesFrame.IsVisible = false;
+    }
+    #endregion Data Initialization
+
+    #region Button Click Events
     private void ButtonWalk_Clicked(object sender, EventArgs e)
     {
 
     }
+
+    private void ButtonFeed_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    #endregion Button Click Events
 }
