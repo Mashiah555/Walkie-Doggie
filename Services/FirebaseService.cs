@@ -53,7 +53,8 @@ public class FirebaseService
             .SetAsync(new UserModel
             {
                 Name = name,
-                TotalWalks = 0
+                TotalWalks = 0,
+                Theme = AppTheme.Unspecified
             });
     }
 
@@ -100,16 +101,19 @@ public class FirebaseService
     }
 
     // ➤ Get the last walk from Firestore
-    public async Task<WalkModel> GetLastWalkAsync()
+    public async Task<WalkModel> GetLastWalkAsync(string? username = null)
     {
-        QuerySnapshot snapshot = await _firestoreDb!
+        Query query = _firestoreDb!
             .Collection(WalksCollection)
-            .OrderByDescending("WalkTime")
-            .Limit(1)
-            .GetSnapshotAsync();
+            .OrderByDescending("WalkTime");
 
-        return snapshot.Documents.Count > 0 ? 
-            snapshot.Documents[0].ConvertTo<WalkModel>() : 
+        if (!string.IsNullOrEmpty(username))
+            query = query.WhereEqualTo("WalkerName", username);
+
+        QuerySnapshot snapshot = await query.Limit(1).GetSnapshotAsync();
+
+        return snapshot.Documents.Count > 0 ?
+            snapshot.Documents[0].ConvertTo<WalkModel>() :
             throw new Exception("There are no walks saved in the database yet!");
     }
 

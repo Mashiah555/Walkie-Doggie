@@ -19,6 +19,11 @@
         <Setter Property="StrokeThickness" Value="1"/>
     </Style>
 
+    <Style TargetType="Grid">
+        <Setter Property="ColumnSpacing" Value="5" />
+        <Setter Property="RowSpacing" Value="5"/>
+    </Style>
+
     <Style TargetType="BoxView">
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>

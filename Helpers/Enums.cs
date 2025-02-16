@@ -2,12 +2,6 @@
 
 public static class Enums
 {
-    public enum AppTheme
-    {
-        Light,
-        Dark,
-        System
-    }
 
     public enum MessageButton
     {

@@ -3,10 +3,94 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Walkie_Doggie.Pages.WalksPage"
              Title="טיולים">
-    <VerticalStackLayout>
-        <Label 
-            Text="walks"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    
+    <Grid ColumnDefinitions="*,*"
+          RowDefinitions="Auto,Auto,Auto">
+
+        <!--Walk Frame-->
+        <Frame Grid.Row="0" Grid.ColumnSpan="2"
+               Style="{StaticResource OutterFrame}">
+            <Grid RowDefinitions="Auto,Auto,Auto"
+                  ColumnDefinitions="*,*">
+
+                <Label Grid.Row="0" Grid.ColumnSpan="2"
+                       Text="הטיול האחרון"
+                       Style="{StaticResource SubHeader}"/>
+
+                <!--Last Walk Time-->
+                <Frame Grid.Row="1" Grid.ColumnSpan="2"
+                       Style="{StaticResource InnerFrame}">
+                    <StackLayout>
+
+                        <Label x:Name="LastWalkTime" 
+                               Text="אין עדיין טיולים במערכת" 
+                               HorizontalOptions="End"/>
+
+                        <Label x:Name="LastWalkPassedTime"
+                               Style="{StaticResource Context}"/>
+
+                    </StackLayout>
+                </Frame>
+
+                <!--Last Walk Pooping-->
+                <Frame Grid.Row="2" Grid.Column="1"
+                   Style="{StaticResource InnerFrame}">
+
+                    <Label x:Name="LastWalkPooped" />
+                </Frame>
+
+                <!--Last Walk Notes-->
+                <Frame Grid.Row="2" Grid.Column="0"
+                   x:Name="WalkNotesFrame"
+                   Style="{StaticResource InnerFrame}">
+
+                    <Label x:Name="LastWalkNotes" />
+                </Frame>
+
+            </Grid>
+        </Frame>
+
+        <!--Debts Frame-->
+        <Frame Grid.Row="1" Grid.Column="0"
+               Style="{StaticResource OutterFrame}">
+            <StackLayout>
+
+                <Label Text="רשימת החובות שלך"
+                       Style="{StaticResource SubHeader}"/>
+
+                <!--Debts List-->
+                <CollectionView>
+                    <CollectionView.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>חוב למעיין</x:String>
+                            <x:String>חוב להילה</x:String>
+                        </x:Array>
+                    </CollectionView.ItemsSource>
+                </CollectionView>
+
+            </StackLayout>
+        </Frame>
+
+        <!--Paybacks Frame-->
+        <Frame Grid.Row="1" Grid.Column="1"
+               Style="{StaticResource OutterFrame}">
+            <StackLayout>
+
+                <Label Text="רשימת הטובות שלך"
+                       Style="{StaticResource SubHeader}"/>
+
+                <!--Paybacks List-->
+                <CollectionView>
+                    <CollectionView.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>מעיין חייבת לך</x:String>
+                            <x:String>מיכל חייבת לך</x:String>
+                        </x:Array>
+                    </CollectionView.ItemsSource>
+                </CollectionView>
+
+            </StackLayout>
+        </Frame>
+
+    </Grid>
 </ContentPage>

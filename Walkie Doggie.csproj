@@ -81,7 +81,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Popups\ActionPopup.xaml.cs">
+	    <DependentUpon>ActionPopup.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Popups\EntryPopup.xaml.cs">
+	    <DependentUpon>EntryPopup.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Pages\DogPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\SettingsPage.xaml">
@@ -93,7 +105,10 @@
 	  <MauiXaml Update="Pages\WalksPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Popups\MessagePopup.xaml">
+	  <MauiXaml Update="Popups\ActionPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Popups\EntryPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

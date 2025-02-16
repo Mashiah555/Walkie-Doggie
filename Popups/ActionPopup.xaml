@@ -2,12 +2,11 @@
 <toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-               x:Class="Walkie_Doggie.Popups.MessagePopup">
+               x:Class="Walkie_Doggie.Popups.ActionPopup">
 
     <Border>
         <Grid RowDefinitions="*,Auto"
-              ColumnDefinitions="*,Auto"
-              RowSpacing="5" ColumnSpacing="5">
+              ColumnDefinitions="*,Auto">
             
             <Label Grid.Row="0" Grid.Column="0"
                    x:Name="MessageContent"

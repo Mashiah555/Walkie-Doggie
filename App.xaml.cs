@@ -6,16 +6,19 @@
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
-            ApplyTheme();
+            if (string.IsNullOrEmpty(LocalService.GetUsername()))
+                MainPage = new Pages.LoginPage();
+            else
+                MainPage = new AppShell();
 
+            ApplyTheme();
             // Detect system theme changes
-            Application.Current.RequestedThemeChanged += (s, e) => ApplyTheme();
+            Current!.RequestedThemeChanged += (s, e) => ApplyTheme();
         }
 
         public static void ApplyTheme()
         {
-            bool isDarkMode = Current.UserAppTheme == AppTheme.Dark ||
+            bool isDarkMode = Current!.UserAppTheme == AppTheme.Dark ||
                 (Current.UserAppTheme == AppTheme.Unspecified && 
                 Current.RequestedTheme == AppTheme.Dark);
 
@@ -58,11 +61,11 @@
             string savedTheme = Preferences.Get("AppTheme", "System");
 
             if (savedTheme == "Light")
-                Application.Current.UserAppTheme = AppTheme.Light;
+                Current!.UserAppTheme = AppTheme.Light;
             else if (savedTheme == "Dark")
-                Application.Current.UserAppTheme = AppTheme.Dark;
+                Current!.UserAppTheme = AppTheme.Dark;
             else
-                Application.Current.UserAppTheme = AppTheme.Unspecified;
+                Current!.UserAppTheme = AppTheme.Unspecified;
 
             ApplyTheme(); // Ensure colors are updated
         }

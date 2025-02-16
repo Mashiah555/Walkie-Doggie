@@ -2,9 +2,9 @@ using CommunityToolkit.Maui.Views;
 
 namespace Walkie_Doggie.Popups;
 
-public partial class MessagePopup : Popup
+public partial class ActionPopup : Popup
 {
-	public MessagePopup(string msg, 
+	public ActionPopup(string msg, 
         string? btn1 = null, string? btn2 = null, string? btn3 = null, string? btn4 = null)
 	{
 		InitializeComponent();

@@ -8,4 +8,7 @@ public class UserModel
 
     [FirestoreProperty]
     public int TotalWalks { get; set; }
+
+    [FirestoreProperty]
+    public AppTheme Theme { get; set; }
 }

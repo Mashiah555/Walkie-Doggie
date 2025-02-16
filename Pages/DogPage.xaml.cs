@@ -45,7 +45,7 @@ public partial class DogPage : ContentPage
         }
         catch (Exception ex)
         {
-            new MessagePopup(ex.Message, "Close");
+            new ActionPopup(ex.Message, "Close");
         }
     }
 
@@ -75,7 +75,7 @@ public partial class DogPage : ContentPage
         }
         catch (Exception ex)
         {
-            this.ShowPopup(new MessagePopup(ex.Message, "Close"));
+            this.ShowPopup(new ActionPopup(ex.Message, "Close"));
         }
     }
     #endregion Data Initialization
