@@ -4,7 +4,7 @@
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                x:Class="Walkie_Doggie.Popups.MessagePopup">
 
-    <Frame Style="{StaticResource InnerFrame}">
+    <Border>
         <Grid RowDefinitions="*,Auto"
               ColumnDefinitions="*,Auto"
               RowSpacing="5" ColumnSpacing="5">
@@ -17,12 +17,16 @@
             <StackLayout Grid.Row="1" Grid.ColumnSpan="2"
                          Orientation="Horizontal" Spacing="5">
                 
-                <Button x:Name="Button1"/>
-                <Button x:Name="Button2"/>
-                <Button x:Name="Button3"/>
-                <Button x:Name="Button4"/>
+                <Button x:Name="Button1"
+                        Clicked="Button_Clicked"/>
+                <Button x:Name="Button2"
+                        Clicked="Button_Clicked"/>
+                <Button x:Name="Button3"
+                        Clicked="Button_Clicked"/>
+                <Button x:Name="Button4"
+                        Clicked="Button_Clicked"/>
 
             </StackLayout>
         </Grid>
-    </Frame>
+    </Border>
 </toolkit:Popup>

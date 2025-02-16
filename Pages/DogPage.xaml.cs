@@ -1,5 +1,8 @@
-﻿using Google.Cloud.Firestore;
+﻿using CommunityToolkit.Maui.Views;
+using Google.Cloud.Firestore;
 using Walkie_Doggie.Helpers;
+using Walkie_Doggie.Popups;
+using static Walkie_Doggie.Helpers.Converters;
 namespace Walkie_Doggie.Pages;
 
 public partial class DogPage : ContentPage
@@ -18,48 +21,62 @@ public partial class DogPage : ContentPage
     #region Data Initialization
     private async void InitializeLastWalkData()
     {
-        var lastWalk = await _db.GetLastWalkAsync();
-
-        LastWalkTime.Text = "טייל בפעם האחרונה בשעה " + 
-            Converters.ConvertToString(lastWalk.WalkTime);
-
-        LastWalkPassedTime.Text = "עברו מאז " + Converters.ConvertToString(
-            DateTime.UtcNow - Converters.ConvertToDateTime(lastWalk.WalkTime)) + " שעות";
-
-        LastWalkPooped.Text = lastWalk.IsPooped ? "לואי עשה קקי בטיול" : "לואי לא עשה קקי";
-
-        LastWalker.Text = lastWalk.WalkerName;
-
-        if (lastWalk.Notes is not null)
+        try
         {
-            WalkNotesFrame.IsVisible = true;
-            LastWalkNotes.Text = lastWalk.Notes;
+            WalkModel lastWalk = await _db.GetLastWalkAsync();
+
+            LastWalkTime.Text = "טייל בפעם האחרונה בשעה " +
+                ConvertToString(lastWalk.WalkTime);
+
+            LastWalkPassedTime.Text = "עברו מאז " + ConvertToString(
+                DateTime.UtcNow - ConvertToDateTime(lastWalk.WalkTime)) + " שעות";
+
+            LastWalkPooped.Text = lastWalk.IsPooped ? "לואי עשה קקי בטיול" : "לואי לא עשה קקי";
+
+            LastWalker.Text = lastWalk.WalkerName;
+
+            if (lastWalk.Notes is not null)
+            {
+                WalkNotesFrame.IsVisible = true;
+                LastWalkNotes.Text = lastWalk.Notes;
+            }
+            else
+                WalkNotesFrame.IsVisible = false;
         }
-        else
-            WalkNotesFrame.IsVisible = false;
+        catch (Exception ex)
+        {
+            new MessagePopup(ex.Message, "Close");
+        }
     }
 
     private async void InitializeLastFeedData()
     {
-        var lastFeed = await _db.GetLastFeedAsync();
-
-        LastFeedTime.Text = "קיבל אוכל בפעם האחרונה בשעה " +
-            Converters.ConvertToString(lastFeed.FeedTime);
-
-        LastFeedPassedTime.Text = "עברו מאז " + Converters.ConvertToString(
-            DateTime.UtcNow - Converters.ConvertToDateTime(lastFeed.FeedTime)) + " שעות";
-
-        LastFeedAmount.Text = lastFeed.FeedAmount.ToString() + " גרם";
-
-        LastFeeder.Text = lastFeed.FeederName;
-
-        if (lastFeed.Notes is not null)
+        try
         {
-            FeedNotesFrame.IsVisible = true;
-            LastFeedNotes.Text = lastFeed.Notes;
+            FeedModel? lastFeed = await _db.GetLastFeedAsync();
+
+            LastFeedTime.Text = "קיבל אוכל בפעם האחרונה בשעה " +
+                ConvertToString(lastFeed.FeedTime);
+
+            LastFeedPassedTime.Text = "עברו מאז " + ConvertToString(
+                DateTime.UtcNow - ConvertToDateTime(lastFeed.FeedTime)) + " שעות";
+
+            LastFeedAmount.Text = lastFeed.FeedAmount.ToString() + " גרם";
+
+            LastFeeder.Text = lastFeed.FeederName;
+
+            if (lastFeed.Notes is not null)
+            {
+                FeedNotesFrame.IsVisible = true;
+                LastFeedNotes.Text = lastFeed.Notes;
+            }
+            else
+                FeedNotesFrame.IsVisible = false;
         }
-        else
-            FeedNotesFrame.IsVisible = false;
+        catch (Exception ex)
+        {
+            this.ShowPopup(new MessagePopup(ex.Message, "Close"));
+        }
     }
     #endregion Data Initialization
 

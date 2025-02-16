@@ -23,4 +23,10 @@ public partial class MessagePopup : Popup
 		else
 			btn.Text = str;
     }
+
+    private void Button_Clicked(object sender, EventArgs e)
+    {
+        Button btn = (Button)sender;
+        Close(btn.Text);
+    }
 }
