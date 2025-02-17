@@ -1,14 +1,14 @@
-# Walkie Doggie
+# **Walkie Doggie**
 
 A .NET MAUI based C# application that allows the users to log and manage their pet dog activities and sync changes across devices
 
 ## Database Service
 
-### 1️⃣ Firebase Cloud Firestore Service
+### 1️⃣ Create a Project Via Firebase Console
 
   #### Set Up a Firebase Project
   - Go to [Firebase Console](https://console.firebase.google.com).
-  - Click Create a Project → Name it (e.g., WalkieDoggieDB).
+  - Click Create a Project → Name it (e.g. WalkieDoggieDB).
   - Click Continue until the project is created.
   #### Enable Firestore Database
   - Inside your Firebase project, go to Build → Firestore Database.
@@ -35,40 +35,26 @@ A .NET MAUI based C# application that allows the users to log and manage their p
 
   - Add a new folder, and name it Services
   - Inside the Services folder, add a new class called: FirebaseService.cs
-  - *add a link to the following code lines:
-using System;
-using System.IO;
-using System.Reflection;
-using System.Threading.Tasks;
-using Google.Apis.Auth.OAuth2;
-using Google.Cloud.Firestore;
-
-public class FirebaseService
-{
-    private static FirestoreDb _firestoreDb;
-    private const string CollectionName = "Walks";
-
-    public FirebaseService()
-    {
-        if (_firestoreDb == null)
-        {
-            _firestoreDb = Authenticate();
-        }
-    }
-
-    private FirestoreDb Authenticate()
-    {
-        var assembly = IntrospectionExtensions.GetTypeInfo(typeof(FirebaseService)).Assembly;
-        var stream = assembly.GetManifestResourceStream("YourNamespace.Resources.Raw.firebase-adminsdk.json");
-
-        if (stream == null)
-            throw new Exception("Firebase credentials file not found.");
-
-        var credential = GoogleCredential.FromStream(stream);
-        FirestoreDb db = FirestoreDb.Create("your-project-id", credential);
-        return db;
-    }
-}
-
+  - Write [these code lines](https://github.com/Mashiah555/Walkie-Doggie/blob/master/Services/FirebaseService.cs#L1-L43) to initialize access to Firebase.
   - Replace "your-project-id" with your Firebase Project ID (found in Firebase settings).
   - Define the Firestore implementation inside every relevent page: "var firebaseService = new FirebaseService();"
+
+## Design Patterns & UI Enhancements
+
+### The Community Toolkit
+The .NET MAUI Community Toolkit enables the use of a more modern, unified, organized, and specific UI design.
+The toolkit implements some modernized controls and components for the designing proccess, as well as predefined converters for a clean and organized coding experience.
+
+  - Right Click the Dependencies in the Solution Explorer → Choose Manage NuGet Packages
+  - Download the following NuGet package:
+    - CommunityToolkit.Maui
+  - **Reference the toolkit in xaml files:**
+    - Add the following namespace to the required page inside it's xaml file declarations:
+      - xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+      - Write "toolkit:" before stating the name of a desired toolkit component.
+  - **Reference the toolkit in the code-behinds:**
+    - Add the following using statement to the required page's code-behind:
+      - using CommunityToolkit.Maui
+     
+## Features
+  - The application features a theme-specific unified color schemes, defined in the [Colors file](https://github.com/Mashiah555/Walkie-Doggie/blob/master/Resources/Styles/Colors.xaml), located inside Resources/Styles folder.
