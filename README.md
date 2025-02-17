@@ -39,7 +39,7 @@ A .NET MAUI based C# application that allows the users to log and manage their p
   - Replace "your-project-id" with your Firebase Project ID (found in Firebase settings).
   - Define the Firestore implementation inside every relevent page: "var firebaseService = new FirebaseService();"
 
-## Design Patterns & UI Enhancements
+## UI Enhancements
 
 ### The Community Toolkit
 The .NET MAUI Community Toolkit enables the use of a more modern, unified, organized, and specific UI design.
@@ -51,7 +51,7 @@ The toolkit implements some modernized controls and components for the designing
   - **Reference the toolkit in xaml files:**
     - Add the following namespace to the required page inside it's xaml file declarations:
       - xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-      - Write "toolkit:" before stating the name of a desired toolkit component.
+    - Write "toolkit:" before stating the name of a desired toolkit component.
   - **Reference the toolkit in the code-behinds:**
     - Add the following using statement to the required page's code-behind:
       - using CommunityToolkit.Maui
