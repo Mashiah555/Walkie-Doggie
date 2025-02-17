@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Converters;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Views;
 
@@ -37,13 +36,19 @@ public partial class LoginPage : ContentPage
 			msg = "ההרשמה נכשלה. נסה להירשם שוב";
 		else if (LocalService.GetUsername() is not null)
             msg = "אתה כבר רשום במערכת";
+		else if (await _db.HasUser((string)result))
+            msg = "השם הזה כבר קיים במערכת";
         else
-        {
-            LocalService.SaveUsername((string)result);
+		{
+			LocalService.SaveUsername((string)result);
 			await _db.AddUserAsync((string)result);
-            msg = "ההרשמה הצליחה";
+
+			msg = "ההרשמה הצליחה";
+            await Toast.Make(msg, ToastDuration.Long).Show();
+
+            Application.Current!.MainPage = new AppShell();
         }
 
-		await Toast.Make(msg, ToastDuration.Long).Show();
+        await Toast.Make(msg, ToastDuration.Long).Show();
     }
 }

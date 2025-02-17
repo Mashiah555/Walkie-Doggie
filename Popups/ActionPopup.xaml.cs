@@ -16,12 +16,12 @@ public partial class ActionPopup : Popup
         InitializeButton(Button4, btn4);
     }
 
-    private void InitializeButton(Button btn, string? str)
+    private void InitializeButton(Button btn, string? content)
     {
-		if (str is null || str == string.Empty)
-			Button1.IsVisible = false;
+		if (content is null || content == string.Empty)
+			btn.IsVisible = false;
 		else
-			btn.Text = str;
+			btn.Text = content;
     }
 
     private void Button_Clicked(object sender, EventArgs e)

@@ -6,32 +6,43 @@
     <StackLayout>
 
         <Label Text="Walkie Doggie"
-               Style="{StaticResource Header}"/>
+               Style="{StaticResource Header}"
+               HorizontalOptions="Center" Margin="1,35" FontSize="50" />
 
         <Label Text="בחר/י את שמך מהרשימה כדי לבצע התחברות ראשונית במכשיר זה"
-               Style="{StaticResource SubHeader}"/>
+               Style="{StaticResource SubHeader}"
+               FontAttributes="None" Margin="1,-5"/>
 
         <CollectionView x:Name="UsersCollection"
                         SelectionMode="Single"
                         ItemsLayout="VerticalGrid, 2"
-                        EmptyView="עדיין לא קיים במערכת אף משתמש">
+                        EmptyView="עדיין לא קיים במערכת אף משתמש"
+                        Margin="8,30">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     
                     <Frame Style="{StaticResource InnerFrame}">
                         <Grid RowDefinitions="Auto,Auto"
-                              ColumnDefinitions="*,60">
+                              ColumnDefinitions="60,Auto,*">
 
-                            <Label Grid.Row="0" Grid.Column="0"
+                            <Image Grid.Column="0" Grid.RowSpan="2"
+                                   Source="{AppThemeBinding Light=user_light.png, Dark=user_dark.png}"
+                                   HeightRequest="50" WidthRequest="50"
+                                   HorizontalOptions="Center" Margin="1,3,-8,3"/>
+                            
+                            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
                                    Text="{Binding Name}"
-                                   Style="{StaticResource SubHeader}"/>
-                            <Label Grid.Row="1" Grid.Column="0"
+                                   Style="{StaticResource SubHeader}"
+                                   VerticalOptions="End"/>
+                            
+                            <Label Grid.Row="1" Grid.Column="1"
                                    Text="{Binding TotalWalks}"
                                    Style="{StaticResource Context}"/>
-                            <Image Grid.Column="1" Grid.RowSpan="2"
-                                   Source="{AppThemeBinding Light=settings_light.gif, Dark=settings_dark.gif}"
-                                   HeightRequest="50"
-                                   WidthRequest="50"/>
+                            <Label Grid.Row="1" Grid.Column="2"
+                                   Text="טיולים"
+                                   Style="{StaticResource Context}"
+                                   HorizontalOptions="Start" Margin="-9,0,0,0"/>
+
                         </Grid>
                     </Frame>
                     
@@ -39,7 +50,9 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <Label Text="מעולם לא התחברת לפני כן? יש ללחוץ על הכפתור על מנת להירשם"/>
+        <Label Text="מעולם לא התחברת לפני כן? יש ללחוץ על הכפתור על מנת להירשם"
+               Style="{StaticResource Context}"
+               Margin="20,10,20,2"/>
         <Button Text="הרשמה למערכת" 
                 Clicked="ButtonSignUp_Clicked"/>
         

@@ -71,6 +71,18 @@ public class FirebaseService
 
         return users;
     }
+
+    // ➤ Get All Users from Firestore
+    public async Task<bool> HasUser(string name)
+    {
+        QuerySnapshot snapshot = await _firestoreDb!
+            .Collection(UsersCollection)
+            .WhereEqualTo("Name", name)
+            .GetSnapshotAsync();
+        return snapshot.Documents.Count > 0;
+
+        //bool tr = (await GetAllUsersAsync()).Any(user => user.Name == name);
+    }
     #endregion User CRUD Operations
 
     #region Walk CRUD Operations

@@ -13,4 +13,11 @@
     {
         return Preferences.Get(UsernameKey, null); // Default to null if not set
     }
+
+    // Remove the locally stored username
+    public static void RemoveUsername()
+    {
+        if (GetUsername() is not null)
+            Preferences.Remove(UsernameKey);
+    }
 }

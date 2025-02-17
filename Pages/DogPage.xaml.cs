@@ -45,7 +45,7 @@ public partial class DogPage : ContentPage
         }
         catch (Exception ex)
         {
-            new ActionPopup(ex.Message, "Close");
+            this.ShowPopup(new ActionPopup(ex.Message, "Close"));
         }
     }
 

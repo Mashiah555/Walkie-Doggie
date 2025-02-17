@@ -3,25 +3,35 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Walkie_Doggie.Pages.SettingsPage"
              Title="הגדרות">
-    
-    <Grid RowDefinitions="Auto,Auto,Auto"
+
+    <StackLayout>
+
+        <Label x:Name="UserProfile" Style="{StaticResource Header}" />
+
+        <Grid RowDefinitions="Auto,Auto,Auto"
           ColumnDefinitions="Auto,*">
+        
+            <Label Grid.Row="0" Grid.Column="0"
+                   Text="App Theme:"
+                   VerticalTextAlignment="Center"/>
 
-        <Label Grid.Row="1" Grid.Column="0"
-               Text="App Theme:"
-               VerticalTextAlignment="Center"/>
-
-        <Picker Grid.Row="1" Grid.Column="1"
+            <Picker Grid.Row="0" Grid.Column="1"
                 x:Name="ThemePicker" 
                 Title="Select Theme"
                 SelectedIndexChanged="ThemePicker_SelectedIndexChanged"
                 SelectedIndex="2">
-            <Picker.Items>
-                <x:String>Light</x:String>
-                <x:String>Dark</x:String>
-                <x:String>System Default</x:String>
-            </Picker.Items>
-        </Picker>
+                <Picker.Items>
+                    <x:String>Light</x:String>
+                    <x:String>Dark</x:String>
+                    <x:String>System Default</x:String>
+                </Picker.Items>
+            </Picker>
 
-    </Grid>
+        </Grid>
+
+        <Button Text="התנתקות"
+                Style="{StaticResource Danger}"
+                Clicked="LogoutButton_Clicked"/>
+        
+    </StackLayout>
 </ContentPage>
