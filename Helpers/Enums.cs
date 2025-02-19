@@ -2,7 +2,6 @@
 
 public static class Enums
 {
-
     public enum MessageButton
     {
         OK,

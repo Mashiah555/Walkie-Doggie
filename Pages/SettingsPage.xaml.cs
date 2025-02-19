@@ -47,10 +47,10 @@ namespace Walkie_Doggie.Pages
 
         private async void LogoutButton_Clicked(object sender, EventArgs e)
         {
-            var result = await this.ShowPopupAsync(new ActionPopup(
-                "האם את/ה בטוח/ה שברצונך להתנתק מהמערכת?", "התנתקות", "ביטול"));
+            bool result = await DisplayAlert("התנתקות", "האם את/ה בטוח/ה שברצונך להתנתק מהמערכת?",
+                "אישור", "ביטול", FlowDirection.RightToLeft);
 
-            if (result is not null && result is string && (string)result == "התנתקות")
+            if (result)
             {
                 LocalService.RemoveUsername();
                 await Toast.Make("התנתקת מהמערכת", ToastDuration.Short).Show();

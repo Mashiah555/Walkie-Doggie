@@ -10,5 +10,7 @@
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
+
+        <local:ConvertToBool x:Key="ConvertToBoolKey" />
     </Application.Resources>
 </Application>

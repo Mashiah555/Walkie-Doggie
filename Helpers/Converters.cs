@@ -1,4 +1,5 @@
 ﻿using Google.Cloud.Firestore;
+using System.Globalization;
 namespace Walkie_Doggie.Helpers;
 
 public static class Converters
@@ -23,7 +24,7 @@ public static class Converters
     }
 
     /// <summary>
-    /// Converts DateTime to string form.
+    /// Converts values to string form.
     /// </summary>
     public static string ConvertToString(object value)
     {
@@ -41,5 +42,43 @@ public static class Converters
 
         return string.Empty;
     }
+
+    /// <summary>
+    /// Converts values to visibility form.
+    /// </summary>
+    public static Visibility ConvertToVisibility(object value)
+    {
+        if (value is null)
+            return Visibility.Collapsed;
+
+        if (value is bool boolValue)
+            return boolValue ? Visibility.Visible : Visibility.Collapsed;
+
+        return Visibility.Visible;
+    }
+
+    /// <summary>
+    /// Converts values to boolean form.
+    /// </summary>
+    public static bool ConvertToBool(object value)
+    {
+        if (value is null)
+            return false;
+        return true;
+    }
 }
 
+class ConvertToBool : IValueConverter
+{
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is null)
+            return false;
+        return true;
+    }
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        return true;
+    }
+}

@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
-using CommunityToolkit.Maui;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
 using Walkie_Doggie.Helpers;
 
 public class FirebaseService
 {
+    #region Firestore Properties
     private static FirestoreDb? _firestoreDb;
     private const string UsersCollection = "Users";
     private const string WalksCollection = "Walks";
     private const string FeedsCollection = "Feeds";
+    #endregion Firestore Properties
 
     #region Firebase Operations
     public FirebaseService()
@@ -54,7 +55,9 @@ public class FirebaseService
             {
                 Name = name,
                 TotalWalks = 0,
-                Theme = AppTheme.Unspecified
+                TotalFavors = 0,
+                TotalPaybacks = 0,
+
             });
     }
 
@@ -72,7 +75,7 @@ public class FirebaseService
         return users;
     }
 
-    // ➤ Get All Users from Firestore
+    // ➤ Searches for a User in Firestore
     public async Task<bool> HasUser(string name)
     {
         QuerySnapshot snapshot = await _firestoreDb!
@@ -83,6 +86,7 @@ public class FirebaseService
 
         //bool tr = (await GetAllUsersAsync()).Any(user => user.Name == name);
     }
+
     #endregion User CRUD Operations
 
     #region Walk CRUD Operations

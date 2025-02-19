@@ -26,7 +26,6 @@ public partial class ActionPopup : Popup
 
     private void Button_Clicked(object sender, EventArgs e)
     {
-        Button btn = (Button)sender;
-        Close(btn.Text);
+        Close(((Button)sender).Text);
     }
 }

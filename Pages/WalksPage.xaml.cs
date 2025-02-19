@@ -41,7 +41,8 @@ public partial class WalksPage : ContentPage
         }
         catch (Exception ex)
         {
-            this.ShowPopup(new ActionPopup(ex.Message, "Close"));
+            await DisplayAlert("InitializeLastWalkData",
+                ex.Message, "סגירה", FlowDirection.RightToLeft);
         }
     }
 }
