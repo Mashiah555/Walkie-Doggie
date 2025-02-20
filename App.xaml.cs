@@ -2,19 +2,42 @@
 {
     public partial class App : Application
     {
+        private readonly FirebaseService _db;
         public App()
         {
             InitializeComponent();
+            _db = new FirebaseService();
 
-            if (string.IsNullOrEmpty(LocalService.GetUsername()))
-                MainPage = new Pages.LoginPage();
-            else
-                MainPage = new AppShell();
+            // Assign a temporary loading page to avoid NotImplementedException
+            MainPage = new ContentPage { Content = new ActivityIndicator { IsRunning = true } };
+
+            InitializeApp();
 
             ApplyTheme();
             // Detect system theme changes
             Current!.RequestedThemeChanged += (s, e) => ApplyTheme();
         }
+
+        private async void InitializeApp()
+        {
+            if (string.IsNullOrEmpty(LocalService.GetUsername()))
+                MainPage = new Pages.LoginPage(OnLogin);
+            else
+                await NavigateApp();
+        }
+
+        private async Task NavigateApp()
+        {
+            if (!(await _db.HasDog()))
+                MainPage = new Pages.DogForms.DogForm();
+            MainPage = new AppShell();
+        }
+
+        private async void OnLogin()
+        {
+            await NavigateApp();
+        }
+
 
         public static void ApplyTheme()
         {

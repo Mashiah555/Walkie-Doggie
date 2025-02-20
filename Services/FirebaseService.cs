@@ -220,9 +220,12 @@ public class FirebaseService
     #endregion Feed CRUD Operations
 
     #region Dog Operations
-    public async Task<bool> InitializeDog(string name, DateTime birthdate, string breed, 
-        int weight, int feedAmount)
+    public async Task<bool> AddDog(string name, DateTime birthdate, string breed, 
+        float weight, int feedAmount)
     {
+        if (await HasDog())
+            return false;
+
         int totalWalks;
         try
         {
@@ -231,29 +234,29 @@ public class FirebaseService
         }
         catch { totalWalks = 0; }
 
+        await _firestoreDb!
+            .Collection(DogsCollection)
+            .Document(name)
+            .SetAsync(new DogModel
+            {
+                DogName = name,
+                DogBirthdate = Converters.ConvertToTimestamp(birthdate),
+                DogBreed = breed,
+                DogWeight = weight,
+                DefaultFeedAmount = feedAmount,
+                TotalWalks = totalWalks
+            });
+
+        return true;
+    }
+
+    public async Task<bool> HasDog()
+    {
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(DogsCollection)
             .Limit(1)
             .GetSnapshotAsync();
-
-        if (snapshot.Documents.Count == 0)
-        {
-            await _firestoreDb!
-                .Collection(DogsCollection)
-                .Document(name)
-                .SetAsync(new DogModel
-                {
-                    DogName = name,
-                    DogBirthdate = Converters.ConvertToTimestamp(birthdate),
-                    DogBreed = breed,
-                    DogWeight = weight,
-                    DefaultFeedAmount = feedAmount,
-                    TotalWalks = totalWalks
-                });
-
-            return true;
-        }
-        return false;
+        return snapshot.Documents.Count > 0;
     }
 
     public async Task<int> GetWalksId(bool increment = false)
