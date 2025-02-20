@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Xml.Linq;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
 using Walkie_Doggie.Helpers;
@@ -10,6 +11,7 @@ public class FirebaseService
     private const string UsersCollection = "Users";
     private const string WalksCollection = "Walks";
     private const string FeedsCollection = "Feeds";
+    private const string DogsCollection = "Dogs";
     #endregion Firestore Properties
 
     #region Firebase Operations
@@ -55,9 +57,7 @@ public class FirebaseService
             {
                 Name = name,
                 TotalWalks = 0,
-                TotalFavors = 0,
-                TotalPaybacks = 0,
-
+                Theme = AppTheme.Unspecified
             });
     }
 
@@ -87,25 +87,18 @@ public class FirebaseService
         //bool tr = (await GetAllUsersAsync()).Any(user => user.Name == name);
     }
 
-    #endregion User CRUD Operations
-
-    #region Walk CRUD Operations
-    // ➤ Add a Walk Record
-    public async Task AddWalkAsync(string walkerName, DateTime walkTime, bool isPooped, string? notes)
+    public async Task<UserModel?> GetUser(string name)
     {
-        await _firestoreDb!
-            .Collection(WalksCollection)
-            .Document($"{walkerName}_{walkTime:ddMMyyyy_HHmmss}")
-            .SetAsync(new WalkModel 
-            {
-                WalkerName = walkerName,
-                WalkTime = Converters.ConvertToTimestamp(walkTime),
-                IsPooped = isPooped,
-                Notes = notes
-            });
+        var userSnapshot = await GetUserReference(name).GetSnapshotAsync();
 
-        // Update User's TotalWalks Count
-        var userRef = _firestoreDb.Collection(UsersCollection).Document(walkerName);
+        if (userSnapshot.Exists)
+            return userSnapshot.ConvertTo<UserModel>();
+        return null;
+    }
+
+    private async Task IncrementTotalWalks(string name)
+    {
+        var userRef = GetUserReference(name);
         var userSnapshot = await userRef.GetSnapshotAsync();
 
         if (userSnapshot.Exists)
@@ -114,6 +107,37 @@ public class FirebaseService
             user.TotalWalks += 1;
             await userRef.SetAsync(user);
         }
+    }
+
+    private DocumentReference GetUserReference(string name)
+    {
+        return _firestoreDb!
+            .Collection(UsersCollection)
+            .Document(name);
+    }
+
+    #endregion User CRUD Operations
+
+    #region Walk CRUD Operations
+    // ➤ Add a Walk Record
+    public async Task AddWalkAsync(string walkerName, DateTime walkTime, bool isPooped,
+        string? notes = null, string? inDebtName = null)
+    {
+        await _firestoreDb!
+            .Collection(WalksCollection)
+            .Document($"{walkerName}_{walkTime:ddMMyyyy_HHmmss}")
+            .SetAsync(new WalkModel 
+            {
+                WalkId = await GetWalksId(true),
+                WalkerName = walkerName,
+                WalkTime = Converters.ConvertToTimestamp(walkTime),
+                IsPooped = isPooped,
+                InDebtName = inDebtName,
+                Notes = notes
+            });
+
+        // Update User's TotalWalks Count
+        await IncrementTotalWalks(walkerName);
     }
 
     // ➤ Get the last walk from Firestore
@@ -194,4 +218,62 @@ public class FirebaseService
         return feeds;
     }
     #endregion Feed CRUD Operations
+
+    #region Dog Operations
+    public async Task<bool> InitializeDog(string name, DateTime birthdate, string breed, 
+        int weight, int feedAmount)
+    {
+        int totalWalks;
+        try
+        {
+            var lastWalk = await GetLastWalkAsync();
+            totalWalks = lastWalk.WalkId;
+        }
+        catch { totalWalks = 0; }
+
+        QuerySnapshot snapshot = await _firestoreDb!
+            .Collection(DogsCollection)
+            .Limit(1)
+            .GetSnapshotAsync();
+
+        if (snapshot.Documents.Count == 0)
+        {
+            await _firestoreDb!
+                .Collection(DogsCollection)
+                .Document(name)
+                .SetAsync(new DogModel
+                {
+                    DogName = name,
+                    DogBirthdate = Converters.ConvertToTimestamp(birthdate),
+                    DogBreed = breed,
+                    DogWeight = weight,
+                    DefaultFeedAmount = feedAmount,
+                    TotalWalks = totalWalks
+                });
+
+            return true;
+        }
+        return false;
+    }
+
+    public async Task<int> GetWalksId(bool increment = false)
+    {
+        QuerySnapshot snapshot = await _firestoreDb!
+            .Collection(DogsCollection)
+            .Limit(1)
+            .GetSnapshotAsync();
+
+        if (snapshot.Documents.Count == 0)
+            throw new DirectoryNotFoundException("There are no dogs saved in the database yet!");
+
+        DogModel dog = snapshot.Documents[0].ConvertTo<DogModel>();
+
+        if (increment)
+        {
+            dog.TotalWalks++;
+            await snapshot.Documents[0].Reference.UpdateAsync("TotalWalks", dog.TotalWalks);
+        }
+        return dog.TotalWalks;
+    }
+    #endregion Dog Operations
 }

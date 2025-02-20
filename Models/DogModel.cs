@@ -4,10 +4,10 @@
 public class DogModel
 {
     [FirestoreProperty]
-    public required string DogName { get; set; }
+    public required string DogName { get; init; }
 
     [FirestoreProperty]
-    public Timestamp DogBirthDate { get; set; }
+    public Timestamp DogBirthdate { get; set; }
 
     [FirestoreProperty]
     public required string DogBreed { get; set; }
@@ -16,5 +16,8 @@ public class DogModel
     public int DogWeight { get; set; }
 
     [FirestoreProperty]
-    public int FeedAmount { get; set; }
+    public int DefaultFeedAmount { get; set; }
+
+    [FirestoreProperty]
+    public int TotalWalks { get; set; }
 }

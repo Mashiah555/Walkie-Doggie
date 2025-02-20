@@ -11,6 +11,6 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
-        <local:ConvertToBool x:Key="ConvertToBoolKey" />
+        <!--<local:ConvertToBool x:Key="ConvertToBoolKey" />-->
     </Application.Resources>
 </Application>

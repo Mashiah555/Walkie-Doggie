@@ -4,6 +4,9 @@
 public class WalkModel
 {
     [FirestoreProperty]
+    public required int WalkId { get; set; } // Serial ID for the walk
+
+    [FirestoreProperty]
     public required string WalkerName { get; set; }  // User who took the walk
 
     [FirestoreProperty]
@@ -13,10 +16,7 @@ public class WalkModel
     public bool IsPooped { get; set; }      // Whether the dog pooped
 
     [FirestoreProperty]
-    public string? Favor { get; set; }       // Optional favor to someone
-
-    [FirestoreProperty]
-    public string? Payback { get; set; }    // Optional payback to someone
+    public string? InDebtName { get; set; }  // User who owes a favor
 
     [FirestoreProperty]
     public string? Notes { get; set; }       // Optional notes about the walk
