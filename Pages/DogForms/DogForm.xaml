@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Walkie_Doggie.Pages.DogForms.DogForm"
-             xmlns:custom="clr-namespace:Walkie_Doggie.Controls"
+             xmlns:pack="clr-namespace:Walkie_Doggie.PacksKit"
              xmlns:vm="clr-namespace:Walkie_Doggie.ViewModels"
              x:DataType="vm:DogViewModel"
              FlowDirection="RightToLeft">
@@ -16,22 +16,22 @@
                Style="{StaticResource Context}"
                Margin="12,0,4,25"/>
 
-        <custom:EntryPack 
-                Text="{Binding DogName}"
-                Placeholder="שם הכלב"
-                FloatingLabel="שם חיית המחמד"
-            Description="תיבה זו היא חובה"
-            Mandatory="False"
-            ContentState="Warning"/>
+        <pack:EntryPack 
+            Text="{Binding DogName}"
+            Placeholder="שם הכלב"
+            FloatingLabel="שם חיית המחמד"
+            Mandatory="True"/>
 
-        <Label Text="תאריך לידה:" FontAttributes="Bold"/>
-        <DatePicker Date="{Binding DogBirthdate}"/>
+        <pack:DatePickerPack 
+            Date="{Binding DogBirthdate}"
+            FloatingLabel="תאריך לידה"
+            Description="גיל חיית המחמד יחושב על פי תאריך הלידה"/>
 
-        <Label Text="גזע:" FontAttributes="Bold"/>
-        <Picker Grid.Row="2" Grid.Column="1"
-                SelectedItem="{Binding DogBreed}"
-                ItemsSource="{Binding DogBreeds}"
-                Title="בחר גזע"/>
+        <pack:PickerPack 
+            SelectedItem="{Binding DogBreed}"
+            ItemsSource="{Binding DogBreeds}"
+            PickerTitle="בחר גזע"
+            FloatingLabel="גזע"/>
 
         <Label Text="משקל:" FontAttributes="Bold"/>
         <Slider Minimum="0.5" Maximum="75" 

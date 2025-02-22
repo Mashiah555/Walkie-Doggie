@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
-using Microsoft.Maui.Handlers;
-using Microsoft.Maui.Hosting;
 
 namespace Walkie_Doggie
 {
