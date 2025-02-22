@@ -14,10 +14,12 @@
     </Style>
 
     <Style TargetType="Border">
+        <Setter Property="Padding" Value="1" />
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="FlowDirection" Value="RightToLeft"/>
         <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
         <Setter Property="StrokeShape" Value="Rectangle"/>
         <Setter Property="StrokeThickness" Value="0"/>
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
     </Style>
 
     <Style TargetType="Grid">

@@ -21,7 +21,8 @@
                 Placeholder="שם הכלב"
                 FloatingLabel="שם חיית המחמד"
             Description="תיבה זו היא חובה"
-            Mandatory="True"/>
+            Mandatory="False"
+            ContentState="Warning"/>
 
         <Label Text="תאריך לידה:" FontAttributes="Bold"/>
         <DatePicker Date="{Binding DogBirthdate}"/>

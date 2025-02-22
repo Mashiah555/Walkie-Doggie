@@ -75,6 +75,9 @@ public class EntryPack : StackLayout
 
     public EntryPack()
     {
+        if (Mandatory && string.IsNullOrWhiteSpace(Description))
+            Description = "שדה חובה";
+
         var image = new Image 
         { 
             WidthRequest = 38, 
@@ -93,7 +96,7 @@ public class EntryPack : StackLayout
             Style = (Style)Application.Current!.Resources["SubHeader"],
             FontSize = 18,
             FontAttributes = FontAttributes.Bold,
-            Margin = new Thickness(8, 3, 1, -1),
+            Margin = new Thickness(9, 5, 5, -3),
             FlowDirection = FlowDirection.RightToLeft
         };
         floatingLabel.SetBinding(
@@ -117,7 +120,7 @@ public class EntryPack : StackLayout
             Style = (Style)Application.Current!.Resources["Context"],
             FontSize = 12, 
             HorizontalOptions = LayoutOptions.Center,
-            Margin = new Thickness(5, -2, 5, 1) 
+            Margin = new Thickness(5, -4, 5, 5) 
         };
         descriptionLabel.SetBinding(
             Label.TextProperty, new Binding(nameof(Description), source: this));
@@ -135,18 +138,37 @@ public class EntryPack : StackLayout
         grid.SetColumn(image, 0);
         grid.SetColumn(entry, 1);
 
-        var frame = new Frame
+        var border = new Border
         {
             Content = grid,
             BackgroundColor = Colors.Transparent,
             Margin = new Thickness(5, 2),
             Padding = new Thickness(3, -3),
-            FlowDirection = FlowDirection.RightToLeft
+            FlowDirection = FlowDirection.RightToLeft,
+            Stroke = Application.Current!.UserAppTheme == AppTheme.Light ?
+                (Color)Application.Current!.Resources["Gray200"] :
+                (Color)Application.Current!.Resources["Gray900"],
+            StrokeThickness = 0.5,
+            StrokeShape = new RoundRectangle
+            {
+                CornerRadius = new CornerRadius(10)  // You can adjust this value to make corners more or less rounded
+            }
         };
+        border.SetBinding(Border.StrokeProperty, new Binding(
+                nameof(ContentState), source: this, converter: new ConvertToColor()));
+
+        //var frame = new Frame
+        //{
+        //    Content = grid,
+        //    BackgroundColor = Colors.Transparent,
+        //    Margin = new Thickness(5, 2),
+        //    Padding = new Thickness(3, -3),
+        //    FlowDirection = FlowDirection.RightToLeft
+        //};
 
         FlowDirection = FlowDirection.RightToLeft;
         Children.Add(floatingLabel);
-        Children.Add(frame);
+        Children.Add(border);
         Children.Add(descriptionLabel);
     }
 
