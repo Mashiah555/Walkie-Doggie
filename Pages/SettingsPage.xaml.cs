@@ -54,7 +54,7 @@ namespace Walkie_Doggie.Pages
             {
                 LocalService.RemoveUsername();
                 await Toast.Make("התנתקת מהמערכת", ToastDuration.Short).Show();
-                Application.Current!.MainPage = new LoginPage();
+                Application.Current!.MainPage = new LoginPage(null);
             }
         }
     }

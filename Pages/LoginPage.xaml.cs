@@ -7,10 +7,10 @@ namespace Walkie_Doggie.Pages;
 public partial class LoginPage : ContentPage
 {
     private readonly FirebaseService _db;
-    private readonly Action _onLogin;
+    private readonly Action? _onLogin = null;
     public UserViewModel ViewModel { get; set; }
 
-    public LoginPage(Action onLogin)
+    public LoginPage(Action? onLogin)
     {
         InitializeComponent();
 
@@ -75,6 +75,8 @@ public partial class LoginPage : ContentPage
         LocalService.SaveUsername(username);
         await Toast.Make("ההרשמה הצליחה", ToastDuration.Short).Show();
 
-        _onLogin?.Invoke();
+        if (_onLogin is not null)
+            _onLogin.Invoke();
+        App.Current!.MainPage = new AppShell();
     }
 }

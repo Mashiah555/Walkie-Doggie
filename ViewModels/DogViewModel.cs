@@ -1,4 +1,6 @@
 ﻿using Google.Cloud.Firestore;
+using Microsoft.VisualBasic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace Walkie_Doggie.ViewModels;
@@ -62,6 +64,12 @@ public class DogViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(DefaultFeedAmount));
         }
     }
+
+    Collection<string> dogBreeds;
+    public Collection<string> DogBreeds
+    {
+        get => dogBreeds;
+    }
     #endregion View Model Properties
 
     public DogViewModel()
@@ -70,8 +78,18 @@ public class DogViewModel : INotifyPropertyChanged
         dogName = string.Empty;
         dogBirthdate = DateTime.Now;
         dogBreed = string.Empty;
-        dogWeight = 0;
-        defaultFeedAmount = 0;
+        dogWeight = 8;
+        defaultFeedAmount = 75;
+
+        dogBreeds = new Collection<string>(
+            new List<string>
+            {
+                "איילירלנד", "אלסקן מלמוט", "בולדוג צרפתי", "ביגל", "בורדר קולי", "בוקסר", "בישון פריזה",
+                "דוברמן", "דלמטי", "האסקי סיבירי", "הרועה הגרמני", "וויפט", "טרייר סקוטי",
+                "לברדור רטריבר", "מלטז", "פודל", "פקינז", "פומרניאן", "פיטבול", "פינצ'ר",
+                "צ'יוואווה", "קוקר ספניאל", "רועה בלגי", "רועה שווייצרי", "רוטוויילר", "רידג'בק רודזי", "שיצו",
+                "שנאוצר", "שיצו"
+            });
     }
 
     public async void SaveDog()

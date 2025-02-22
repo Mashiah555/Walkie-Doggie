@@ -2,13 +2,43 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Walkie_Doggie.Pages.DogForms.DogForm"
+             xmlns:custom="clr-namespace:Walkie_Doggie.Controls"
              xmlns:vm="clr-namespace:Walkie_Doggie.ViewModels"
              x:DataType="vm:DogViewModel"
-             Title="פרטי חיית המחמד">
+             FlowDirection="RightToLeft">
+    
     <VerticalStackLayout>
         <Label 
-            Text="{Binding DogName}"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+            Text="פרטי חיית המחמד"
+            Style="{StaticResource Header}" />
+
+        <Label Text="יש להגדיר את פרטי חיית המחמד לפני הגישה ליישומון"
+               Style="{StaticResource Context}"
+               Margin="12,0,4,25"/>
+
+        <custom:EntryPack 
+                Text="{Binding DogName}"
+                Placeholder="שם הכלב"
+                FloatingLabel="שם חיית המחמד"
+            Description="תיבה זו היא חובה"
+            Mandatory="True"/>
+
+        <Label Text="תאריך לידה:" FontAttributes="Bold"/>
+        <DatePicker Date="{Binding DogBirthdate}"/>
+
+        <Label Text="גזע:" FontAttributes="Bold"/>
+        <Picker Grid.Row="2" Grid.Column="1"
+                SelectedItem="{Binding DogBreed}"
+                ItemsSource="{Binding DogBreeds}"
+                Title="בחר גזע"/>
+
+        <Label Text="משקל:" FontAttributes="Bold"/>
+        <Slider Minimum="0.5" Maximum="75" 
+                Value="{Binding DogWeight}"/>
+
+        <Label Text="ברירת מחדל לארוחה:" FontAttributes="Bold"/>
+        <Slider Minimum="5" Maximum="250"
+                Value="{Binding DefaultFeedAmount}"/>
+
     </VerticalStackLayout>
 </ContentPage>

@@ -10,7 +10,7 @@
 
             // Assign a temporary loading page to avoid NotImplementedException
             MainPage = new ContentPage { Content = new ActivityIndicator { IsRunning = true } };
-
+            
             InitializeApp();
 
             ApplyTheme();
@@ -30,7 +30,8 @@
         {
             if (!(await _db.HasDog()))
                 MainPage = new Pages.DogForms.DogForm();
-            MainPage = new AppShell();
+            else
+                MainPage = new AppShell();
         }
 
         private async void OnLogin()

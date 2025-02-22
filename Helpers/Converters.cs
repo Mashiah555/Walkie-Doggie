@@ -1,5 +1,6 @@
 ﻿using Google.Cloud.Firestore;
 using System.Globalization;
+using static Walkie_Doggie.Helpers.Enums;
 namespace Walkie_Doggie.Helpers;
 
 public static class Converters
@@ -72,9 +73,7 @@ class ConvertToBool : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is null)
-            return false;
-        return true;
+        return value != null;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

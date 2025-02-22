@@ -2,6 +2,7 @@
 <Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Walkie_Doggie"
+             xmlns:cnvrt="clr-namespace:Walkie_Doggie.Helpers"
              x:Class="Walkie_Doggie.App">
     <Application.Resources>
         <ResourceDictionary>
@@ -9,8 +10,8 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            
+            <cnvrt:ConvertToBool x:Key="ConvertToBoolKey" />
         </ResourceDictionary>
-
-        <!--<local:ConvertToBool x:Key="ConvertToBoolKey" />-->
     </Application.Resources>
 </Application>
