@@ -6,8 +6,12 @@
              xmlns:vm="clr-namespace:Walkie_Doggie.ViewModels"
              x:DataType="vm:DogViewModel"
              FlowDirection="RightToLeft">
+    <ContentPage.BindingContext>
+        <vm:DogViewModel />
+    </ContentPage.BindingContext>
     
     <VerticalStackLayout>
+        
         <Label 
             Text="פרטי חיית המחמד"
             Style="{StaticResource Header}" />
@@ -30,16 +34,62 @@
         <pack:PickerPack 
             SelectedItem="{Binding DogBreed}"
             ItemsSource="{Binding DogBreeds}"
-            PickerTitle="בחר גזע"
+            PickerTitle="בחר/י את סוג הגזע"
             FloatingLabel="גזע"/>
 
-        <Label Text="משקל:" FontAttributes="Bold"/>
-        <Slider Minimum="0.5" Maximum="75" 
-                Value="{Binding DogWeight}"/>
+        <!--Weight Slider-->
+        <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="0"
+              ColumnDefinitions="*,Auto" ColumnSpacing="0">
 
-        <Label Text="ברירת מחדל לארוחה:" FontAttributes="Bold"/>
-        <Slider Minimum="5" Maximum="250"
-                Value="{Binding DefaultFeedAmount}"/>
+            <Label Grid.Row="0" Grid.ColumnSpan="2"
+                   Style="{StaticResource SubHeader}"
+                   Text="משקל"/>
+            
+            <Slider Grid.Row="1" Grid.ColumnSpan="2"
+                    Value="{Binding DogWeight}"
+                    Minimum="1.5" Maximum="70"
+                    Margin="5,-2"/>
+            
+            <Label Grid.Row="2" Grid.Column="0"
+                   Style="{StaticResource Context}"
+                   Text="{Binding DogWeight, Converter={StaticResource ConvertToRoundedStringKey}}"
+                   FontSize="18"
+                   HorizontalOptions="End"
+                   Margin="0,-7,0,10"/>
+            <Label Grid.Row="2" Grid.Column="1"
+                   Style="{StaticResource Context}"
+                   Text="קילו"
+                   FontSize="18"
+                   Margin="5,-7,35,10"/>
+            
+        </Grid>
+
+        <!--Feed Slider-->
+        <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="0"
+              ColumnDefinitions="*,Auto" ColumnSpacing="0">
+
+            <Label Grid.Row="0" Grid.ColumnSpan="2"
+                   Style="{StaticResource SubHeader}"
+                   Text="ברירת מחדל לארוחה"/>
+
+            <Slider Grid.Row="1" Grid.ColumnSpan="2"
+                    Value="{Binding DefaultFeedAmount}"
+                    Minimum="5" Maximum="250"
+                    Margin="5,-2"/>
+
+            <Label Grid.Row="2" Grid.Column="0"
+                   Style="{StaticResource Context}"
+                   Text="{Binding DefaultFeedAmount, Converter={StaticResource ConvertToRoundedStringKey}}"
+                   FontSize="18"
+                   HorizontalOptions="End"
+                   Margin="0,-7,0,10"/>
+            <Label Grid.Row="2" Grid.Column="1"
+                   Style="{StaticResource Context}"
+                   Text="קילו"
+                   FontSize="18"
+                   Margin="5,-7,35,10"/>
+
+        </Grid>
 
     </VerticalStackLayout>
 </ContentPage>

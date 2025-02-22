@@ -43,8 +43,8 @@ public class DogViewModel : INotifyPropertyChanged
         }
     }
 
-    float dogWeight;
-    public float DogWeight
+    double dogWeight;
+    public double DogWeight
     {
         get => dogWeight;
         set
@@ -65,8 +65,8 @@ public class DogViewModel : INotifyPropertyChanged
         }
     }
 
-    Collection<string> dogBreeds;
-    public Collection<string> DogBreeds
+    ObservableCollection<string> dogBreeds;
+    public ObservableCollection<string> DogBreeds
     {
         get => dogBreeds;
     }
@@ -75,21 +75,21 @@ public class DogViewModel : INotifyPropertyChanged
     public DogViewModel()
     {
         _db = new FirebaseService();
+
         dogName = string.Empty;
         dogBirthdate = DateTime.Now;
         dogBreed = string.Empty;
         dogWeight = 8;
         defaultFeedAmount = 75;
 
-        dogBreeds = new Collection<string>(
-            new List<string>
-            {
-                "איילירלנד", "אלסקן מלמוט", "בולדוג צרפתי", "ביגל", "בורדר קולי", "בוקסר", "בישון פריזה",
-                "דוברמן", "דלמטי", "האסקי סיבירי", "הרועה הגרמני", "וויפט", "טרייר סקוטי",
-                "לברדור רטריבר", "מלטז", "פודל", "פקינז", "פומרניאן", "פיטבול", "פינצ'ר",
-                "צ'יוואווה", "קוקר ספניאל", "רועה בלגי", "רועה שווייצרי", "רוטוויילר", "רידג'בק רודזי", "שיצו",
-                "שנאוצר", "שיצו"
-            });
+        dogBreeds = new ObservableCollection<string>
+        {
+            "איילירלנד", "אלסקן מלמוט", "בולדוג צרפתי", "ביגל", "בורדר קולי", "בוקסר", "בישון פריזה",
+            "דוברמן", "דלמטי", "האסקי סיבירי", "הרועה הגרמני", "וויפט", "טרייר סקוטי",
+            "לברדור רטריבר", "מלטז", "פודל", "פקינז", "פומרניאן", "פיטבול", "פינצ'ר",
+            "צ'יוואווה", "קוקר ספניאל", "רועה בלגי", "רועה שווייצרי", "רוטוויילר", "רידג'בק רודזי", "שיצו",
+            "שנאוצר", "שיצו"
+        };
     }
 
     public async void SaveDog()

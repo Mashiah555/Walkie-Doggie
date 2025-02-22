@@ -13,7 +13,7 @@ public class DogModel
     public required string DogBreed { get; set; }
 
     [FirestoreProperty]
-    public float DogWeight { get; set; }
+    public double DogWeight { get; set; }
 
     [FirestoreProperty]
     public int DefaultFeedAmount { get; set; }

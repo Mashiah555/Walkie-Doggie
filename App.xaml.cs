@@ -9,7 +9,11 @@
             _db = new FirebaseService();
 
             // Assign a temporary loading page to avoid NotImplementedException
-            MainPage = new ContentPage { Content = new ActivityIndicator { IsRunning = true } };
+            MainPage = new ContentPage { Content = new ActivityIndicator 
+            { 
+                IsRunning = true, 
+                Margin = new Thickness(200)
+            } };
             
             InitializeApp();
 

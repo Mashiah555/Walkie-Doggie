@@ -119,7 +119,6 @@ public class PickerPack : StackLayout
         {
             FontSize = 18,
             Margin = new Thickness(-4, 1, 3, 2),
-            HorizontalOptions = LayoutOptions.Start,
             HorizontalTextAlignment = TextAlignment.Start,
             FlowDirection = FlowDirection.RightToLeft
         };

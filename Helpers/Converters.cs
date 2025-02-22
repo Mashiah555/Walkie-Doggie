@@ -71,13 +71,52 @@ public static class Converters
 
 class ConvertToBool : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return value != null;
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return true;
+    }
+}
+
+class ConvertToRoundedString : IValueConverter
+{
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is null)
+            return string.Empty;
+
+        if (value is int)
+            return value.ToString() ?? string.Empty;
+
+        if (value is double)
+            return (Math.Floor((double)value * 2 + 0.5) / 2)
+                .ToString() ?? string.Empty;
+
+        if (value is float)
+            return (Math.Floor((float)value * 2 + 0.5) / 2)
+                .ToString() ?? string.Empty;
+
+        return string.Empty;
+    }
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is null)
+            return 0;
+
+        if (double.TryParse(value as string, out double doubleResult))
+            return doubleResult;
+
+        if (float.TryParse(value as string, out float floatResult))
+            return floatResult;
+
+        if (int.TryParse(value as string, out int intResult))
+            return intResult;
+
+        return 0;
     }
 }

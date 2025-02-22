@@ -221,7 +221,7 @@ public class FirebaseService
 
     #region Dog Operations
     public async Task<bool> AddDog(string name, DateTime birthdate, string breed, 
-        float weight, int feedAmount)
+        double weight, int feedAmount)
     {
         if (await HasDog())
             return false;

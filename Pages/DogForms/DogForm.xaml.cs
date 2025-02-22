@@ -5,5 +5,6 @@ public partial class DogForm : ContentPage
 	public DogForm()
 	{
 		InitializeComponent();
-	}
+        BindingContext = new ViewModels.DogViewModel();
+    }
 }
