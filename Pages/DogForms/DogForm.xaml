@@ -24,7 +24,8 @@
             Text="{Binding DogName}"
             Placeholder="שם הכלב"
             FloatingLabel="שם חיית המחמד"
-            Mandatory="True"/>
+            Mandatory="True"
+            IsEnabled="{Binding HasDog}"/>
 
         <pack:DatePickerPack 
             Date="{Binding DogBirthdate}"
@@ -90,6 +91,10 @@
                    Margin="5,-7,35,10"/>
 
         </Grid>
+
+        <Button Text="שמירה"
+                Command="{Binding SaveCommand}">
+        </Button>
 
     </VerticalStackLayout>
 </ContentPage>

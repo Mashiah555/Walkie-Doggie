@@ -1,10 +1,14 @@
+using Walkie_Doggie.ViewModels;
 namespace Walkie_Doggie.Pages.DogForms;
 
 public partial class DogForm : ContentPage
 {
-	public DogForm()
+    private readonly FirebaseService _db;
+
+    public DogForm()
 	{
 		InitializeComponent();
-        BindingContext = new ViewModels.DogViewModel();
+        BindingContext = new DogViewModel();
+        _db = new FirebaseService();
     }
 }

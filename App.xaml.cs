@@ -12,7 +12,7 @@
             MainPage = new ContentPage { Content = new ActivityIndicator 
             { 
                 IsRunning = true, 
-                Margin = new Thickness(200)
+                Margin = new Thickness(250)
             } };
             
             InitializeApp();

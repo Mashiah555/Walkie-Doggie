@@ -229,7 +229,7 @@ public class FirebaseService
         int totalWalks;
         try
         {
-            var lastWalk = await GetLastWalkAsync();
+            WalkModel lastWalk = await GetLastWalkAsync();
             totalWalks = lastWalk.WalkId;
         }
         catch { totalWalks = 0; }
@@ -246,6 +246,26 @@ public class FirebaseService
                 DefaultFeedAmount = feedAmount,
                 TotalWalks = totalWalks
             });
+
+        return true;
+    }
+
+    public async Task<bool> UpdateDog(DateTime birthdate, string breed,
+        double weight, int feedAmount)
+    {
+        QuerySnapshot snapshot = await _firestoreDb!
+            .Collection(DogsCollection)
+            .Limit(1)
+            .GetSnapshotAsync();
+
+        if (snapshot.Documents.Count == 0)
+            return false;
+
+        DocumentReference reference = snapshot.Documents[0].Reference;
+        await reference.UpdateAsync("DogBirthdate", Converters.ConvertToTimestamp(birthdate));
+        await reference.UpdateAsync("DogBreed", breed);
+        await reference.UpdateAsync("DogWeight", weight);
+        await reference.UpdateAsync("DefaultFeedAmount", feedAmount);
 
         return true;
     }

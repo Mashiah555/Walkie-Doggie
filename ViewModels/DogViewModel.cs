@@ -2,6 +2,7 @@
 using Microsoft.VisualBasic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace Walkie_Doggie.ViewModels;
 
@@ -68,8 +69,16 @@ public class DogViewModel : INotifyPropertyChanged
     ObservableCollection<string> dogBreeds;
     public ObservableCollection<string> DogBreeds
     {
-        get => dogBreeds;
+        get => (ObservableCollection<string>)dogBreeds.Order();
     }
+
+    bool hasDog;
+    public bool HasDog
+    {
+        get => hasDog;
+    }
+
+    public ICommand SaveCommand { get; }
     #endregion View Model Properties
 
     public DogViewModel()
@@ -81,21 +90,41 @@ public class DogViewModel : INotifyPropertyChanged
         dogBreed = string.Empty;
         dogWeight = 8;
         defaultFeedAmount = 75;
-
         dogBreeds = new ObservableCollection<string>
         {
-            "איילירלנד", "אלסקן מלמוט", "בולדוג צרפתי", "ביגל", "בורדר קולי", "בוקסר", "בישון פריזה",
-            "דוברמן", "דלמטי", "האסקי סיבירי", "הרועה הגרמני", "וויפט", "טרייר סקוטי",
-            "לברדור רטריבר", "מלטז", "פודל", "פקינז", "פומרניאן", "פיטבול", "פינצ'ר",
-            "צ'יוואווה", "קוקר ספניאל", "רועה בלגי", "רועה שווייצרי", "רוטוויילר", "רידג'בק רודזי", "שיצו",
-            "שנאוצר", "שיצו"
+            "איילירלנד", "אלסקן מלמוט", "בולדוג צרפתי", "ביגל", "בורדר קולי", "בוקסר",
+            "בישון פריזה", "דוברמן", "דלמטי", "האסקי סיבירי", "הרועה הגרמני", "וויפט",
+            "טרייר סקוטי", "לברדור רטריבר", "מלטז", "פודל", "פקינז", "פומרניאן", "פיטבול",
+            "פינצ'ר", "צ'יוואווה", "קוקר ספניאל", "רועה בלגי", "רועה שווייצרי",
+            "רוטוויילר", "רידג'בק רודזי", "שיצו", "שנאוצר"
         };
+        InitializeAsync();
+
+        SaveCommand = new Command(SaveClick);
+    }
+    public async void InitializeAsync() => hasDog = await _db.HasDog();
+
+    public async void SaveClick()
+    {
+        if (string.IsNullOrWhiteSpace(dogName) || string.IsNullOrWhiteSpace(dogBreed))
+        {
+            await DisplayAlert("שמירה נכשלה", 
+                "אחד או יותר מהשדות ריקים. חובה למלא את כל השדות לפני ביצוע שמירה!", "סגירה");
+            return;
+        }
+
+        if (await _db.HasDog())
+            await _db.UpdateDog(dogBirthdate, dogBreed, dogWeight, defaultFeedAmount);
+        else
+            await _db.AddDog(dogName, dogBirthdate, dogBreed, dogWeight, defaultFeedAmount);
     }
 
-    public async void SaveDog()
+    private Task DisplayAlert(string title, string message, string cancel)
     {
-        bool isDogSaved = await _db.AddDog(
-            DogName, DogBirthdate, DogBreed, DogWeight, DefaultFeedAmount);
+        // Implement your alert display logic here
+        // For example, if using Xamarin.Forms:
+        // return Application.Current.MainPage.DisplayAlert(title, message, cancel);
+        return Task.CompletedTask;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
