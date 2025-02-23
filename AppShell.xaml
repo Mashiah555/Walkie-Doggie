@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:Walkie_Doggie"
     xmlns:pages="clr-namespace:Walkie_Doggie.Pages"
     Shell.FlyoutBehavior="Disabled"
+    FlowDirection="RightToLeft"
     Title="Walkie_Doggie">
 
     <TabBar>
@@ -30,6 +31,8 @@
                       ContentTemplate="{DataTemplate pages:SettingsPage}" />
     </TabBar>
     
+    
+    <!--Default Page-->
     <!--<ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"

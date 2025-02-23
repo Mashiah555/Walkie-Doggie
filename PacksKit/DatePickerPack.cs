@@ -70,10 +70,12 @@ public class DatePickerPack : StackLayout
         #region Image Initialization
         var image = new Image
         {
-            WidthRequest = 38,
-            HeightRequest = 38,
+            WidthRequest = 25,
+            HeightRequest = 25,
+            MaximumWidthRequest = 26,
+            MaximumHeightRequest = 26,
             VerticalOptions = LayoutOptions.Center,
-            Margin = new Thickness(-2)
+            Margin = new Thickness(6,-2)
         };
         image.SetBinding(
             Image.SourceProperty, new Binding(nameof(ImageSource), source: this));

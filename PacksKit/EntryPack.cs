@@ -1,4 +1,5 @@
 ﻿using Microsoft.Maui.Controls.Shapes;
+
 namespace Walkie_Doggie.PacksKit;
 
 public class EntryPack : StackLayout
@@ -115,6 +116,7 @@ public class EntryPack : StackLayout
         entry.SetBinding(
             Entry.PlaceholderProperty, new Binding(nameof(Placeholder), source: this));
         entry.TextChanged += Entry_TextChanged;
+        entry.Unfocused += Entry_Unfocused;
         #endregion Entry Initialization
 
         #region Grid & Border Initialization
@@ -170,9 +172,18 @@ public class EntryPack : StackLayout
         FlowDirection = FlowDirection.RightToLeft;
     }
 
+    private void Entry_Unfocused(object? sender, FocusEventArgs e)
+    {
+        if (sender is Entry entry && entry.IsFocused && Mandatory)
+        {
+            ContentState = string.IsNullOrWhiteSpace(entry.Text)
+                ? ContentStates.Error : ContentStates.Normal;
+        }
+    }
+
     private void Entry_TextChanged(object sender, TextChangedEventArgs e)
     {
-        if (Mandatory)
+        if (sender is Entry entry && entry.IsFocused && Mandatory)
         {
             ContentState = string.IsNullOrWhiteSpace(e.NewTextValue)
                 ? ContentStates.Error : ContentStates.Normal;

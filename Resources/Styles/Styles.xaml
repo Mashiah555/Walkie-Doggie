@@ -501,6 +501,7 @@
     <Style TargetType="Page" ApplyToDerivedTypes="True">
         <Setter Property="Padding" Value="5"/>
         <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray950}}" />
+        <Setter Property="FlowDirection" Value="RightToLeft" />
     </Style>
 
     <Style TargetType="Shell" ApplyToDerivedTypes="True">
@@ -525,6 +526,7 @@
         <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray950}}" />
         <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource AccentColorLight}, Dark={StaticResource AccentColorDark}}" />
         <Setter Property="IconColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray900}}" />
+        <Setter Property="FlowDirection" Value="RightToLeft" />
     </Style>
 
     <Style TargetType="TabbedPage">
@@ -532,6 +534,7 @@
         <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource PrimaryColorLight}, Dark={StaticResource PrimaryColorDark}}" />
         <Setter Property="UnselectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray900}}" />
         <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}" />
+        <Setter Property="FlowDirection" Value="RightToLeft" />
     </Style>
 
 </ResourceDictionary>

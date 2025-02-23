@@ -106,7 +106,8 @@ public class PickerPack : StackLayout
             WidthRequest = 38,
             HeightRequest = 38,
             VerticalOptions = LayoutOptions.Center,
-            Margin = new Thickness(-2)
+            HorizontalOptions = LayoutOptions.Center,
+            Margin = new Thickness(-5,-2)
         };
         image.SetBinding(
             Image.SourceProperty, new Binding(nameof(ImageSource), source: this));
@@ -132,6 +133,7 @@ public class PickerPack : StackLayout
             Picker.TitleProperty, new Binding(
                 nameof(PickerTitle), source: this));
         picker.SelectedIndexChanged += Picker_SelectedIndexChanged;
+        picker.Unfocused += Picker_Unfocused;
         #endregion Picker Initialization
 
         #region Grid & Border Initialization
@@ -187,6 +189,14 @@ public class PickerPack : StackLayout
         FlowDirection = FlowDirection.RightToLeft;
     }
 
+    private void Picker_Unfocused(object? sender, FocusEventArgs e)
+    {
+        if (sender is Picker picker && Mandatory)
+        {
+            ContentState = picker.SelectedItem == null
+                ? ContentStates.Error : ContentStates.Normal;
+        }
+    }
     private void Picker_SelectedIndexChanged(object? sender, EventArgs e)
     {
         if (sender is Picker picker && Mandatory)

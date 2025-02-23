@@ -9,7 +9,7 @@
     <!-- Light Mode Colors -->
     <Color x:Key="AccentColorLight">#007378</Color>
     <Color x:Key="PrimaryColorLight">#003741</Color>
-    <Color x:Key="SecondaryColorLight">#007378</Color> <!--483D8B-->
+    <Color x:Key="SecondaryColorLight">#003741</Color> <!--483D8B-->
     <Color x:Key="ActionTextColorLight">white</Color>
     <Color x:Key="PrimaryTextColorLight">#141414</Color>
     <Color x:Key="SecondaryTextColorLight">dimgray</Color>
@@ -19,7 +19,7 @@
     <!-- Dark Mode Colors -->
     <Color x:Key="AccentColorDark">#003741</Color>
     <Color x:Key="PrimaryColorDark">#007378</Color>
-    <Color x:Key="SecondaryColorDark">#003741</Color> <!--7B68EE-->
+    <Color x:Key="SecondaryColorDark">#007378</Color> <!--7B68EE-->
     <Color x:Key="ActionTextColorDark">black</Color>
     <Color x:Key="PrimaryTextColorDark">whitesmoke</Color>
     <Color x:Key="SecondaryTextColorDark">darkgray</Color>

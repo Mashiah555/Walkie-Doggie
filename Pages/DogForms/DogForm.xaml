@@ -12,88 +12,81 @@
     
     <VerticalStackLayout>
         
-        <Label 
-            Text="פרטי חיית המחמד"
-            Style="{StaticResource Header}" />
+        <Label Text="פרטי חיית המחמד"
+               Style="{StaticResource Header}" 
+               Margin="10,20,4,0"/>
 
         <Label Text="יש להגדיר את פרטי חיית המחמד לפני הגישה ליישומון"
                Style="{StaticResource Context}"
-               Margin="12,0,4,25"/>
+               Margin="12,3,4,35"/>
 
         <pack:EntryPack 
             Text="{Binding DogName}"
             Placeholder="שם הכלב"
             FloatingLabel="שם חיית המחמד"
             Mandatory="True"
-            IsEnabled="{Binding HasDog}"/>
+            ImageSource="{AppThemeBinding Light=dog_light, Dark=dog_dark}"
+            IsEnabled="{Binding HasDog, Converter={StaticResource ConvertToBoolKey}}"/>
 
         <pack:DatePickerPack 
             Date="{Binding DogBirthdate}"
             FloatingLabel="תאריך לידה"
-            Description="גיל חיית המחמד יחושב על פי תאריך הלידה"/>
+            Description="גיל חיית המחמד יחושב על פי תאריך הלידה"
+            ImageSource="{AppThemeBinding Light=calendar_light, Dark=calendar_dark}"/>
 
         <pack:PickerPack 
             SelectedItem="{Binding DogBreed}"
             ItemsSource="{Binding DogBreeds}"
             PickerTitle="בחר/י את סוג הגזע"
-            FloatingLabel="גזע"/>
+            FloatingLabel="גזע"
+            Mandatory="True"
+            ImageSource="{AppThemeBinding Light=arrow-light, Dark=arrow_dark}"/>
 
         <!--Weight Slider-->
-        <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="0"
-              ColumnDefinitions="*,Auto" ColumnSpacing="0">
+        <StackLayout Spacing="0" Margin="0,5">
 
-            <Label Grid.Row="0" Grid.ColumnSpan="2"
-                   Style="{StaticResource SubHeader}"
+            <Label Style="{StaticResource SubHeader}"
                    Text="משקל"/>
             
-            <Slider Grid.Row="1" Grid.ColumnSpan="2"
-                    Value="{Binding DogWeight}"
+            <Slider Value="{Binding DogWeight}"
                     Minimum="1.5" Maximum="70"
                     Margin="5,-2"/>
-            
-            <Label Grid.Row="2" Grid.Column="0"
-                   Style="{StaticResource Context}"
-                   Text="{Binding DogWeight, Converter={StaticResource ConvertToRoundedStringKey}}"
+
+            <Label Style="{StaticResource Context}"
+                   Text="{Binding DogWeight, 
+                          Converter={StaticResource ConvertToRoundedStringKey}, 
+                          StringFormat='{}{0} ק&quot;ג'}"
                    FontSize="18"
                    HorizontalOptions="End"
-                   Margin="0,-7,0,10"/>
-            <Label Grid.Row="2" Grid.Column="1"
-                   Style="{StaticResource Context}"
-                   Text="קילו"
-                   FontSize="18"
-                   Margin="5,-7,35,10"/>
-            
-        </Grid>
+                   Margin="0,-7,40,10"/>
+
+        </StackLayout>
 
         <!--Feed Slider-->
-        <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="0"
-              ColumnDefinitions="*,Auto" ColumnSpacing="0">
+        <StackLayout Spacing="0" Margin="0,5">
 
-            <Label Grid.Row="0" Grid.ColumnSpan="2"
-                   Style="{StaticResource SubHeader}"
+            <Label Style="{StaticResource SubHeader}"
                    Text="ברירת מחדל לארוחה"/>
 
-            <Slider Grid.Row="1" Grid.ColumnSpan="2"
-                    Value="{Binding DefaultFeedAmount}"
+            <Slider Value="{Binding DefaultFeedAmount}"
                     Minimum="5" Maximum="250"
-                    Margin="5,-2"/>
+                    Margin="5,-2"
+                    HeightRequest="100"
+                    WidthRequest="500"/>
 
-            <Label Grid.Row="2" Grid.Column="0"
-                   Style="{StaticResource Context}"
-                   Text="{Binding DefaultFeedAmount, Converter={StaticResource ConvertToRoundedStringKey}}"
+            <Label Style="{StaticResource Context}"
+                   Text="{Binding DefaultFeedAmount, 
+                          Converter={StaticResource ConvertToRoundedStringKey}, 
+                          StringFormat='{}{0} גרם'}"
                    FontSize="18"
                    HorizontalOptions="End"
-                   Margin="0,-7,0,10"/>
-            <Label Grid.Row="2" Grid.Column="1"
-                   Style="{StaticResource Context}"
-                   Text="קילו"
-                   FontSize="18"
-                   Margin="5,-7,35,10"/>
+                   Margin="0,-7,40,10"/>
 
-        </Grid>
+        </StackLayout>
 
         <Button Text="שמירה"
-                Command="{Binding SaveCommand}">
+                Command="{Binding SaveCommand}"
+                Margin="10,20">
         </Button>
 
     </VerticalStackLayout>

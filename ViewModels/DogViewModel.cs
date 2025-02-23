@@ -69,7 +69,7 @@ public class DogViewModel : INotifyPropertyChanged
     ObservableCollection<string> dogBreeds;
     public ObservableCollection<string> DogBreeds
     {
-        get => (ObservableCollection<string>)dogBreeds.Order();
+        get => new ObservableCollection<string>(dogBreeds.Order());
     }
 
     bool hasDog;
@@ -85,11 +85,7 @@ public class DogViewModel : INotifyPropertyChanged
     {
         _db = new FirebaseService();
 
-        dogName = string.Empty;
-        dogBirthdate = DateTime.Now;
-        dogBreed = string.Empty;
-        dogWeight = 8;
-        defaultFeedAmount = 75;
+        InitializeAsync();
         dogBreeds = new ObservableCollection<string>
         {
             "איילירלנד", "אלסקן מלמוט", "בולדוג צרפתי", "ביגל", "בורדר קולי", "בוקסר",
@@ -98,11 +94,35 @@ public class DogViewModel : INotifyPropertyChanged
             "פינצ'ר", "צ'יוואווה", "קוקר ספניאל", "רועה בלגי", "רועה שווייצרי",
             "רוטוויילר", "רידג'בק רודזי", "שיצו", "שנאוצר"
         };
-        InitializeAsync();
 
         SaveCommand = new Command(SaveClick);
     }
-    public async void InitializeAsync() => hasDog = await _db.HasDog();
+    public async void InitializeAsync()
+    {
+        try
+        {
+            hasDog = await _db.HasDog();
+            if (hasDog)
+            {
+                DogModel dog = await _db.GetDogAsync();
+
+                dogName = dog.DogName;
+                dogBirthdate = dog.DogBirthdate.ToDateTime();
+                dogBreed = dog.DogBreed;
+                dogWeight = dog.DogWeight;
+                defaultFeedAmount = dog.DefaultFeedAmount;
+            }
+            else
+            {
+                dogName = string.Empty;
+                dogBirthdate = DateTime.Today;
+                dogBreed = string.Empty;
+                dogWeight = 8;
+                defaultFeedAmount = 75;
+            }
+        }
+        catch { }
+    }
 
     public async void SaveClick()
     {
@@ -114,9 +134,13 @@ public class DogViewModel : INotifyPropertyChanged
         }
 
         if (await _db.HasDog())
-            await _db.UpdateDog(dogBirthdate, dogBreed, dogWeight, defaultFeedAmount);
+            await _db.UpdateDog(dogBirthdate, dogBreed, 
+                Math.Floor(dogWeight * 2 + 0.5) / 2, defaultFeedAmount);
         else
-            await _db.AddDog(dogName, dogBirthdate, dogBreed, dogWeight, defaultFeedAmount);
+            await _db.AddDog(dogName, dogBirthdate, dogBreed, 
+                Math.Floor(dogWeight * 2 + 0.5) / 2, defaultFeedAmount);
+
+        Application.Current!.MainPage = new AppShell();
     }
 
     private Task DisplayAlert(string title, string message, string cancel)

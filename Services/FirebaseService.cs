@@ -270,6 +270,19 @@ public class FirebaseService
         return true;
     }
 
+    // ➤ Get the last dog from Firestore
+    public async Task<DogModel> GetDogAsync()
+    {
+        QuerySnapshot snapshot = await _firestoreDb!
+            .Collection(DogsCollection)
+            .Limit(1)
+            .GetSnapshotAsync();
+
+        return snapshot.Documents.Count > 0 ?
+            snapshot.Documents[0].ConvertTo<DogModel>() :
+            throw new Exception("There is no dog saved in the database!");
+    }
+
     public async Task<bool> HasDog()
     {
         QuerySnapshot snapshot = await _firestoreDb!
