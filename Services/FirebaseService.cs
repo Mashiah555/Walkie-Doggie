@@ -61,6 +61,15 @@ public class FirebaseService
             });
     }
 
+    // ➤ Update a User in Firestore
+    public async Task UpdateUserAsync(string name, AppTheme appTheme)
+    {
+        await _firestoreDb!
+            .Collection(UsersCollection)
+            .Document(name)
+            .UpdateAsync("Theme", appTheme);
+    }
+
     // ➤ Get All Users from Firestore
     public async Task<List<UserModel>> GetAllUsersAsync()
     {
@@ -76,7 +85,7 @@ public class FirebaseService
     }
 
     // ➤ Searches for a User in Firestore
-    public async Task<bool> HasUser(string name)
+    public async Task<bool> HasUserAsync(string name)
     {
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(UsersCollection)
@@ -87,7 +96,7 @@ public class FirebaseService
         //bool tr = (await GetAllUsersAsync()).Any(user => user.Name == name);
     }
 
-    public async Task<UserModel?> GetUser(string name)
+    public async Task<UserModel?> GetUserAsync(string name)
     {
         var userSnapshot = await GetUserReference(name).GetSnapshotAsync();
 
@@ -128,7 +137,7 @@ public class FirebaseService
             .Document($"{walkerName}_{walkTime:ddMMyyyy_HHmmss}")
             .SetAsync(new WalkModel 
             {
-                WalkId = await GetWalksId(true),
+                WalkId = await GetWalksIdAsync(true),
                 WalkerName = walkerName,
                 WalkTime = Converters.ConvertToTimestamp(walkTime),
                 IsPooped = isPooped,
@@ -220,7 +229,7 @@ public class FirebaseService
     #endregion Feed CRUD Operations
 
     #region Dog Operations
-    public async Task<bool> AddDog(string name, DateTime birthdate, string breed, 
+    public async Task<bool> AddDogAsync(string name, DateTime birthdate, string breed, 
         double weight, int feedAmount)
     {
         if (await HasDog())
@@ -250,7 +259,7 @@ public class FirebaseService
         return true;
     }
 
-    public async Task<bool> UpdateDog(DateTime birthdate, string breed,
+    public async Task<bool> UpdateDogAsync(DateTime birthdate, string breed,
         double weight, int feedAmount)
     {
         QuerySnapshot snapshot = await _firestoreDb!
@@ -292,7 +301,7 @@ public class FirebaseService
         return snapshot.Documents.Count > 0;
     }
 
-    public async Task<int> GetWalksId(bool increment = false)
+    public async Task<int> GetWalksIdAsync(bool increment = false)
     {
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(DogsCollection)

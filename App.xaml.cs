@@ -33,7 +33,7 @@
         private async Task NavigateApp()
         {
             if (!(await _db.HasDog()))
-                MainPage = new Pages.DogForms.DogForm();
+                MainPage = new Views.DogView();
             else
                 MainPage = new AppShell();
         }

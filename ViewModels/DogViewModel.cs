@@ -1,5 +1,7 @@
-﻿using Google.Cloud.Firestore;
-using Microsoft.VisualBasic;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Maui.Core.Extensions;
+using Google.Cloud.Firestore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -69,7 +71,7 @@ public class DogViewModel : INotifyPropertyChanged
     ObservableCollection<string> dogBreeds;
     public ObservableCollection<string> DogBreeds
     {
-        get => new ObservableCollection<string>(dogBreeds.Order());
+        get => dogBreeds;
     }
 
     bool hasDog;
@@ -85,7 +87,6 @@ public class DogViewModel : INotifyPropertyChanged
     {
         _db = new FirebaseService();
 
-        InitializeAsync();
         dogBreeds = new ObservableCollection<string>
         {
             "איילירלנד", "אלסקן מלמוט", "בולדוג צרפתי", "ביגל", "בורדר קולי", "בוקסר",
@@ -94,10 +95,12 @@ public class DogViewModel : INotifyPropertyChanged
             "פינצ'ר", "צ'יוואווה", "קוקר ספניאל", "רועה בלגי", "רועה שווייצרי",
             "רוטוויילר", "רידג'בק רודזי", "שיצו", "שנאוצר"
         };
+        dogBreeds = dogBreeds.Order().ToObservableCollection();
+        InitializeAsync();
 
         SaveCommand = new Command(SaveClick);
     }
-    public async void InitializeAsync()
+    private async void InitializeAsync()
     {
         try
         {
@@ -128,27 +131,20 @@ public class DogViewModel : INotifyPropertyChanged
     {
         if (string.IsNullOrWhiteSpace(dogName) || string.IsNullOrWhiteSpace(dogBreed))
         {
-            await DisplayAlert("שמירה נכשלה", 
+            await Application.Current!.MainPage!.DisplayAlert("שמירה נכשלה", 
                 "אחד או יותר מהשדות ריקים. חובה למלא את כל השדות לפני ביצוע שמירה!", "סגירה");
             return;
         }
 
         if (await _db.HasDog())
-            await _db.UpdateDog(dogBirthdate, dogBreed, 
+            await _db.UpdateDogAsync(dogBirthdate, dogBreed, 
                 Math.Floor(dogWeight * 2 + 0.5) / 2, defaultFeedAmount);
         else
-            await _db.AddDog(dogName, dogBirthdate, dogBreed, 
+            await _db.AddDogAsync(dogName, dogBirthdate, dogBreed, 
                 Math.Floor(dogWeight * 2 + 0.5) / 2, defaultFeedAmount);
 
+        await Toast.Make("השינויים נשמרו", ToastDuration.Short).Show();
         Application.Current!.MainPage = new AppShell();
-    }
-
-    private Task DisplayAlert(string title, string message, string cancel)
-    {
-        // Implement your alert display logic here
-        // For example, if using Xamarin.Forms:
-        // return Application.Current.MainPage.DisplayAlert(title, message, cancel);
-        return Task.CompletedTask;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

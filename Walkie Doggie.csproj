@@ -83,10 +83,13 @@
 	  <Compile Update="Popups\EntryPopup.xaml.cs">
 	    <DependentUpon>EntryPopup.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\DogView.xaml.cs">
+	    <DependentUpon>DogView.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\DogForms\DogForm.xaml">
+	  <MauiXaml Update="Views\DogView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\DogPage.xaml">

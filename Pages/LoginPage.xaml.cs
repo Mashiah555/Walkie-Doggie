@@ -43,7 +43,7 @@ public partial class LoginPage : ContentPage
             msg = "ההרשמה נכשלה. נסה להירשם שוב";
         else if (LocalService.GetUsername() is not null)
             msg = "אתה כבר רשום במערכת";
-        else if (await _db.HasUser((string)result))
+        else if (await _db.HasUserAsync((string)result))
             msg = "השם הזה כבר קיים במערכת";
 
         if (msg is not null)

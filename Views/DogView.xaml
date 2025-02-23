@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Walkie_Doggie.Pages.DogForms.DogForm"
+             x:Class="Walkie_Doggie.Views.DogView"
              xmlns:pack="clr-namespace:Walkie_Doggie.PacksKit"
              xmlns:vm="clr-namespace:Walkie_Doggie.ViewModels"
              x:DataType="vm:DogViewModel"
@@ -10,7 +10,7 @@
         <vm:DogViewModel />
     </ContentPage.BindingContext>
     
-    <VerticalStackLayout>
+    <StackLayout>
         
         <Label Text="פרטי חיית המחמד"
                Style="{StaticResource Header}" 
@@ -89,5 +89,5 @@
                 Margin="10,20">
         </Button>
 
-    </VerticalStackLayout>
+    </StackLayout>
 </ContentPage>

@@ -172,7 +172,7 @@ public class PickerPack : StackLayout
         {
             Style = (Style)Application.Current!.Resources["Context"],
             FontSize = 12,
-            HorizontalOptions = LayoutOptions.Center,
+            HorizontalOptions = LayoutOptions.End,
             Margin = new Thickness(5, -2, 5, 5)
         };
         descriptionLabel.SetBinding(

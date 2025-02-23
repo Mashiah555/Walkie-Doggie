@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
-using CommunityToolkit.Maui.Views;
-using Walkie_Doggie.Helpers;
-using Walkie_Doggie.Popups;
+using Walkie_Doggie.ViewModels;
 
 namespace Walkie_Doggie.Pages
 {
@@ -13,36 +11,8 @@ namespace Walkie_Doggie.Pages
         public SettingsPage()
         {
             InitializeComponent();
+            BindingContext = new SettingViewModel();
             _db = new FirebaseService();
-
-            UserProfile.Text = "את/ה מחובר/ת כעת בתור " + LocalService.GetUsername();
-        }
-
-        private void ThemePicker_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var picker = (Picker)sender;
-
-            if (picker.SelectedIndex == -1)
-                return;
-
-            switch (picker.SelectedItem)
-            {
-                case "Light":
-                    Application.Current!.UserAppTheme = AppTheme.Light;
-                    Preferences.Set("AppTheme", "Light");
-                    break;
-                case "Dark":
-                    Application.Current!.UserAppTheme = AppTheme.Dark;
-                    Preferences.Set("AppTheme", "Dark");
-                    break;
-                case "System Default":
-                    Application.Current!.UserAppTheme = AppTheme.Unspecified;
-                    Preferences.Set("AppTheme", "System");
-                    break;
-            }
-
-            // Apply the new theme colors immediately
-            App.ApplyTheme();
         }
 
         private async void LogoutButton_Clicked(object sender, EventArgs e)
@@ -56,6 +26,11 @@ namespace Walkie_Doggie.Pages
                 await Toast.Make("התנתקת מהמערכת", ToastDuration.Short).Show();
                 Application.Current!.MainPage = new LoginPage(null);
             }
+        }
+
+        private void EditDogButton_Clicked(object sender, EventArgs e)
+        {
+            Application.Current!.MainPage = new DogPage();
         }
     }
 }

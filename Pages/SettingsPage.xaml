@@ -2,32 +2,29 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Walkie_Doggie.Pages.SettingsPage"
-             Title="הגדרות">
+             xmlns:pack="clr-namespace:Walkie_Doggie.PacksKit"
+             xmlns:vm="clr-namespace:Walkie_Doggie.ViewModels"
+             x:DataType="vm:SettingViewModel"
+             FlowDirection="RightToLeft">
+    <ContentPage.BindingContext>
+        <vm:SettingViewModel />
+    </ContentPage.BindingContext>
 
     <StackLayout>
 
-        <Label x:Name="UserProfile" Style="{StaticResource Header}" />
+        <Label Text="{Binding Name, StringFormat='את/ה מחובר/ת למערכת בתור {0}'}" 
+               Style="{StaticResource Header}"
+               FontSize="18"/>
 
-        <Grid RowDefinitions="Auto,Auto,Auto"
-          ColumnDefinitions="Auto,*">
-        
-            <Label Grid.Row="0" Grid.Column="0"
-                   Text="App Theme:"
-                   VerticalTextAlignment="Center"/>
+        <pack:PickerPack
+            FloatingLabel="ערכת נושא"
+            PickerTitle="בחר/י ערכת נושא"
+            ItemsSource="{Binding Themes}"
+            SelectedItem="{Binding Theme, Converter={StaticResource ConvertThemeToStringKey}}"
+            ImageSource="{AppThemeBinding Light=arrow_light, Dark=arrow_dark}"/>
 
-            <Picker Grid.Row="0" Grid.Column="1"
-                x:Name="ThemePicker" 
-                Title="Select Theme"
-                SelectedIndexChanged="ThemePicker_SelectedIndexChanged"
-                SelectedIndex="2">
-                <Picker.Items>
-                    <x:String>Light</x:String>
-                    <x:String>Dark</x:String>
-                    <x:String>System Default</x:String>
-                </Picker.Items>
-            </Picker>
-
-        </Grid>
+        <Button Text="עריכת פרטי חיית המחמד"
+                Clicked="EditDogButton_Clicked"/>
 
         <Button Text="התנתקות"
                 Style="{StaticResource Danger}"

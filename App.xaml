@@ -13,6 +13,7 @@
             
             <cnvrt:ConvertToBool x:Key="ConvertToBoolKey" />
             <cnvrt:ConvertToRoundedString x:Key="ConvertToRoundedStringKey" />
+            <cnvrt:ConvertThemeToString x:Key="ConvertThemeToStringKey" />
 
         </ResourceDictionary>
     </Application.Resources>

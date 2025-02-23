@@ -1,6 +1,5 @@
 ﻿using Google.Cloud.Firestore;
 using System.Globalization;
-using static Walkie_Doggie.Helpers.Enums;
 namespace Walkie_Doggie.Helpers;
 
 public static class Converters
@@ -82,6 +81,41 @@ class ConvertToBool : IValueConverter
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
         return true;
+    }
+}
+
+class ConvertThemeToString : IValueConverter
+{
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is null)
+            return string.Empty;
+
+        if (value is AppTheme theme)
+        {
+            switch (theme)
+            {
+                case AppTheme.Light: return "בהיר";
+                case AppTheme.Dark: return "כהה";
+                default: return "ברירת המחדל של המערכת";
+            };
+        }
+
+        return string.Empty;
+    }
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value is string theme)
+        {
+            switch (theme)
+            {
+                case "בהיר": return AppTheme.Light;
+                case "כהה": return AppTheme.Dark;
+                default: return AppTheme.Unspecified;
+            }
+        }
+
+        return AppTheme.Unspecified;
     }
 }
 

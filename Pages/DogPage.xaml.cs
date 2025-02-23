@@ -1,8 +1,4 @@
-﻿using CommunityToolkit.Maui.Views;
-using Google.Cloud.Firestore;
-using Walkie_Doggie.Helpers;
-using Walkie_Doggie.Popups;
-using static Walkie_Doggie.Helpers.Converters;
+﻿using static Walkie_Doggie.Helpers.Converters;
 namespace Walkie_Doggie.Pages;
 
 public partial class DogPage : ContentPage
