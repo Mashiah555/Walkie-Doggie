@@ -27,10 +27,5 @@ namespace Walkie_Doggie.Pages
                 Application.Current!.MainPage = new LoginPage(null);
             }
         }
-
-        private void EditDogButton_Clicked(object sender, EventArgs e)
-        {
-            Application.Current!.MainPage = new DogPage();
-        }
     }
 }

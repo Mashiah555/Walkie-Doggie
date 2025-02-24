@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
+using Walkie_Doggie.Views;
 
 namespace Walkie_Doggie.ViewModels;
 
@@ -39,8 +41,9 @@ class SettingViewModel : INotifyPropertyChanged
     {
         get => themes;
     }
-
     #endregion View Model Properties
+
+    public ICommand Navigate { get; }
 
     public SettingViewModel()
     {
@@ -48,6 +51,8 @@ class SettingViewModel : INotifyPropertyChanged
 
         themes = new ObservableCollection<string> { "ברירת המחדל של המערכת", "בהיר", "כהה" };
         InitializeAsync();
+
+        Navigate = new Command(NavigateToDog);
     }
     private async void InitializeAsync()
     {
@@ -68,6 +73,11 @@ class SettingViewModel : INotifyPropertyChanged
             }
         }
         catch { }
+    }
+
+    private async void NavigateToDog()
+    {
+        await Shell.Current.GoToAsync(nameof(DogView), true);
     }
 
     private async void ApplyTheme(AppTheme theme)

@@ -24,7 +24,7 @@
             ImageSource="{AppThemeBinding Light=arrow_light, Dark=arrow_dark}"/>
 
         <Button Text="עריכת פרטי חיית המחמד"
-                Clicked="EditDogButton_Clicked"/>
+                Command="{Binding Navigate}"/>
 
         <Button Text="התנתקות"
                 Style="{StaticResource Danger}"

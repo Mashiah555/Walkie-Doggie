@@ -79,9 +79,9 @@ public class DogViewModel : INotifyPropertyChanged
     {
         get => hasDog;
     }
+    #endregion View Model Properties
 
     public ICommand SaveCommand { get; }
-    #endregion View Model Properties
 
     public DogViewModel()
     {
@@ -137,14 +137,21 @@ public class DogViewModel : INotifyPropertyChanged
         }
 
         if (await _db.HasDog())
-            await _db.UpdateDogAsync(dogBirthdate, dogBreed, 
-                Math.Floor(dogWeight * 2 + 0.5) / 2, defaultFeedAmount);
-        else
-            await _db.AddDogAsync(dogName, dogBirthdate, dogBreed, 
+        {
+            await _db.UpdateDogAsync(dogBirthdate, dogBreed,
                 Math.Floor(dogWeight * 2 + 0.5) / 2, defaultFeedAmount);
 
-        await Toast.Make("השינויים נשמרו", ToastDuration.Short).Show();
-        Application.Current!.MainPage = new AppShell();
+            await Toast.Make("השינויים נשמרו", ToastDuration.Short).Show();
+            await Shell.Current.GoToAsync("..", true);
+        }
+        else
+        {
+            await _db.AddDogAsync(dogName, dogBirthdate, dogBreed,
+                Math.Floor(dogWeight * 2 + 0.5) / 2, defaultFeedAmount);
+
+            await Toast.Make("השינויים נשמרו", ToastDuration.Short).Show();
+            Application.Current!.MainPage = new AppShell();
+        }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

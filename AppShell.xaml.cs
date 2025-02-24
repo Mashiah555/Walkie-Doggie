@@ -1,4 +1,6 @@
-﻿namespace Walkie_Doggie
+﻿using Walkie_Doggie.Views;
+
+namespace Walkie_Doggie
 {
     public partial class AppShell : Shell
     {
@@ -7,6 +9,8 @@
         public AppShell()
         {
             InitializeComponent();
+
+            Routing.RegisterRoute(nameof(DogView), typeof(DogView));
         }
     }
 }
