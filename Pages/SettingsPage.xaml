@@ -10,25 +10,38 @@
         <vm:SettingViewModel />
     </ContentPage.BindingContext>
 
-    <StackLayout>
+    <Grid RowDefinitions="Auto,*"
+          ColumnDefinitions="*,Auto">
 
-        <Label Text="{Binding Name, StringFormat='את/ה מחובר/ת למערכת בתור {0}'}" 
-               Style="{StaticResource Header}"
-               FontSize="18"/>
+        <Label Grid.Row="0" Grid.Column="0"
+               Text="שינויים להגדרות נשמרים אוטומטית על גבי המכשיר"
+               Style="{StaticResource Context}" 
+               Margin="10,20,4,0"/>
+        <Button Grid.Row="0" Grid.Column="1"
+                Text="גיבוי השינויים לענן"
+                IsEnabled="{Binding HasChanges}"
+                Command="{Binding Backup}"/>
 
-        <pack:PickerPack
-            FloatingLabel="ערכת נושא"
-            PickerTitle="בחר/י ערכת נושא"
-            ItemsSource="{Binding Themes}"
-            SelectedItem="{Binding Theme, Converter={StaticResource ConvertThemeToStringKey}}"
-            ImageSource="{AppThemeBinding Light=arrow_light, Dark=arrow_dark}"/>
+        <ScrollView Grid.Row="1" Grid.ColumnSpan="2">
+            <StackLayout>
+                <pack:PickerPack
+                FloatingLabel="ערכת נושא"
+                PickerTitle="בחר/י ערכת נושא"
+                ItemsSource="{Binding Themes}"
+                SelectedItem="{Binding Theme, Converter={StaticResource ConvertThemeToStringKey}}"
+                ImageSource="{AppThemeBinding Light=arrow_light, Dark=arrow_dark}"/>
 
-        <Button Text="עריכת פרטי חיית המחמד"
-                Command="{Binding Navigate}"/>
+                <Button Text="עריכת פרטי חיית המחמד"
+                    Command="{Binding Navigate}"/>
 
-        <Button Text="התנתקות"
-                Style="{StaticResource Danger}"
-                Clicked="LogoutButton_Clicked"/>
-        
-    </StackLayout>
+                <Label Text="{Binding Name, StringFormat='את/ה מחובר/ת למערכת בתור {0}'}" 
+                   Style="{StaticResource Header}"
+                   FontSize="18"/>
+                <Button Text="התנתקות"
+                    Style="{StaticResource Danger}"
+                    Clicked="LogoutButton_Clicked"/>
+            </StackLayout>
+        </ScrollView>
+
+    </Grid>
 </ContentPage>

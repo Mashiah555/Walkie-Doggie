@@ -21,6 +21,17 @@ class SettingViewModel : INotifyPropertyChanged
         }
     }
 
+    bool hasChanges;
+    public bool HasChanges
+    {
+        get => hasChanges;
+        set
+        {
+            hasChanges = value;
+            OnPropertyChanged(nameof(HasChanges));
+        }
+    }
+
     AppTheme theme;
     public AppTheme Theme
     {
@@ -30,8 +41,8 @@ class SettingViewModel : INotifyPropertyChanged
             if (theme != value)
             {
                 theme = value;
-                OnPropertyChanged(nameof(Theme)); // Notify UI about change
                 ApplyTheme(value); // Apply theme update
+                OnPropertyChanged(nameof(Theme)); // Notify UI about change
             }
         }
     }
@@ -43,36 +54,21 @@ class SettingViewModel : INotifyPropertyChanged
     }
     #endregion View Model Properties
 
+    #region View Model Commands
     public ICommand Navigate { get; }
+    public ICommand Backup { get; }
+    #endregion View Model Commands
 
     public SettingViewModel()
     {
         _db = new FirebaseService();
 
         themes = new ObservableCollection<string> { "ברירת המחדל של המערכת", "בהיר", "כהה" };
-        InitializeAsync();
+        name = LocalService.GetUsername() ?? string.Empty;
+        theme = LocalService.GetTheme();
 
         Navigate = new Command(NavigateToDog);
-    }
-    private async void InitializeAsync()
-    {
-        try
-        {
-            UserModel? user = await _db.GetUserAsync(LocalService.GetUsername() ??
-                throw new Exception("You must be signed in!"));
-
-            if (user is null)
-            {
-                Name = string.Empty;
-                Theme = AppTheme.Unspecified;
-            }
-            else
-            {
-                Name = user.Name;
-                Theme = user.Theme;
-            }
-        }
-        catch { }
+        Backup = new Command(SyncToFirebase);
     }
 
     private async void NavigateToDog()
@@ -80,31 +76,37 @@ class SettingViewModel : INotifyPropertyChanged
         await Shell.Current.GoToAsync(nameof(DogView), true);
     }
 
-    private async void ApplyTheme(AppTheme theme)
+    private async void SyncToFirebase()
     {
-        switch (theme)
+        await _db.UpdateUserAsync(Name, Theme);
+    }
+
+    private void ApplyTheme(AppTheme newTheme)
+    {
+        switch (newTheme)
         {
             case AppTheme.Light:
                 Application.Current!.UserAppTheme = AppTheme.Light;
-                Preferences.Set("AppTheme", "Light");
                 break;
 
             case AppTheme.Dark:
                 Application.Current!.UserAppTheme = AppTheme.Dark;
-                Preferences.Set("AppTheme", "Dark");
                 break;
 
             default:
                 Application.Current!.UserAppTheme = AppTheme.Unspecified;
-                Preferences.Set("AppTheme", "System");
                 break;
         }
 
         App.ApplyTheme(); // Apply colors immediately
-        await _db.UpdateUserAsync(Name, theme);
+        LocalService.SetTheme(newTheme); // Save theme locally
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
-    void OnPropertyChanged(string propertyName) =>
+    void OnPropertyChanged(string propertyName)
+    {
+        if (propertyName != nameof(HasChanges))
+            HasChanges = true;
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 }

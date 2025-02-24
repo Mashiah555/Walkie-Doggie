@@ -1,4 +1,6 @@
-﻿namespace Walkie_Doggie
+﻿using Walkie_Doggie.Views;
+
+namespace Walkie_Doggie
 {
     public partial class App : Application
     {
@@ -11,7 +13,9 @@
             // Assign a temporary loading page to avoid NotImplementedException
             MainPage = new ContentPage { Content = new ActivityIndicator 
             { 
-                IsRunning = true, 
+                IsRunning = true,
+                HeightRequest = 100,
+                WidthRequest = 100,
                 Margin = new Thickness(250)
             } };
             
@@ -24,6 +28,8 @@
 
         private async void InitializeApp()
         {
+            await Shell.Current.GoToAsync(nameof(DogView));
+
             if (string.IsNullOrEmpty(LocalService.GetUsername()))
                 MainPage = new Pages.LoginPage(OnLogin);
             else
