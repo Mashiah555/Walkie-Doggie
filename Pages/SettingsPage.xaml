@@ -20,7 +20,7 @@
         <Button Grid.Row="0" Grid.Column="1"
                 Text="גיבוי השינויים לענן"
                 IsEnabled="{Binding HasChanges}"
-                Command="{Binding Backup}"/>
+                Command="{Binding SyncChanges}"/>
 
         <ScrollView Grid.Row="1" Grid.ColumnSpan="2">
             <StackLayout>
@@ -32,14 +32,14 @@
                 ImageSource="{AppThemeBinding Light=arrow_light, Dark=arrow_dark}"/>
 
                 <Button Text="עריכת פרטי חיית המחמד"
-                    Command="{Binding Navigate}"/>
+                    Command="{Binding NavigateToDogView}"/>
 
                 <Label Text="{Binding Name, StringFormat='את/ה מחובר/ת למערכת בתור {0}'}" 
                    Style="{StaticResource Header}"
                    FontSize="18"/>
                 <Button Text="התנתקות"
                     Style="{StaticResource Danger}"
-                    Clicked="LogoutButton_Clicked"/>
+                    Command="{Binding NavigateToLogin}"/>
             </StackLayout>
         </ScrollView>
 

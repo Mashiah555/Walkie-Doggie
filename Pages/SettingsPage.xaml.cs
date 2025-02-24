@@ -14,18 +14,5 @@ namespace Walkie_Doggie.Pages
             BindingContext = new SettingViewModel();
             _db = new FirebaseService();
         }
-
-        private async void LogoutButton_Clicked(object sender, EventArgs e)
-        {
-            bool result = await DisplayAlert("התנתקות", "האם את/ה בטוח/ה שברצונך להתנתק מהמערכת?",
-                "אישור", "ביטול", FlowDirection.RightToLeft);
-
-            if (result)
-            {
-                LocalService.RemoveUsername();
-                await Toast.Make("התנתקת מהמערכת", ToastDuration.Short).Show();
-                Application.Current!.MainPage = new LoginPage(null);
-            }
-        }
     }
 }

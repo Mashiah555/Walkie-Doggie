@@ -2,12 +2,12 @@
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Views;
 using Walkie_Doggie.ViewModels;
+using Walkie_Doggie.Views;
 namespace Walkie_Doggie.Pages;
 
 public partial class LoginPage : ContentPage
 {
     private readonly FirebaseService _db;
-    private readonly Action? _onLogin = null;
     public UserViewModel ViewModel { get; set; }
 
     public LoginPage(Action? onLogin)
@@ -15,12 +15,10 @@ public partial class LoginPage : ContentPage
         InitializeComponent();
 
         _db = new FirebaseService();
-        _onLogin = onLogin;
         ViewModel = new UserViewModel();
         BindingContext = ViewModel;
 
         QueryCollection();
-        _onLogin = onLogin;
     }
 
     private async void QueryCollection()
@@ -72,11 +70,12 @@ public partial class LoginPage : ContentPage
 
     private async void Login(string username)
     {
-        LocalService.SaveUsername(username);
+        LocalService.SetUsername(username);
         await Toast.Make("ההרשמה הצליחה", ToastDuration.Short).Show();
 
-        if (_onLogin is not null)
-            _onLogin.Invoke();
-        App.Current!.MainPage = new AppShell();
+        if (!await _db.HasDog())
+            await Shell.Current.GoToAsync($"//{nameof(DogView)}");
+        else
+            await Shell.Current.GoToAsync($"//{nameof(AppShell)}");
     }
 }

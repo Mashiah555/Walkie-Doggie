@@ -1,4 +1,5 @@
-﻿using Walkie_Doggie.Views;
+﻿using Walkie_Doggie.Pages;
+using Walkie_Doggie.Views;
 
 namespace Walkie_Doggie
 {
@@ -10,6 +11,8 @@ namespace Walkie_Doggie
         {
             InitializeComponent();
 
+            Routing.RegisterRoute(nameof(AppShell), typeof(AppShell));
+            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(DogView), typeof(DogView));
         }
     }

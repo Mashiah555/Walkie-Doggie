@@ -1,6 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using Walkie_Doggie.Pages;
 using Walkie_Doggie.Views;
 
 namespace Walkie_Doggie.ViewModels;
@@ -55,8 +58,9 @@ class SettingViewModel : INotifyPropertyChanged
     #endregion View Model Properties
 
     #region View Model Commands
-    public ICommand Navigate { get; }
-    public ICommand Backup { get; }
+    public ICommand SyncChanges { get; }
+    public ICommand NavigateToDog { get; }
+    public ICommand NavigateToLogin { get; }
     #endregion View Model Commands
 
     public SettingViewModel()
@@ -67,13 +71,28 @@ class SettingViewModel : INotifyPropertyChanged
         name = LocalService.GetUsername() ?? string.Empty;
         theme = LocalService.GetTheme();
 
-        Navigate = new Command(NavigateToDog);
-        Backup = new Command(SyncToFirebase);
+        SyncChanges = new Command(SyncToFirebase);
+        NavigateToDog = new Command(GoToDogView);
+        NavigateToLogin = new Command(GoToLoginPage);
     }
 
-    private async void NavigateToDog()
+    private async void GoToDogView()
     {
         await Shell.Current.GoToAsync(nameof(DogView), true);
+    }
+
+    private async void GoToLoginPage()
+    {
+        bool result = await Application.Current!.MainPage!.DisplayAlert(
+            "התנתקות", "האם את/ה בטוח/ה שברצונך להתנתק מהמערכת?",
+                "אישור", "ביטול", FlowDirection.RightToLeft);
+
+        if (result)
+        {
+            LocalService.RemoveUsername();
+            await Toast.Make("התנתקת מהמערכת", ToastDuration.Short).Show();
+            await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+        }
     }
 
     private async void SyncToFirebase()
@@ -100,6 +119,7 @@ class SettingViewModel : INotifyPropertyChanged
 
         App.ApplyTheme(); // Apply colors immediately
         LocalService.SetTheme(newTheme); // Save theme locally
+
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

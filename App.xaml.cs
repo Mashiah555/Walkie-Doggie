@@ -1,4 +1,5 @@
-﻿using Walkie_Doggie.Views;
+﻿using Walkie_Doggie.Pages;
+using Walkie_Doggie.Views;
 
 namespace Walkie_Doggie
 {
@@ -28,27 +29,13 @@ namespace Walkie_Doggie
 
         private async void InitializeApp()
         {
-            await Shell.Current.GoToAsync(nameof(DogView));
-
             if (string.IsNullOrEmpty(LocalService.GetUsername()))
-                MainPage = new Pages.LoginPage(OnLogin);
+                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+            else if (!await _db.HasDog())
+                await Shell.Current.GoToAsync($"//{nameof(DogView)}");
             else
-                await NavigateApp();
+                await Shell.Current.GoToAsync($"//{nameof(AppShell)}");
         }
-
-        private async Task NavigateApp()
-        {
-            if (!(await _db.HasDog()))
-                MainPage = new Views.DogView();
-            else
-                MainPage = new AppShell();
-        }
-
-        private async void OnLogin()
-        {
-            await NavigateApp();
-        }
-
 
         public static void ApplyTheme()
         {
