@@ -6,11 +6,11 @@ public partial class WalkView : ContentPage
 {
     private readonly FirebaseService _db;
 
-    public WalkView()
+    public WalkView(int? walkId = null)
 	{
 		InitializeComponent();
 
-        BindingContext = new WalkViewModel();
+        BindingContext = new WalkViewModel(walkId);
         _db = new FirebaseService();
     }
 }

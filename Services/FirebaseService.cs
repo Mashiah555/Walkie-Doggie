@@ -151,6 +151,19 @@ public class FirebaseService
         await IncrementTotalWalks(walkerName);
     }
 
+    // ➤ Get a Walk Record
+    public async Task<WalkModel?> GetWalkAsync(int walkId)
+    {
+        DocumentSnapshot snapshot = await _firestoreDb!
+            .Collection(WalksCollection)
+            .Document(walkId.ToString())
+            .GetSnapshotAsync();
+
+        if (snapshot.Exists)
+            return snapshot.ConvertTo<WalkModel>();
+        return null;
+    }
+
     // ➤ Get the last walk from Firestore
     public async Task<WalkModel> GetLastWalkAsync(string? username = null)
     {

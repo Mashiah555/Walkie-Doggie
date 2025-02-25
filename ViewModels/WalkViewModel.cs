@@ -16,82 +16,138 @@ public class WalkViewModel : INotifyPropertyChanged
     private readonly FirebaseService _db;
 
     #region View Model Properties
-    string dogName;
-    public string DogName
+    string walkerName;
+    public string WalkerName
     {
-        get => dogName;
+        get => walkerName;
         set
         {
-            dogName = value;
-            OnPropertyChanged(nameof(DogName));
+            walkerName = value;
+            OnPropertyChanged(nameof(WalkerName));
+        }
+    }
+
+    DateTime walkDate;
+    public DateTime WalkDate
+    {
+        get => walkDate;
+        set
+        {
+            walkDate = value;
+            OnPropertyChanged(nameof(WalkDate));
+        }
+    }
+
+    DateTime walkTime;
+    public DateTime WalkTime
+    {
+        get => walkTime;
+        set
+        {
+            walkTime = value;
+            OnPropertyChanged(nameof(WalkTime));
+        }
+    }
+
+    string? inDebtName;
+    public string? InDebtName
+    {
+        get => inDebtName;
+        set
+        {
+            inDebtName = value;
+            OnPropertyChanged(nameof(InDebtName));
+        }
+    }
+
+    bool? isPayback;
+    public bool? IsPayback
+    {
+        get => isPayback;
+        set
+        {
+            isPayback = value;
+            OnPropertyChanged(nameof(IsPayback));
+        }
+    }
+
+    bool isPooped;
+    public bool IsPooped
+    {
+        get => isPooped;
+        set
+        {
+            isPooped = value;
+            OnPropertyChanged(nameof(IsPooped));
+        }
+    }
+
+    string notes;
+    public string Notes
+    {
+        get => notes;
+        set
+        {
+            notes = value;
+            OnPropertyChanged(nameof(Notes));
         }
     }
     #endregion View Model Properties
 
+    #region View Model Commands
     public ICommand SaveCommand { get; }
+    public ICommand CancelCommand { get; }
+    #endregion View Model Commands
 
-    public WalkViewModel()
+    public WalkViewModel(int? walkId)
     {
         _db = new FirebaseService();
 
-        InitializeAsync();
+        walkerName = string.Empty;
+        InitializeAsync(walkId);
 
-        SaveCommand = new Command(SaveClick);
+        SaveCommand = new Command(SaveWalk);
+        CancelCommand = new Command(CloseView);
     }
-    private async void InitializeAsync()
+    private async void InitializeAsync(int? id)
     {
-        try
+        if (id is not null)
         {
-            hasDog = await _db.HasDog();
-            if (hasDog)
+            WalkModel? walk = await _db.GetWalkAsync(id.Value);
+            if (walk is not null)
             {
-                DogModel dog = await _db.GetDogAsync();
+                walkerName = walk.WalkerName;
+                walkDate = walk.WalkTime.ToDateTime().Date;
+                walkTime = walk.WalkTime.ToDateTime().ToLocalTime();
+                inDebtName = walk.InDebtName;
+                isPayback = walk.IsPayback;
+                isPooped = walk.IsPooped;
+                notes = walk.Notes ?? string.Empty;
 
-                dogName = dog.DogName;
-                dogBirthdate = dog.DogBirthdate.ToDateTime();
-                dogBreed = dog.DogBreed;
-                dogWeight = dog.DogWeight;
-                defaultFeedAmount = dog.DefaultFeedAmount;
-            }
-            else
-            {
-                dogName = string.Empty;
-                dogBirthdate = DateTime.Today;
-                dogBreed = string.Empty;
-                dogWeight = 8;
-                defaultFeedAmount = 75;
+                return;
             }
         }
-        catch { }
+
+        walkerName = string.Empty;
+        walkDate = DateTime.Today;
+        walkTime = DateTime.Now;
+        inDebtName = null;
+        isPayback = null;
+        isPooped = true;
+        notes = string.Empty;
     }
 
-    public async void SaveClick()
+    public async void SaveWalk()
     {
-        if (string.IsNullOrWhiteSpace(dogName) || string.IsNullOrWhiteSpace(dogBreed))
-        {
-            await Application.Current!.MainPage!.DisplayAlert("שמירה נכשלה",
-                "אחד או יותר מהשדות ריקים. חובה למלא את כל השדות לפני ביצוע שמירה!", "סגירה");
-            return;
-        }
+        CloseView();
+    }
 
-        if (await _db.HasDog())
-        {
-            await _db.UpdateDogAsync(dogBirthdate, dogBreed,
-                Math.Floor(dogWeight * 2 + 0.5) / 2, defaultFeedAmount);
-
-            await Toast.Make("השינויים נשמרו", ToastDuration.Short).Show();
-            await Shell.Current.GoToAsync("..", true);
-        }
-        else
-        {
-            await _db.AddDogAsync(dogName, dogBirthdate, dogBreed,
-                Math.Floor(dogWeight * 2 + 0.5) / 2, defaultFeedAmount);
-
-            await Toast.Make("השינויים נשמרו", ToastDuration.Short).Show();
-            await Shell.Current.GoToAsync($"//{nameof(AppShell)}");
-        }
+    public async void CloseView()
+    {
+        await Shell.Current.GoToAsync("..", true);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
     void OnPropertyChanged(string propertyName) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+}
