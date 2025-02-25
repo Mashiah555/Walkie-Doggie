@@ -18,9 +18,9 @@
                Style="{StaticResource Context}" 
                Margin="10,20,4,0"/>
         <Button Grid.Row="0" Grid.Column="1"
-                Text="גיבוי השינויים לענן"
-                IsEnabled="{Binding HasChanges}"
-                Command="{Binding SyncChanges}"/>
+                Text="גיבוי הגדרות לענן"
+                IsEnabled="{Binding IsSynced, Converter={StaticResource ConvertToBoolKey}}"
+                Command="{Binding SyncUp}"/>
 
         <ScrollView Grid.Row="1" Grid.ColumnSpan="2">
             <StackLayout>

@@ -1,7 +1,20 @@
 ﻿public static class LocalService
 {
+    #region Preference Keys
+    private const string SyncedKey = "LocalSynced";
     private const string UsernameKey = "LocalUsername";
     private const string ThemeKey = "LocalTheme";
+    #endregion Preference Keys
+
+    #region Sync State Methods
+    // Set the synced state of the settings
+    public static void SetSyncState(bool synced) =>
+        Preferences.Set(SyncedKey, synced);
+
+    // Retrieve the sync state of the settings
+    public static bool GetSyncState() =>
+        Preferences.Get(SyncedKey, false);
+    #endregion Sync State Methods
 
     #region Username Methods
     // Save the username locally

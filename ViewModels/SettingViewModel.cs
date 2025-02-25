@@ -24,14 +24,14 @@ class SettingViewModel : INotifyPropertyChanged
         }
     }
 
-    bool hasChanges;
-    public bool HasChanges
+    bool isSynced;
+    public bool IsSynced
     {
-        get => hasChanges;
+        get => isSynced;
         set
         {
-            hasChanges = value;
-            OnPropertyChanged(nameof(HasChanges));
+            isSynced = value;
+            OnPropertyChanged(nameof(IsSynced));
         }
     }
 
@@ -58,7 +58,7 @@ class SettingViewModel : INotifyPropertyChanged
     #endregion View Model Properties
 
     #region View Model Commands
-    public ICommand SyncChanges { get; }
+    public ICommand SyncUp { get; }
     public ICommand NavigateToDog { get; }
     public ICommand NavigateToLogin { get; }
     #endregion View Model Commands
@@ -71,7 +71,7 @@ class SettingViewModel : INotifyPropertyChanged
         name = LocalService.GetUsername() ?? string.Empty;
         theme = LocalService.GetTheme();
 
-        SyncChanges = new Command(SyncToFirebase);
+        SyncUp = new Command(SyncSettings);
         NavigateToDog = new Command(GoToDogView);
         NavigateToLogin = new Command(GoToLoginPage);
     }
@@ -91,13 +91,15 @@ class SettingViewModel : INotifyPropertyChanged
         {
             LocalService.RemoveUsername();
             await Toast.Make("התנתקת מהמערכת", ToastDuration.Short).Show();
-            await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+            await Shell.Current.GoToAsync($"//{nameof(LoginPage)}", true);
         }
     }
 
-    private async void SyncToFirebase()
+    private async void SyncSettings()
     {
         await _db.UpdateUserAsync(Name, Theme);
+        IsSynced = true;
+        LocalService.SetSyncState(true);
     }
 
     private void ApplyTheme(AppTheme newTheme)
@@ -125,8 +127,12 @@ class SettingViewModel : INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
     void OnPropertyChanged(string propertyName)
     {
-        if (propertyName != nameof(HasChanges))
-            HasChanges = true;
+        if (propertyName != nameof(IsSynced))
+        {
+            IsSynced = false;
+            LocalService.SetSyncState(false);
+        }
+
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

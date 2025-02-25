@@ -129,15 +129,17 @@ public class FirebaseService
 
     #region Walk CRUD Operations
     // ➤ Add a Walk Record
+    // Throws an exception if there are no dogs saved in the database.
     public async Task AddWalkAsync(string walkerName, DateTime walkTime, bool isPooped,
         string? notes = null, string? inDebtName = null)
     {
+        int walkId = await GetWalksIdAsync(true);
         await _firestoreDb!
             .Collection(WalksCollection)
-            .Document($"{walkerName}_{walkTime:ddMMyyyy_HHmmss}")
+            .Document(walkId.ToString())
             .SetAsync(new WalkModel 
             {
-                WalkId = await GetWalksIdAsync(true),
+                WalkId = walkId,
                 WalkerName = walkerName,
                 WalkTime = Converters.ConvertToTimestamp(walkTime),
                 IsPooped = isPooped,
@@ -301,6 +303,8 @@ public class FirebaseService
         return snapshot.Documents.Count > 0;
     }
 
+    // ➤ Get the total walks of the dog, and optionally increment it.
+    // Throws an exception if there are no dogs saved in the database.
     public async Task<int> GetWalksIdAsync(bool increment = false)
     {
         QuerySnapshot snapshot = await _firestoreDb!
