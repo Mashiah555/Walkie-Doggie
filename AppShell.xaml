@@ -4,7 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Walkie_Doggie"
-    xmlns:pages="clr-namespace:Walkie_Doggie.Pages"
+    xmlns:tabs="clr-namespace:Walkie_Doggie.Pages"
     Shell.FlyoutBehavior="Disabled"
     FlowDirection="RightToLeft"
     Title="Walkie_Doggie">
@@ -13,22 +13,26 @@
         <!-- Walks Page (Default Tab) -->
         <ShellContent Title="טיולים" 
                       Icon="{AppThemeBinding Light=walks_light.png, Dark=walks_dark.png}" 
-                      ContentTemplate="{DataTemplate pages:WalksPage}" />
+                      ContentTemplate="{DataTemplate tabs:WalksPage}" 
+                      Route="WalksPage"/>
 
         <!-- Dog Page -->
         <ShellContent Title="לואי" 
                       Icon="{AppThemeBinding Light=dog_light.png, Dark=dog_dark.png}" 
-                      ContentTemplate="{DataTemplate pages:DogPage}" />
+                      ContentTemplate="{DataTemplate tabs:DogPage}" 
+                      Route="DogPage"/>
 
         <!-- Stats Page -->
         <ShellContent Title="סטטיסטיקות" 
                       Icon="{AppThemeBinding Light=stats_light.png, Dark=stats_dark.png}" 
-                      ContentTemplate="{DataTemplate pages:StatsPage}" />
+                      ContentTemplate="{DataTemplate tabs:StatsPage}" 
+                      Route="StatsPage"/>
 
         <!-- Settings Page -->
         <ShellContent Title="הגדרות" 
                       Icon="{AppThemeBinding Light=settings_light.png, Dark=settings_dark.png}"  
-                      ContentTemplate="{DataTemplate pages:SettingsPage}" />
+                      ContentTemplate="{DataTemplate tabs:SettingsPage}" 
+                      Route="SettingsPage"/>
     </TabBar>
     
     

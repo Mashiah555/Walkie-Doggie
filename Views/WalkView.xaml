@@ -22,80 +22,25 @@
         <Grid ColumnDefinitions="*,*">
             
             <pack:DatePickerPack Grid.Column="0"
-                Date=""
+                Date="{Binding WalkDate}"
                 FloatingLabel="תאריך הטיול"
                 ImageSource="{AppThemeBinding Light=calendar_light, Dark=calendar_dark}"/>
 
             <pack:TimePickerPack Grid.Column="1"
-                Time=""
+                Time="{Binding WalkTime}"
                 FloatingLabel="שעת הטיול"
                 ImageSource="{AppThemeBinding Light=clock_light, Dark=clock_dark}"/>
         </Grid>
-        
-        
 
-        <pack:EntryPack 
-    Text="{Binding DogName}"
-    Placeholder="שם הכלב"
-    FloatingLabel="שם חיית המחמד"
-    Mandatory="True"
-    ImageSource="{AppThemeBinding Light=dog_light, Dark=dog_dark}"
-    IsEnabled="{Binding HasDog, Converter={StaticResource ConvertToBoolKey}}"/>
 
-        <pack:PickerPack 
-    SelectedItem="{Binding DogBreed}"
-    ItemsSource="{Binding DogBreeds}"
-    PickerTitle="בחר/י את סוג הגזע"
-    FloatingLabel="גזע"
-    Mandatory="True"
-    ImageSource="{AppThemeBinding Light=arrow-light, Dark=arrow_dark}"/>
-
-        <!--Weight Slider-->
-        <StackLayout Spacing="0" Margin="0,5">
-
-            <Label Style="{StaticResource SubHeader}"
-           Text="משקל"/>
-
-            <Slider Value="{Binding DogWeight}"
-            Minimum="1.5" Maximum="70"
-            Margin="5,-2"/>
-
-            <Label Style="{StaticResource Context}"
-           Text="{Binding DogWeight, 
-                  Converter={StaticResource ConvertToRoundedStringKey}, 
-                  StringFormat='{}{0} ק&quot;ג'}"
-           FontSize="18"
-           HorizontalOptions="End"
-           Margin="0,-7,40,10"/>
-
-        </StackLayout>
-
-        <!--Feed Slider-->
-        <StackLayout Spacing="0" Margin="0,5">
-
-            <Label Style="{StaticResource SubHeader}"
-           Text="ברירת מחדל לארוחה"/>
-
-            <Slider Value="{Binding DefaultFeedAmount}"
-            Minimum="5" Maximum="250"
-            Margin="5,-2"
-            HeightRequest="100"
-            WidthRequest="500"/>
-
-            <Label Style="{StaticResource Context}"
-           Text="{Binding DefaultFeedAmount, 
-                  Converter={StaticResource ConvertToRoundedStringKey}, 
-                  StringFormat='{}{0} גרם'}"
-           FontSize="18"
-           HorizontalOptions="End"
-           Margin="0,-7,40,10"/>
-
-        </StackLayout>
 
         <Button Text="שמירה"
         Command="{Binding SaveCommand}"
-        Margin="10,20">
-        </Button>
-        
+        Margin="10,20"/>
+
+        <Button Text="שמירה"
+                Command="{Binding CancelCommand}"
+                Margin="10,20"/>
+
     </VerticalStackLayout>
 </ContentPage>

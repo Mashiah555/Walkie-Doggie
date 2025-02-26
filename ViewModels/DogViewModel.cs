@@ -124,7 +124,11 @@ public class DogViewModel : INotifyPropertyChanged
                 defaultFeedAmount = 75;
             }
         }
-        catch { }
+        catch (Exception ex)
+        {
+            await Application.Current!.MainPage!.DisplayAlert(
+                "ERROR", "DogViewModel constructor failed\n\n" + ex.Message, "OK");
+        }
     }
 
     public async void SaveClick()

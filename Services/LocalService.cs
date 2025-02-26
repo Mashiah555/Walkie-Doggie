@@ -41,7 +41,7 @@
 
     // Retrieve the locally stored theme
     public static AppTheme GetTheme() => 
-        (AppTheme)Preferences.Get(ThemeKey, (int)AppTheme.Unspecified);
+        (AppTheme)Preferences.Get(ThemeKey, 0);
     #endregion Theme Methods
 
     #region Selected Walk Preference
@@ -55,7 +55,11 @@
         int id = Preferences.Get(WalkKey, -1);
         Preferences.Remove(WalkKey);
 
-        return id == -1 ? null : id;
+        return id != -1 ? id : null;
     }
+
+    // Remove a selected walk id prefernce
+    public static void RemoveWalk() =>
+        Preferences.Remove(WalkKey);
     #endregion Selected Walk Preference
 }

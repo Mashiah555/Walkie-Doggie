@@ -16,6 +16,7 @@ public class WalkViewModel : INotifyPropertyChanged
     private readonly FirebaseService _db;
 
     #region View Model Properties
+
     string walkerName;
     public string WalkerName
     {
@@ -117,34 +118,31 @@ public class WalkViewModel : INotifyPropertyChanged
         isPayback = null;
         isPooped = true;
         notes = string.Empty;
-        InitializeAsync(walkId);
+
+        if (WalkId is not null) 
+            InitializeAsync(WalkId ?? -1);
 
         SaveCommand = new Command(SaveWalk);
         CancelCommand = new Command(CloseView);
     }
-    private async void InitializeAsync(int? id)
+    private async void InitializeAsync(int id)
     {
-        if (id is not null)
-        {
-            WalkModel? walk = await _db.GetWalkAsync(id.Value);
-            if (walk is not null)
-            {
-                walkerName = walk.WalkerName;
-                walkDate = walk.WalkTime.ToDateTime().Date;
-                walkTime = walk.WalkTime.ToDateTime().ToLocalTime();
-                inDebtName = walk.InDebtName;
-                isPayback = walk.IsPayback;
-                isPooped = walk.IsPooped;
-                notes = walk.Notes ?? string.Empty;
+        WalkModel? walk = await _db.GetWalkAsync(id);
+        if (walk == null)
+            return;
 
-                return;
-            }
-        }
+        WalkerName = walk.WalkerName;
+        WalkDate = walk.WalkTime.ToDateTime().Date;
+        WalkTime = walk.WalkTime.ToDateTime().ToLocalTime();
+        InDebtName = walk.InDebtName;
+        IsPayback = walk.IsPayback;
+        IsPooped = walk.IsPooped;
+        Notes = walk.Notes ?? string.Empty;
     }
 
-    public void SaveWalk()
+    public async void SaveWalk()
     {
-        CloseView();
+        await Shell.Current.GoToAsync("..", true);
     }
 
     public async void CloseView()

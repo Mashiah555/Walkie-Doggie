@@ -1,4 +1,5 @@
-﻿using static Walkie_Doggie.Helpers.Converters;
+﻿using Walkie_Doggie.Views;
+using static Walkie_Doggie.Helpers.Converters;
 namespace Walkie_Doggie.Pages;
 
 public partial class DogPage : ContentPage
@@ -79,9 +80,9 @@ public partial class DogPage : ContentPage
     #endregion Data Initialization
 
     #region Button Click Events
-    private void ButtonWalk_Clicked(object sender, EventArgs e)
+    private async void ButtonWalk_Clicked(object sender, EventArgs e)
     {
-
+        await Shell.Current.GoToAsync(nameof(DogView), true);
     }
 
     private void ButtonFeed_Clicked(object sender, EventArgs e)

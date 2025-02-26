@@ -1,4 +1,5 @@
-﻿using Walkie_Doggie.Pages;
+﻿using System.Diagnostics;
+using Walkie_Doggie.Pages;
 using Walkie_Doggie.Views;
 
 namespace Walkie_Doggie
@@ -12,15 +13,16 @@ namespace Walkie_Doggie
             _db = new FirebaseService();
 
             // Assign a temporary loading page to avoid NotImplementedException
-            MainPage = new ContentPage { Content = new ActivityIndicator 
-            { 
-                IsRunning = true,
-                HeightRequest = 100,
-                WidthRequest = 100,
-                Margin = new Thickness(250)
-            } };
-            
-            InitializeApp();
+            //MainPage = new ContentPage { Content = new ActivityIndicator 
+            //{ 
+            //    IsRunning = true,
+            //    HeightRequest = 100,
+            //    WidthRequest = 100,
+            //    Margin = new Thickness(250)
+            //} };
+            MainPage = new AppShell();
+
+            //InitializeApp();
 
             ApplyTheme();
             // Detect system theme changes
@@ -30,11 +32,16 @@ namespace Walkie_Doggie
         private async void InitializeApp()
         {
             if (string.IsNullOrEmpty(LocalService.GetUsername()))
-                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
-            else if (!await _db.HasDog())
-                await Shell.Current.GoToAsync($"//{nameof(DogView)}");
+                await Shell.Current.GoToAsync($"{nameof(LoginPage)}");
+            else if (await _db.HasDog())
+            {
+                if (Shell.Current != null)
+                    await Shell.Current.GoToAsync($"{nameof(AppShell)}");
+                else
+                    Debug.WriteLine("Shell.Current is null, cannot navigate.");
+            }
             else
-                await Shell.Current.GoToAsync($"//{nameof(AppShell)}");
+                await Shell.Current.GoToAsync($"{nameof(DogView)}");
         }
 
         public static void ApplyTheme()

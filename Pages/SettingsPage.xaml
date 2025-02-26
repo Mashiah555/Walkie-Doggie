@@ -32,7 +32,7 @@
                 ImageSource="{AppThemeBinding Light=arrow_light, Dark=arrow_dark}"/>
 
                 <Button Text="עריכת פרטי חיית המחמד"
-                    Command="{Binding NavigateToDogView}"/>
+                    Command="{Binding NavigateToDog}"/>
 
                 <Label Text="{Binding Name, StringFormat='את/ה מחובר/ת למערכת בתור {0}'}" 
                    Style="{StaticResource Header}"
