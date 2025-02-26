@@ -10,7 +10,7 @@ public partial class LoginPage : ContentPage
     private readonly FirebaseService _db;
     public UserViewModel ViewModel { get; set; }
 
-    public LoginPage(Action? onLogin)
+    public LoginPage()
     {
         InitializeComponent();
 
@@ -74,8 +74,11 @@ public partial class LoginPage : ContentPage
         await Toast.Make("ההרשמה הצליחה", ToastDuration.Short).Show();
 
         if (!await _db.HasDog())
-            await Shell.Current.GoToAsync($"//{nameof(DogView)}");
+        {
+            await Shell.Current.GoToAsync(nameof(DogView), true);
+            Shell.Current.Navigation.RemovePage(this);
+        }
         else
-            await Shell.Current.GoToAsync($"//{nameof(AppShell)}");
+            await Shell.Current.GoToAsync("..", true);
     }
 }

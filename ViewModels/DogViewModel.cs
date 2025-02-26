@@ -154,7 +154,7 @@ public class DogViewModel : INotifyPropertyChanged
                 Math.Floor(dogWeight * 2 + 0.5) / 2, defaultFeedAmount);
 
             await Toast.Make("השינויים נשמרו", ToastDuration.Short).Show();
-            await Shell.Current.GoToAsync($"//{nameof(AppShell)}", true);
+            await Shell.Current.GoToAsync("..", true);
         }
     }
 

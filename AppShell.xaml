@@ -10,36 +10,33 @@
     Title="Walkie_Doggie">
 
     <TabBar>
-        <!-- Walks Page (Default Tab) -->
-        <ShellContent Title="טיולים" 
-                      Icon="{AppThemeBinding Light=walks_light.png, Dark=walks_dark.png}" 
-                      ContentTemplate="{DataTemplate tabs:WalksPage}" 
-                      Route="WalksPage"/>
+        <!--Walks Page (Default Tab)-->
+        <Tab Title="טיולים" 
+             Icon="{AppThemeBinding Light=walks_light.png, Dark=walks_dark.png}" >
+            <ShellContent ContentTemplate="{DataTemplate tabs:WalksPage}" 
+                          Route="WalksPage"/>
+        </Tab>
 
-        <!-- Dog Page -->
-        <ShellContent Title="לואי" 
-                      Icon="{AppThemeBinding Light=dog_light.png, Dark=dog_dark.png}" 
-                      ContentTemplate="{DataTemplate tabs:DogPage}" 
+        <!--Dog Page-->
+        <Tab Title="לואי" 
+             Icon="{AppThemeBinding Light=dog_light.png, Dark=dog_dark.png}">
+            <ShellContent ContentTemplate="{DataTemplate tabs:DogPage}" 
                       Route="DogPage"/>
+        </Tab>
 
-        <!-- Stats Page -->
-        <ShellContent Title="סטטיסטיקות" 
-                      Icon="{AppThemeBinding Light=stats_light.png, Dark=stats_dark.png}" 
-                      ContentTemplate="{DataTemplate tabs:StatsPage}" 
+        <!--Stats Page-->
+        <Tab Title="סטטיסטיקות" 
+             Icon="{AppThemeBinding Light=stats_light.png, Dark=stats_dark.png}" >
+            <ShellContent ContentTemplate="{DataTemplate tabs:StatsPage}" 
                       Route="StatsPage"/>
+        </Tab>
 
-        <!-- Settings Page -->
-        <ShellContent Title="הגדרות" 
-                      Icon="{AppThemeBinding Light=settings_light.png, Dark=settings_dark.png}"  
-                      ContentTemplate="{DataTemplate tabs:SettingsPage}" 
+        <!--Settings Page-->
+        <Tab Title="הגדרות" 
+             Icon="{AppThemeBinding Light=settings_light.png, Dark=settings_dark.png}" >
+            <ShellContent ContentTemplate="{DataTemplate tabs:SettingsPage}" 
                       Route="SettingsPage"/>
+        </Tab>
     </TabBar>
-    
-    
-    <!--Default Page-->
-    <!--<ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />-->
 
 </Shell>

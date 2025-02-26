@@ -91,7 +91,7 @@ class SettingViewModel : INotifyPropertyChanged
         {
             LocalService.RemoveUsername();
             await Toast.Make("התנתקת מהמערכת", ToastDuration.Short).Show();
-            await Shell.Current.GoToAsync($"//{nameof(LoginPage)}", true);
+            await Shell.Current.GoToAsync(nameof(LoginPage), true);
         }
     }
 

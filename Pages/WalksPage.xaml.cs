@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Maui.Views;
 using Google.Cloud.Firestore;
+using System.Diagnostics;
 using Walkie_Doggie.Helpers;
 using Walkie_Doggie.Popups;
+using Walkie_Doggie.Views;
 using static Walkie_Doggie.Helpers.Converters;
 namespace Walkie_Doggie.Pages;
 
@@ -14,8 +16,9 @@ public partial class WalksPage : ContentPage
 		InitializeComponent();
         _db = new FirebaseService();
 
+        NavigationWizard.InitializeAppAsync();
         InitializeLastWalkData();
-    }
+    } 
 
     private async void InitializeLastWalkData()
     {
