@@ -1,6 +1,7 @@
 ﻿public static class LocalService
 {
     #region Preference Keys
+    private const string WalkKey = "SelectedWalk";
     private const string SyncedKey = "LocalSynced";
     private const string UsernameKey = "LocalUsername";
     private const string ThemeKey = "LocalTheme";
@@ -36,16 +37,25 @@
     #region Theme Methods
     // Save the theme locally
     public static void SetTheme(AppTheme theme) =>
-        Preferences.Set(ThemeKey, theme.ToString());
+        Preferences.Set(ThemeKey, (int)theme);
 
     // Retrieve the locally stored theme
-    public static AppTheme GetTheme()
-    {
-        var themeString = Preferences.Get(ThemeKey, null);
-
-        if (themeString is not null && Enum.TryParse(themeString, out AppTheme theme))
-            return theme;
-        return AppTheme.Unspecified;
-    }
+    public static AppTheme GetTheme() => 
+        (AppTheme)Preferences.Get(ThemeKey, (int)AppTheme.Unspecified);
     #endregion Theme Methods
+
+    #region Selected Walk Preference
+    // Set the selected walk id preference
+    public static void SetWalk(int id) =>
+        Preferences.Set(WalkKey, id);
+
+    // Retrieve the selected walk id preference and remove it
+    public static int? GetWalk()
+    {
+        int id = Preferences.Get(WalkKey, -1);
+        Preferences.Remove(WalkKey);
+
+        return id == -1 ? null : id;
+    }
+    #endregion Selected Walk Preference
 }

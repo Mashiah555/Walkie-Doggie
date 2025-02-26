@@ -92,6 +92,12 @@ public class WalkViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(Notes));
         }
     }
+
+    int? walkId;
+    public int? WalkId
+    {
+        get => walkId;
+    }
     #endregion View Model Properties
 
     #region View Model Commands
@@ -99,11 +105,18 @@ public class WalkViewModel : INotifyPropertyChanged
     public ICommand CancelCommand { get; }
     #endregion View Model Commands
 
-    public WalkViewModel(int? walkId)
+    public WalkViewModel()
     {
         _db = new FirebaseService();
 
+        walkId = LocalService.GetWalk();
         walkerName = string.Empty;
+        walkDate = DateTime.Today;
+        walkTime = DateTime.Now;
+        inDebtName = null;
+        isPayback = null;
+        isPooped = true;
+        notes = string.Empty;
         InitializeAsync(walkId);
 
         SaveCommand = new Command(SaveWalk);
@@ -127,17 +140,9 @@ public class WalkViewModel : INotifyPropertyChanged
                 return;
             }
         }
-
-        walkerName = string.Empty;
-        walkDate = DateTime.Today;
-        walkTime = DateTime.Now;
-        inDebtName = null;
-        isPayback = null;
-        isPooped = true;
-        notes = string.Empty;
     }
 
-    public async void SaveWalk()
+    public void SaveWalk()
     {
         CloseView();
     }
