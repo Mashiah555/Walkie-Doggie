@@ -17,6 +17,12 @@ public class WalkViewModel : INotifyPropertyChanged
 
     #region View Model Properties
 
+    string signedUser;
+    public string SignedUser
+    {
+        get => signedUser;
+    }
+
     string walkerName;
     public string WalkerName
     {
@@ -99,6 +105,12 @@ public class WalkViewModel : INotifyPropertyChanged
     {
         get => walkId;
     }
+
+    List<string> users;
+    public List<string> Users
+    {
+        get => users;
+    }
     #endregion View Model Properties
 
     #region View Model Commands
@@ -110,6 +122,7 @@ public class WalkViewModel : INotifyPropertyChanged
     {
         _db = new FirebaseService();
 
+        signedUser = LocalService.GetUsername() ?? string.Empty;
         walkId = LocalService.GetWalk();
         walkerName = string.Empty;
         walkDate = DateTime.Today;
@@ -119,17 +132,19 @@ public class WalkViewModel : INotifyPropertyChanged
         isPooped = true;
         notes = string.Empty;
 
-        if (WalkId is not null) 
-            InitializeAsync(WalkId ?? -1);
+        InitializeAsync(WalkId);
 
         SaveCommand = new Command(SaveWalk);
         CancelCommand = new Command(CloseView);
     }
-    private async void InitializeAsync(int id)
+    private async void InitializeAsync(int? id)
     {
-        WalkModel? walk = await _db.GetWalkAsync(id);
-        if (walk == null)
-            return;
+        users = await _db.GetAllUsernamesAsync();
+
+        if (id == null) return;
+
+        WalkModel? walk = await _db.GetWalkAsync(id ?? -1);
+        if (walk == null) return;
 
         WalkerName = walk.WalkerName;
         WalkDate = walk.WalkTime.ToDateTime().Date;

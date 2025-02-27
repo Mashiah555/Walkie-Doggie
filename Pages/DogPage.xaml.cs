@@ -82,7 +82,7 @@ public partial class DogPage : ContentPage
     #region Button Click Events
     private async void ButtonWalk_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync(nameof(DogView), true);
+        await Shell.Current.GoToAsync(nameof(WalkView), true);
     }
 
     private void ButtonFeed_Clicked(object sender, EventArgs e)

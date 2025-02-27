@@ -84,6 +84,20 @@ public class FirebaseService
         return users;
     }
 
+    // ➤ Get All Usernames from Firestore
+    public async Task<List<String>> GetAllUsernamesAsync()
+    {
+        var users = new List<String>();
+        QuerySnapshot snapshot = await _firestoreDb!
+            .Collection(UsersCollection)
+            .GetSnapshotAsync();
+
+        foreach (var doc in snapshot.Documents)
+            users.Add(doc.ConvertTo<UserModel>().Name);
+
+        return users;
+    }
+
     // ➤ Searches for a User in Firestore
     public async Task<bool> HasUserAsync(string name)
     {

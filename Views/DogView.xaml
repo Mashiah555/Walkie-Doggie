@@ -5,20 +5,24 @@
              xmlns:pack="clr-namespace:Walkie_Doggie.PacksKit"
              xmlns:vm="clr-namespace:Walkie_Doggie.ViewModels"
              x:DataType="vm:DogViewModel"
-             FlowDirection="RightToLeft">
+             FlowDirection="RightToLeft"
+             Title="פרטי חיית המחמד">
     <ContentPage.BindingContext>
         <vm:DogViewModel />
     </ContentPage.BindingContext>
-    
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsEnabled="False" />
+    </Shell.BackButtonBehavior>
+
     <StackLayout>
         
-        <Label Text="פרטי חיית המחמד"
+        <!--<Label Text="פרטי חיית המחמד"
                Style="{StaticResource Header}" 
-               Margin="10,20,4,0"/>
+               Margin="10,-20,4,3"/>-->
 
         <Label Text="יש להגדיר את פרטי חיית המחמד לפני הגישה ליישומון"
                Style="{StaticResource Context}"
-               Margin="12,3,4,35"/>
+               Margin="12,-15,4,35"/>
 
         <pack:EntryPack 
             Text="{Binding DogName}"
@@ -70,9 +74,7 @@
 
             <Slider Value="{Binding DefaultFeedAmount}"
                     Minimum="5" Maximum="250"
-                    Margin="5,-2"
-                    HeightRequest="100"
-                    WidthRequest="500"/>
+                    Margin="5,-2"/>
 
             <Label Style="{StaticResource Context}"
                    Text="{Binding DefaultFeedAmount, 

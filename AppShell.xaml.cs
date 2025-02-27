@@ -15,6 +15,7 @@ namespace Walkie_Doggie
 
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(DogView), typeof(DogView));
+            Routing.RegisterRoute(nameof(WalkView), typeof(WalkView));
         }
     }
 }

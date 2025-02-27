@@ -5,22 +5,23 @@
              xmlns:pack="clr-namespace:Walkie_Doggie.PacksKit"
              xmlns:vm="clr-namespace:Walkie_Doggie.ViewModels"
              x:DataType="vm:WalkViewModel"
-             FlowDirection="RightToLeft">
+             FlowDirection="RightToLeft"
+             Title="שמירת פרטי טיול">
     <ContentPage.BindingContext>
         <vm:WalkViewModel />
     </ContentPage.BindingContext>
     
     <VerticalStackLayout>
-        <Label Text="שמירת פרטי טיול"
+        <!--<Label Text="שמירת פרטי טיול"
                Style="{StaticResource Header}" 
-               Margin="10,20,4,0"/>
+               Margin="10,20,4,3"/>-->
 
         <Label Text="טיול מספר להגדיר"
                Style="{StaticResource Context}"
-               Margin="12,3,4,35"/>
+               Margin="12,-10,4,35"/>
 
         <Grid ColumnDefinitions="*,*">
-            
+
             <pack:DatePickerPack Grid.Column="0"
                 Date="{Binding WalkDate}"
                 FloatingLabel="תאריך הטיול"
@@ -32,13 +33,47 @@
                 ImageSource="{AppThemeBinding Light=clock_light, Dark=clock_dark}"/>
         </Grid>
 
+        <pack:RadioCollectionPack 
+            FloatingLabel="שם המטייל/ת"
+            Description="try"
+            ItemsSource="{Binding Users}"
+            SelectedItem="{Binding WalkerName}"
+            GroupName="Users"
+            DefaultItem="{Binding SignedUser}"
+            ContentState="Warning"/>
 
+        <CollectionView ItemsSource="{Binding Users}"
+                SelectedItem="{Binding SignedUser}"
+                SelectionMode="Single"
+                ItemsLayout="VerticalGrid, 2"
+                EmptyView="עדיין לא קיים במערכת אף משתמש"
+                Margin="8,30">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+
+                    <Frame Style="{StaticResource SelectableFrame}"
+                   BorderColor="Transparent"
+                   InputTransparent="True">
+                        <StackLayout Orientation="Horizontal">
+
+                            <RadioButton GroupName="UsersGroup"/>
+
+                            <Label Text="{Binding SignedUser}"
+                           Style="{StaticResource SubHeader}"
+                           VerticalOptions="End"/>
+
+                        </StackLayout>
+                    </Frame>
+
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
         <Button Text="שמירה"
         Command="{Binding SaveCommand}"
         Margin="10,20"/>
 
-        <Button Text="שמירה"
+        <Button Text="ביטול"
                 Command="{Binding CancelCommand}"
                 Margin="10,20"/>
 

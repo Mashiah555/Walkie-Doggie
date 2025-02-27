@@ -81,4 +81,9 @@ public partial class LoginPage : ContentPage
         else
             await Shell.Current.GoToAsync("..", true);
     }
+
+    protected override bool OnBackButtonPressed()
+    {
+        return true; // Prevents back navigation
+    }
 }
