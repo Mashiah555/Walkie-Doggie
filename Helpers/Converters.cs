@@ -157,3 +157,20 @@ class ConvertToRoundedString : IValueConverter
         return 0;
     }
 }
+
+class SelectedItemConverter : IValueConverter
+{
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        if (value == null || parameter == null)
+            return false;
+
+        // Compare the current item (parameter) with the selected item (value)
+        return value.ToString() == parameter.ToString();
+    }
+
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    {
+        throw new NotImplementedException();
+    }
+}

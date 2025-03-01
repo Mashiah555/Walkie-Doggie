@@ -1,6 +1,5 @@
 ﻿using Microsoft.Maui.Controls;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace Walkie_Doggie.PacksKit;
 
@@ -8,10 +7,11 @@ public class RadioCollectionPack : StackLayout
 {
     #region Bindable Properties
     public static readonly BindableProperty ItemsSourceProperty =
-        BindableProperty.Create(nameof(ItemsSource), typeof(List<string>), typeof(RadioCollectionPack), new List<string>(), propertyChanged: OnItemsSourceChanged);
+        BindableProperty.Create(nameof(ItemsSource), typeof(List<string>), typeof(RadioCollectionPack), new List<string>());
 
     public static readonly BindableProperty SelectedItemProperty =
-        BindableProperty.Create(nameof(SelectedItem), typeof(string), typeof(RadioCollectionPack), null, BindingMode.TwoWay);
+        BindableProperty.Create(nameof(SelectedItem), typeof(string), typeof(RadioCollectionPack), null, BindingMode.TwoWay,
+            propertyChanged: OnSelectedItemChanged);
 
     public static readonly BindableProperty SelectionModeProperty =
         BindableProperty.Create(nameof(SelectionMode), typeof(SelectionMode), typeof(RadioCollectionPack), SelectionMode.Single);
@@ -20,7 +20,7 @@ public class RadioCollectionPack : StackLayout
         BindableProperty.Create(nameof(GroupName), typeof(string), typeof(RadioCollectionPack), default(string));
 
     public static readonly BindableProperty DefaultItemProperty =
-        BindableProperty.Create(nameof(DefaultItem), typeof(string), typeof(RadioCollectionPack), default(string), propertyChanged: OnDefaultItemChanged);
+        BindableProperty.Create(nameof(DefaultItem), typeof(string), typeof(RadioCollectionPack), default(string));
 
     public static readonly BindableProperty FloatingLabelProperty =
         BindableProperty.Create(nameof(FloatingLabel), typeof(string), typeof(EntryPack), string.Empty);
@@ -30,6 +30,7 @@ public class RadioCollectionPack : StackLayout
 
     public static readonly BindableProperty ContentStateProperty =
     BindableProperty.Create(nameof(ContentState), typeof(ContentStates), typeof(EntryPack), ContentStates.Normal);
+
     #endregion Bindable Properties
 
     #region Properties
@@ -82,6 +83,9 @@ public class RadioCollectionPack : StackLayout
     }
     #endregion Properties
 
+    private CollectionView collectionView;
+    private Dictionary<string, RadioPack> radioPackLookup = new Dictionary<string, RadioPack>();
+
     public RadioCollectionPack()
     {
         #region Floating Label Initialization
@@ -98,110 +102,133 @@ public class RadioCollectionPack : StackLayout
         #endregion Floating Label Initialization
 
         #region CollectionView Initialization
-        var collectionView = new CollectionView
+        collectionView = new CollectionView
         {
-            SelectionMode = SelectionMode,
             ItemsLayout = new GridItemsLayout(2, ItemsLayoutOrientation.Vertical),
-            ItemsSource = ItemsSource,
+            EmptyView = "עדיין לא קיים במערכת אף משתמש",
+            Margin = new Thickness(8),
             ItemTemplate = new DataTemplate(() =>
             {
-                var frame = new Frame { Padding = 5, Margin = new Thickness(5) };
-
-                var stack = new StackLayout { Orientation = StackOrientation.Horizontal };
-
-                var radioButton = new RadioButton { GroupName = GroupName };
-                radioButton.CheckedChanged += (s, e) =>
+                RadioPack radioPack = new RadioPack
                 {
-                    if (e.Value)
-                        SelectedItem = (string)((RadioButton)s).BindingContext;
+                    GroupName = GroupName,
+                    Margin = new Thickness(3)
                 };
+                radioPack.SetBinding(RadioPack.TextProperty, ".");
 
-                var label = new Label();
-                label.SetBinding(Label.TextProperty, ".");
-
-                stack.Children.Add(radioButton);
-                stack.Children.Add(label);
-
-                frame.Content = stack;
-                frame.BindingContextChanged += (s, e) =>
+                // Store a reference to each RadioPack for later use
+                radioPack.BindingContextChanged += (sender, e) =>
                 {
-                    if (frame.BindingContext is string item && item == DefaultItem)
+                    if (sender is RadioPack pack && pack.BindingContext is string text)
                     {
-                        radioButton.IsChecked = true;
+                        if (!radioPackLookup.ContainsKey(text))
+                            radioPackLookup[text] = pack;
+
+                        // Set IsChecked based on whether this item is the SelectedItem
+                        pack.IsChecked = text == SelectedItem;
                     }
                 };
-                frame.SetBinding(BindableObject.BindingContextProperty, new Binding("."));
 
-                return frame;
+                // Handle IsChecked changes to update SelectedItem
+                radioPack.PropertyChanged += (sender, e) =>
+                {
+                    if (e.PropertyName == nameof(RadioPack.IsChecked) && sender is RadioPack pack)
+                    {
+                        if (pack.IsChecked && pack.BindingContext is string text)
+                        {
+                            SelectedItem = text;
+                        }
+                    }
+                };
+
+                return radioPack;
             })
+        };
+
+        collectionView.SetBinding(
+            CollectionView.ItemsSourceProperty, new Binding(nameof(ItemsSource), source: this));
+        collectionView.SetBinding(
+            CollectionView.SelectedItemProperty, new Binding(nameof(SelectedItem), source: this));
+        collectionView.SetBinding(
+            CollectionView.SelectionModeProperty, new Binding(nameof(SelectionMode), source: this));
+
+        // Handle when CollectionView selection changes
+        collectionView.SelectionChanged += (sender, e) =>
+        {
+            if (e.CurrentSelection.Count > 0 && e.CurrentSelection[0] is string selectedItem)
+            {
+                SelectedItem = selectedItem;
+            }
         };
         #endregion CollectionView Initialization
-    }
 
-    private static void OnItemsSourceChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        var control = (RadioCollectionPack)bindable;
-        //control.UpdateItems();
-    }
-
-    private static void OnDefaultItemChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        var control = (RadioCollectionPack)bindable;
-        control.SelectDefaultItem();
-    }
-
-    private void UpdateItems()
-    {
-        Children.Clear();
-        if (ItemsSource == null)
-            return;
-
-        var collectionView = new CollectionView
+        #region Border Initialization
+        var border = new Border
         {
-            SelectionMode = SelectionMode,
-            ItemsLayout = new GridItemsLayout(2, ItemsLayoutOrientation.Vertical),
-            ItemsSource = ItemsSource,
-            ItemTemplate = new DataTemplate(() =>
+            Content = collectionView,
+            BackgroundColor = Colors.Transparent,
+            Margin = new Thickness(5, 2),
+            Padding = new Thickness(2),
+            FlowDirection = FlowDirection.RightToLeft,
+            Stroke = Application.Current!.UserAppTheme == AppTheme.Light ?
+                (Color)Application.Current!.Resources["Gray200"] :
+                (Color)Application.Current!.Resources["Gray900"],
+            StrokeThickness = 0.5,
+            StrokeShape = new RoundRectangle
             {
-                var frame = new Frame { Padding = 5, Margin = new Thickness(5) };
-
-                var stack = new StackLayout { Orientation = StackOrientation.Horizontal };
-
-                var radioButton = new RadioButton { GroupName = GroupName };
-                radioButton.CheckedChanged += (s, e) => 
-                {
-                    if (e.Value) 
-                        SelectedItem = (string)((RadioButton)s).BindingContext; 
-                };
-
-                var label = new Label();
-                label.SetBinding(Label.TextProperty, ".");
-
-                stack.Children.Add(radioButton);
-                stack.Children.Add(label);
-
-                frame.Content = stack;
-                frame.BindingContextChanged += (s, e) =>
-                {
-                    if (frame.BindingContext is string item && item == DefaultItem)
-                    {
-                        radioButton.IsChecked = true;
-                    }
-                };
-                frame.SetBinding(BindableObject.BindingContextProperty, new Binding("."));
-
-                return frame;
-            })
+                CornerRadius = new CornerRadius(8)  // You can adjust this value to make corners more or less rounded
+            }
         };
+        border.SetBinding(Border.StrokeProperty, new Binding(
+            nameof(ContentState), source: this, converter: new ConvertToColor()));
+        #endregion Border Initialization
 
-        collectionView.SetBinding(SelectableItemsView.SelectedItemProperty, new Binding(nameof(SelectedItem), source: this, mode: BindingMode.TwoWay));
-        Children.Add(collectionView);
+        #region Description Label Initialization
+        var descriptionLabel = new Label
+        {
+            Style = (Style)Application.Current!.Resources["Context"],
+            FontSize = 12,
+            HorizontalOptions = LayoutOptions.End,
+            Margin = new Thickness(5, -2, 5, 5)
+        };
+        descriptionLabel.SetBinding(
+            Label.TextProperty, new Binding(nameof(Description), source: this));
+        descriptionLabel.SetBinding(
+            Label.TextColorProperty, new Binding(
+            nameof(ContentState), source: this, converter: new ConvertToColor()));
+        #endregion Description Label Initialization
+
+        //Initialize the EntryPack's StackLayout with components:
+        Children.Add(floatingLabel);
+        Children.Add(border);
+        Children.Add(descriptionLabel);
+        FlowDirection = FlowDirection.RightToLeft;
+
+        // Set the DefaultItem if specified
+        if (!string.IsNullOrEmpty(DefaultItem))
+        {
+            SelectedItem = DefaultItem;
+        }
     }
 
-    private void SelectDefaultItem()
+    // Handle when the SelectedItem property changes
+    private static void OnSelectedItemChanged(BindableObject bindable, object oldValue, object newValue)
     {
-        if (ItemsSource == null || string.IsNullOrEmpty(DefaultItem))
-            return;
-        SelectedItem = ItemsSource.Contains(DefaultItem) ? DefaultItem : null;
+        if (bindable is RadioCollectionPack radioCollection)
+        {
+            radioCollection.UpdateRadioPackSelection();
+        }
+    }
+
+    // Update all RadioPack controls to reflect the current selection
+    private void UpdateRadioPackSelection()
+    {
+        foreach (var entry in radioPackLookup)
+        {
+            string itemText = entry.Key;
+            RadioPack radioPack = entry.Value;
+
+            radioPack.IsChecked = itemText == SelectedItem;
+        }
     }
 }

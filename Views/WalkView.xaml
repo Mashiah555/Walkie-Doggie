@@ -33,17 +33,9 @@
                 ImageSource="{AppThemeBinding Light=clock_light, Dark=clock_dark}"/>
         </Grid>
 
-        <pack:RadioCollectionPack 
-            FloatingLabel="שם המטייל/ת"
-            Description="try"
-            ItemsSource="{Binding Users}"
-            SelectedItem="{Binding WalkerName}"
-            GroupName="Users"
-            DefaultItem="{Binding SignedUser}"
-            ContentState="Warning"/>
-
-        <CollectionView ItemsSource="{Binding Users}"
-                SelectedItem="{Binding SignedUser}"
+        <!--<CollectionView
+                x:Name="UsersCollection"
+                ItemsSource="{Binding Users}"
                 SelectionMode="Single"
                 ItemsLayout="VerticalGrid, 2"
                 EmptyView="עדיין לא קיים במערכת אף משתמש"
@@ -51,24 +43,31 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
 
-                    <Frame Style="{StaticResource SelectableFrame}"
-                   BorderColor="Transparent"
-                   InputTransparent="True">
-                        <StackLayout Orientation="Horizontal">
-
-                            <RadioButton GroupName="UsersGroup"/>
-
-                            <Label Text="{Binding SignedUser}"
-                           Style="{StaticResource SubHeader}"
-                           VerticalOptions="End"/>
-
-                        </StackLayout>
-                    </Frame>
+                    <pack:RadioPack
+                        GroupName="Users"
+                        Text="{Binding .}"
+                        IsChecked="{Binding Source={x:Reference UsersCollection}, 
+                                            Path=SelectedItem, 
+                                            Converter={StaticResource SelectedItemConverterKey}, 
+                                            ConverterParameter={Binding .}}" />
 
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-        </CollectionView>
+        </CollectionView>-->
 
+        <pack:RadioCollectionPack 
+            FloatingLabel="שם המטייל/ת"
+            ItemsSource="{Binding Users}"
+            SelectedItem="{Binding WalkerName}"
+            GroupName="Users2"
+            DefaultItem="{Binding SignedUser}"/>
+
+        <StackLayout Orientation="Horizontal">
+            <Switch IsToggled="{Binding IsPooped}"
+                    FlowDirection="RightToLeft"/>
+            <Label Text="לואי חירבן"/>
+        </StackLayout>
+        
         <Button Text="שמירה"
         Command="{Binding SaveCommand}"
         Margin="10,20"/>

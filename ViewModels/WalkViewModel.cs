@@ -110,6 +110,11 @@ public class WalkViewModel : INotifyPropertyChanged
     public List<string> Users
     {
         get => users;
+        set
+        {
+            users = value;
+            OnPropertyChanged(nameof(Users));
+        }
     }
     #endregion View Model Properties
 
@@ -139,7 +144,7 @@ public class WalkViewModel : INotifyPropertyChanged
     }
     private async void InitializeAsync(int? id)
     {
-        users = await _db.GetAllUsernamesAsync();
+        Users = await _db.GetAllUsernamesAsync();
 
         if (id == null) return;
 
