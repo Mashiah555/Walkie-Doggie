@@ -74,9 +74,7 @@ public class FirebaseService
     public async Task<List<UserModel>> GetAllUsersAsync()
     {
         var users = new List<UserModel>();
-        QuerySnapshot snapshot = await _firestoreDb!
-            .Collection(UsersCollection)
-            .GetSnapshotAsync();
+        QuerySnapshot snapshot = await GetUsersSnapshot();
 
         foreach (var doc in snapshot.Documents)
             users.Add(doc.ConvertTo<UserModel>());
@@ -88,9 +86,7 @@ public class FirebaseService
     public async Task<List<String>> GetAllUsernamesAsync()
     {
         var users = new List<String>();
-        QuerySnapshot snapshot = await _firestoreDb!
-            .Collection(UsersCollection)
-            .GetSnapshotAsync();
+        QuerySnapshot snapshot = await GetUsersSnapshot();
 
         foreach (var doc in snapshot.Documents)
             users.Add(doc.ConvertTo<UserModel>().Name);
@@ -137,6 +133,13 @@ public class FirebaseService
         return _firestoreDb!
             .Collection(UsersCollection)
             .Document(name);
+    }
+
+    private async Task<QuerySnapshot> GetUsersSnapshot()
+    {
+        return await _firestoreDb!
+            .Collection(UsersCollection)
+            .GetSnapshotAsync();
     }
 
     #endregion User CRUD Operations

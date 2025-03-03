@@ -8,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using The49.Maui.BottomSheet;
+using Walkie_Doggie.PacksKit;
+using Walkie_Doggie.Popups;
 
 namespace Walkie_Doggie.ViewModels;
 
@@ -119,6 +122,7 @@ public class WalkViewModel : INotifyPropertyChanged
     #endregion View Model Properties
 
     #region View Model Commands
+    public ICommand SheetCommand { get; }
     public ICommand SaveCommand { get; }
     public ICommand CancelCommand { get; }
     #endregion View Model Commands
@@ -139,9 +143,11 @@ public class WalkViewModel : INotifyPropertyChanged
 
         InitializeAsync(WalkId);
 
+        SheetCommand = new Command(OpenUsersSheet);
         SaveCommand = new Command(SaveWalk);
         CancelCommand = new Command(CloseView);
     }
+
     private async void InitializeAsync(int? id)
     {
         Users = await _db.GetAllUsernamesAsync();
@@ -158,6 +164,21 @@ public class WalkViewModel : INotifyPropertyChanged
         IsPayback = walk.IsPayback;
         IsPooped = walk.IsPooped;
         Notes = walk.Notes ?? string.Empty;
+    }
+
+    private async void OpenUsersSheet()
+    {
+        string? result;
+        UsersSheet sheet = new((result) =>
+        {
+            this.InDebtName = result;
+        });
+        sheet.Dismissed += (s, e) =>
+        {
+            OnPropertyChanged(nameof(InDebtName));
+        };
+        await sheet.ShowAsync();
+        await sheet.DismissAsync();
     }
 
     public async void SaveWalk()

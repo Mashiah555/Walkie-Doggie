@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
+using The49.Maui.BottomSheet;
 
 namespace Walkie_Doggie
 {
@@ -11,19 +12,20 @@ namespace Walkie_Doggie
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .UseBottomSheet()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            // Removes Entry underline on Android:
-            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoUnderline", (handler, view) =>
-            {
 #if ANDROID
-                handler.PlatformView.Background = null;
+            SetAndroidHandlers();
 #endif
-            });
+
+#if WINDOWS
+            SetWindowsHandlers();
+#endif
 
 #if DEBUG
             builder.Logging.AddDebug();
@@ -31,5 +33,31 @@ namespace Walkie_Doggie
 
             return builder.Build();
         }
+
+#if ANDROID
+        public static void SetAndroidHandlers()
+        {
+            // Removes Entry underline on Android:
+            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoUnderline", (handler, view) =>
+            {
+                handler.PlatformView.Background = null;
+            });
+        }
+#endif
+
+#if WINDOWS
+        public static void SetWindowsHandlers()
+        {
+            // Removes Switch state-label on Windows:
+            Microsoft.Maui.Handlers.SwitchHandler.Mapper.AppendToMapping("NoSwitchLabel", (handler, view) =>
+            {
+                handler.PlatformView.OffContent = string.Empty;
+                handler.PlatformView.OnContent = string.Empty;
+
+                handler.PlatformView.MinWidth = 0;
+            });
+        }
+#endif
+
     }
 }

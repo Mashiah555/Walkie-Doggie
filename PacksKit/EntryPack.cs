@@ -151,13 +151,14 @@ public class EntryPack : StackLayout
         #endregion Grid & Border Initialization
 
         #region Description Label Initialization
-        var descriptionLabel = new Label 
+        Label descriptionLabel = new Label 
         {
             Style = (Style)Application.Current!.Resources["Context"],
             FontSize = 12, 
             HorizontalOptions = LayoutOptions.End,
             Margin = new Thickness(5, -2, 5, 5) 
         };
+
         descriptionLabel.SetBinding(
             Label.TextProperty, new Binding(nameof(Description), source: this));
         descriptionLabel.SetBinding(

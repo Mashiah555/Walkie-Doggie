@@ -449,6 +449,8 @@
     </Style>
 
     <Style TargetType="Switch">
+        <Setter Property="Margin" Value="5,1,-100,1" />
+        <Setter Property="FlowDirection" Value="RightToLeft" />
         <Setter Property="OnColor" Value="{AppThemeBinding Light={StaticResource PrimaryColorLight}, Dark={StaticResource PrimaryColorDark}}" />
         <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource AccentColorLight}, Dark={StaticResource AccentColorDark}}" />
         <Setter Property="VisualStateManager.VisualStateGroups">

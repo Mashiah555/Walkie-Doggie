@@ -60,12 +60,21 @@
             ItemsSource="{Binding Users}"
             SelectedItem="{Binding WalkerName}"
             GroupName="Users2"
-            DefaultItem="{Binding SignedUser}"/>
+            DefaultItem="{Binding SignedUser}"
+            />
+
+        <Button Text="תשלום חוב"
+                Command="{Binding SheetCommand}"/>
+
+        <Label Text="{Binding InDebtName, Mode=TwoWay}"/>
 
         <StackLayout Orientation="Horizontal">
             <Switch IsToggled="{Binding IsPooped}"
-                    FlowDirection="RightToLeft"/>
-            <Label Text="לואי חירבן"/>
+                    FlowDirection="RightToLeft"
+                    Margin="5,0,-115,0"/>
+            <Label Text="לואי חירבן"
+                   HorizontalOptions="Start"
+                   FlowDirection="RightToLeft"/>
         </StackLayout>
         
         <Button Text="שמירה"
