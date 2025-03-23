@@ -1,15 +1,5 @@
-﻿using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Core;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows.Input;
-using The49.Maui.BottomSheet;
-using Walkie_Doggie.PacksKit;
 using Walkie_Doggie.Popups;
 
 namespace Walkie_Doggie.ViewModels;
@@ -140,6 +130,7 @@ public class WalkViewModel : INotifyPropertyChanged
         isPayback = null;
         isPooped = true;
         notes = string.Empty;
+        users = new List<string> { signedUser };
 
         InitializeAsync(WalkId);
 
@@ -168,7 +159,6 @@ public class WalkViewModel : INotifyPropertyChanged
 
     private async void OpenUsersSheet()
     {
-        string? result;
         UsersSheet sheet = new((result) =>
         {
             this.InDebtName = result;
@@ -183,6 +173,8 @@ public class WalkViewModel : INotifyPropertyChanged
 
     public async void SaveWalk()
     {
+        await _db.AddWalkAsync(WalkerName, WalkTime, IsPooped, Notes, InDebtName);
+
         await Shell.Current.GoToAsync("..", true);
     }
 

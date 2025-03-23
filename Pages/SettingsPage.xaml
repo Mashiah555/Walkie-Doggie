@@ -16,27 +16,31 @@
         <Label Grid.Row="0" Grid.Column="0"
                Text="שינויים להגדרות נשמרים אוטומטית על גבי המכשיר"
                Style="{StaticResource Context}" 
-               Margin="10,20,4,0"/>
+               Margin="10,10,4,0"/>
         <Button Grid.Row="0" Grid.Column="1"
                 Text="גיבוי הגדרות לענן"
                 IsEnabled="{Binding IsSynced, Converter={StaticResource ConvertToBoolKey}}"
-                Command="{Binding SyncUp}"/>
+                Style="{StaticResource Hollow}"
+                Command="{Binding SyncUp}"
+                VerticalOptions="Center"
+                Margin="0,10,10,0" />
 
         <ScrollView Grid.Row="1" Grid.ColumnSpan="2">
             <StackLayout>
                 <pack:PickerPack
-                FloatingLabel="ערכת נושא"
-                PickerTitle="בחר/י ערכת נושא"
-                ItemsSource="{Binding Themes}"
-                SelectedItem="{Binding Theme, Converter={StaticResource ConvertThemeToStringKey}}"
-                ImageSource="{AppThemeBinding Light=arrow_light, Dark=arrow_dark}"/>
+                    FloatingLabel="ערכת נושא"
+                    PickerTitle="בחר/י ערכת נושא"
+                    ItemsSource="{Binding Themes}"
+                    SelectedItem="{Binding Theme, Converter={StaticResource ConvertThemeToStringKey}}"
+                    ImageSource="{AppThemeBinding Light=arrow_light, Dark=arrow_dark}"/>
 
                 <Button Text="עריכת פרטי חיית המחמד"
                     Command="{Binding NavigateToDog}"/>
 
                 <Label Text="{Binding Name, StringFormat='את/ה מחובר/ת למערכת בתור {0}'}" 
                    Style="{StaticResource Header}"
-                   FontSize="18"/>
+                   FontSize="18"
+                   Margin="10,35,0,-5"/>
                 <Button Text="התנתקות"
                     Style="{StaticResource Danger}"
                     Command="{Binding NavigateToLogin}"/>

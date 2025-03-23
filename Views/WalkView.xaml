@@ -33,28 +33,6 @@
                 ImageSource="{AppThemeBinding Light=clock_light, Dark=clock_dark}"/>
         </Grid>
 
-        <!--<CollectionView
-                x:Name="UsersCollection"
-                ItemsSource="{Binding Users}"
-                SelectionMode="Single"
-                ItemsLayout="VerticalGrid, 2"
-                EmptyView="עדיין לא קיים במערכת אף משתמש"
-                Margin="8,30">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-
-                    <pack:RadioPack
-                        GroupName="Users"
-                        Text="{Binding .}"
-                        IsChecked="{Binding Source={x:Reference UsersCollection}, 
-                                            Path=SelectedItem, 
-                                            Converter={StaticResource SelectedItemConverterKey}, 
-                                            ConverterParameter={Binding .}}" />
-
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>-->
-
         <pack:RadioCollectionPack 
             FloatingLabel="שם המטייל/ת"
             ItemsSource="{Binding Users}"
@@ -64,26 +42,32 @@
             />
 
         <Button Text="תשלום חוב"
+                Style="{StaticResource Hollow}"
                 Command="{Binding SheetCommand}"/>
 
         <Label Text="{Binding InDebtName, Mode=TwoWay}"/>
 
-        <StackLayout Orientation="Horizontal">
+        <StackLayout Orientation="Horizontal" Margin="0,-15,0,0" >
             <Switch IsToggled="{Binding IsPooped}"
-                    FlowDirection="RightToLeft"
-                    Margin="5,0,-115,0"/>
+                    Margin="5,0,-10,0" />
             <Label Text="לואי חירבן"
-                   HorizontalOptions="Start"
-                   FlowDirection="RightToLeft"/>
+                   HorizontalOptions="Start"/>
         </StackLayout>
-        
+
+        <pack:EntryPack 
+            FloatingLabel="תיאור"
+            Description="תיבה לכתיבת מידע נוסף לגבי הטיול"
+            Placeholder="פרטים על הטיול"
+            Text="{Binding Notes}"/>
+
         <Button Text="שמירה"
         Command="{Binding SaveCommand}"
-        Margin="10,20"/>
+        Margin="10,20,10,0"/>
 
         <Button Text="ביטול"
+                Style="{StaticResource Hollow}"
                 Command="{Binding CancelCommand}"
-                Margin="10,20"/>
+                Margin="10"/>
 
     </VerticalStackLayout>
 </ContentPage>

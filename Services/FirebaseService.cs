@@ -14,7 +14,7 @@ public class FirebaseService
     private const string DogsCollection = "Dogs";
     #endregion Firestore Properties
 
-    #region Firebase Operations
+    #region Firebase Initialization
     public FirebaseService()
     {
         if (_firestoreDb == null)
@@ -43,7 +43,7 @@ public class FirebaseService
             }.Build();
         }
     }
-    #endregion Firebase Operations
+    #endregion Firebase Initialization
 
     #region User CRUD Operations
 
@@ -260,7 +260,7 @@ public class FirebaseService
     }
     #endregion Feed CRUD Operations
 
-    #region Dog Operations
+    #region Dog CRUD Operations
     public async Task<bool> AddDogAsync(string name, DateTime birthdate, string breed, 
         double weight, int feedAmount)
     {
@@ -354,5 +354,5 @@ public class FirebaseService
         }
         return dog.TotalWalks;
     }
-    #endregion Dog Operations
+    #endregion Dog CRUD Operations
 }
