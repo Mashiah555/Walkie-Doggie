@@ -96,6 +96,9 @@ public class DogViewModel : INotifyPropertyChanged
             "רוטוויילר", "רידג'בק רודזי", "שיצו", "שנאוצר"
         };
         dogBreeds = dogBreeds.Order().ToObservableCollection();
+
+        dogName = string.Empty;
+        dogBreed = string.Empty;
         InitializeAsync();
 
         SaveCommand = new Command(SaveClick);

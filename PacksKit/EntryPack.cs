@@ -182,7 +182,7 @@ public class EntryPack : StackLayout
         }
     }
 
-    private void Entry_TextChanged(object sender, TextChangedEventArgs e)
+    private void Entry_TextChanged(object? sender, TextChangedEventArgs e)
     {
         if (sender is Entry entry && entry.IsFocused && Mandatory)
         {
