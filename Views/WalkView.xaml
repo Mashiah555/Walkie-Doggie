@@ -39,6 +39,7 @@
             SelectedItem="{Binding WalkerName}"
             GroupName="Users2"
             DefaultItem="{Binding SignedUser}"
+            Description="הטיול ישמר במערכת על שם המטייל/ת הנבחר/ת"
             />
 
         <Button Text="תשלום חוב"

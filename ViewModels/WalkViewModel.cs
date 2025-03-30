@@ -159,16 +159,18 @@ public class WalkViewModel : INotifyPropertyChanged
 
     private async void OpenUsersSheet()
     {
-        UsersSheet sheet = new((result) =>
-        {
-            this.InDebtName = result;
-        });
-        sheet.Dismissed += (s, e) =>
-        {
-            OnPropertyChanged(nameof(InDebtName));
-        };
-        await sheet.ShowAsync();
-        await sheet.DismissAsync();
+        //UsersSheet sheet = new((result) =>
+        //{
+        //    this.InDebtName = result;
+        //});
+        //sheet.Dismissed += (s, e) =>
+        //{
+        //    OnPropertyChanged(nameof(InDebtName));
+        //};
+        //await sheet.ShowAsync();
+        //await sheet.DismissAsync();
+
+        InDebtName = await MauiPopup.PopupAction.DisplayPopup(new UsersPopup());
     }
 
     public async void SaveWalk()
