@@ -14,7 +14,7 @@ public class FirebaseService
     private const string DogsCollection = "Dogs";
     #endregion Firestore Properties
 
-    #region Firebase Initialization
+    #region Firebase Authentication
     public FirebaseService()
     {
         if (_firestoreDb == null)
@@ -43,7 +43,7 @@ public class FirebaseService
             }.Build();
         }
     }
-    #endregion Firebase Initialization
+    #endregion Firebase Authentication
 
     #region User CRUD Operations
 
@@ -148,7 +148,7 @@ public class FirebaseService
     // ➤ Add a Walk Record
     // Throws an exception if there are no dogs saved in the database.
     public async Task AddWalkAsync(string walkerName, DateTime walkTime, bool isPooped,
-        string? notes = null, string? inDebtName = null)
+        string? notes = null, string? inDebtName = null, bool? isPayback = false)
     {
         int walkId = await GetWalksIdAsync(true);
         await _firestoreDb!
@@ -161,6 +161,7 @@ public class FirebaseService
                 WalkTime = Converters.ConvertToTimestamp(walkTime),
                 IsPooped = isPooped,
                 InDebtName = inDebtName,
+                IsPayback = isPayback,
                 Notes = notes
             });
 

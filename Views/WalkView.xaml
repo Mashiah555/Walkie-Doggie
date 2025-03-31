@@ -39,14 +39,32 @@
             SelectedItem="{Binding WalkerName}"
             GroupName="Users2"
             DefaultItem="{Binding SignedUser}"
-            Description="הטיול ישמר במערכת על שם המטייל/ת הנבחר/ת"
-            />
+            Description="הטיול ישמר במערכת על שם המטייל/ת הנבחר/ת"/>
 
-        <Button Text="תשלום חוב"
-                Style="{StaticResource Hollow}"
-                Command="{Binding SheetCommand}"/>
+        <Label Style="{StaticResource SubHeader}" 
+               Text="חובות וטובות"
+               Margin="10,7,10,0"/>
+        
+        <Border Style="{StaticResource RoundedBorder}"
+                Margin="5,0,5,20">
+            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,*">
+            
+                <Button Grid.Row="0" Grid.Column="0"
+                        Text="החזרת חוב"
+                        Command="{Binding PaybackCommand}"/>
 
-        <Label Text="{Binding InDebtName, Mode=TwoWay}"/>
+                <Button Grid.Row="0" Grid.Column="1"
+                        Text="טובה עבור מישהו"
+                        Style="{StaticResource Hollow}"
+                        Command="{Binding FavorCommand}"/>
+
+                <Label Grid.Row="1" Grid.ColumnSpan="2"
+                       Text="{Binding InDebtName, Mode=TwoWay}"
+                       Style="{StaticResource SubHeader}"
+                       IsVisible="{StaticResource ConvertToBoolKey}"/>
+
+            </Grid>
+        </Border>
 
         <StackLayout Orientation="Horizontal" Margin="0,-15,0,0" >
             <Switch IsToggled="{Binding IsPooped}"
@@ -56,7 +74,7 @@
         </StackLayout>
 
         <pack:EntryPack 
-            FloatingLabel="תיאור"
+            FloatingLabel="הערות"
             Description="תיבה לכתיבת מידע נוסף לגבי הטיול"
             Placeholder="פרטים על הטיול"
             Text="{Binding Notes}"/>

@@ -19,7 +19,7 @@ public class WalkModel
     public string? InDebtName { get; set; }  // User who owes a favor
 
     [FirestoreProperty]
-    public bool? IsPayback { get; set; }    // Whether the favor is a payback of a favor
+    public bool? IsPayback { get; set; }    // Whether the debt is a payback or a favor
 
     [FirestoreProperty]
     public string? Notes { get; set; }       // Optional notes about the walk

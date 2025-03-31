@@ -75,6 +75,9 @@ class ConvertToBool : IValueConverter
         if (value is bool boolValue)
             return !boolValue;
 
+        if (value is string stringValue)
+            return !string.IsNullOrEmpty(stringValue);
+
         return value != null;
     }
 

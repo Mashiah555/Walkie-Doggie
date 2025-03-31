@@ -1,4 +1,5 @@
-﻿using Walkie_Doggie.Views;
+﻿using System.Threading.Tasks;
+using Walkie_Doggie.Views;
 using static Walkie_Doggie.Helpers.Converters;
 namespace Walkie_Doggie.Pages;
 
@@ -85,9 +86,9 @@ public partial class DogPage : ContentPage
         await Shell.Current.GoToAsync(nameof(WalkView), true);
     }
 
-    private void ButtonFeed_Clicked(object sender, EventArgs e)
+    private async void ButtonFeed_Clicked(object sender, EventArgs e)
     {
-
+        await Shell.Current.GoToAsync(nameof(FeedView), true);
     }
 
     #endregion Button Click Events

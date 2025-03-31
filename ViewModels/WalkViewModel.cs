@@ -112,7 +112,8 @@ public class WalkViewModel : INotifyPropertyChanged
     #endregion View Model Properties
 
     #region View Model Commands
-    public ICommand SheetCommand { get; }
+    public ICommand PaybackCommand { get; }
+    public ICommand FavorCommand { get; }
     public ICommand SaveCommand { get; }
     public ICommand CancelCommand { get; }
     #endregion View Model Commands
@@ -134,7 +135,8 @@ public class WalkViewModel : INotifyPropertyChanged
 
         InitializeAsync(WalkId);
 
-        SheetCommand = new Command(OpenUsersSheet);
+        PaybackCommand = new Command((_) => OpenUsersPopup(true));
+        FavorCommand = new Command((_) => OpenUsersPopup(false));
         SaveCommand = new Command(SaveWalk);
         CancelCommand = new Command(CloseView);
     }
@@ -157,7 +159,7 @@ public class WalkViewModel : INotifyPropertyChanged
         Notes = walk.Notes ?? string.Empty;
     }
 
-    private async void OpenUsersSheet()
+    private async void OpenUsersPopup(bool payback)
     {
         //UsersSheet sheet = new((result) =>
         //{
@@ -170,12 +172,17 @@ public class WalkViewModel : INotifyPropertyChanged
         //await sheet.ShowAsync();
         //await sheet.DismissAsync();
 
-        InDebtName = await MauiPopup.PopupAction.DisplayPopup(new UsersPopup());
+        string result = await MauiPopup.PopupAction.DisplayPopup(new UsersPopup());
+        if (!string.IsNullOrEmpty(result))
+        {
+            InDebtName = result;
+            IsPayback = payback;
+        }
     }
 
     public async void SaveWalk()
     {
-        await _db.AddWalkAsync(WalkerName, WalkTime, IsPooped, Notes, InDebtName);
+        await _db.AddWalkAsync(WalkerName, WalkTime, IsPooped, Notes, InDebtName, IsPayback);
 
         await Shell.Current.GoToAsync("..", true);
     }

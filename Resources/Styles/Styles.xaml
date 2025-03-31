@@ -22,6 +22,20 @@
         <Setter Property="StrokeThickness" Value="0"/>
     </Style>
 
+    <Style TargetType="Border" x:Key="RoundedBorder">
+        <Setter Property="Padding" Value="3" />
+        <Setter Property="Margin" Value="5,3" />
+        <Setter Property="FlowDirection" Value="RightToLeft"/>
+        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource SecondaryTextColorLight}, Dark={StaticResource SecondaryTextColorDark}}" />
+        <Setter Property="StrokeThickness" Value="0.5"/>
+        <Setter Property="StrokeThickness" Value="0.5"/>
+        <Setter Property="StrokeShape">
+            <Setter.Value>
+                <RoundRectangle CornerRadius="8"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="Grid">
         <Setter Property="ColumnSpacing" Value="5" />
         <Setter Property="RowSpacing" Value="5"/>
