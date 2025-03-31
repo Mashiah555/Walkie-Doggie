@@ -1,6 +1,11 @@
 # **Walkie Doggie**
 
-A .NET MAUI based C# application that allows the users to log and manage their pet dog activities and sync changes across devices
+**Walkie Doggie** is a mobile application that allows users to log and manage their pet dog activities, synced automatically across devices.
+    The application is built using .NET MAUI, a cross-platform framework that enables developers to create native applications for Android, iOS, and Windows using C# and XAML.
+
+## Installation
+
+**Latest Release:** Version 1.0.0 - Alpha (Pre-Release)
 
 ## Database Service
 
