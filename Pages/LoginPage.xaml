@@ -9,9 +9,12 @@
 
     <StackLayout>
 
+        <Image Source="walkiedoggieicon.png"
+               HeightRequest="75"/>
+
         <Label Text="Walkie Doggie"
                Style="{StaticResource Header}"
-               HorizontalOptions="Center" Margin="1,35" FontSize="50" />
+               HorizontalOptions="Center" Margin="1,-15,1,35" FontSize="50" />
 
         <Label Text="בחר/י את שמך מהרשימה כדי לבצע התחברות ראשונית במכשיר זה"
                Style="{StaticResource SubHeader}"
