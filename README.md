@@ -5,7 +5,7 @@
 
 ## Installation
 
-**Latest Release:** Version 1.0.0 - Alpha (Pre-Release)
+**Latest Release:** Version 1.0.0 - Alpha Testing (Pre-Release)
 
 ## Database Service
 
