@@ -40,10 +40,10 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\Images\walkiedoggieicon.png" Color="#007378" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\Images\walkiedoggieicon.png" Color="#000000" />
 
 		<!-- Splash Screen -->
-		<MauiSplashScreen Include="Resources\Splash\splashicon.png" Color="#007378" BaseSize="128,128" />
+		<MauiSplashScreen Include="Resources\Splash\splashicon.png" Color="#000000" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
@@ -125,5 +125,13 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)'=='Release'">
+		<AndroidKeyStore>True</AndroidKeyStore>
+		<AndroidSigningKeyStore>walkiedoggiekey.keystore</AndroidSigningKeyStore>
+		<AndroidSigningKeyAlias>WalkieDoggieAlias</AndroidSigningKeyAlias>
+		<AndroidSigningStorePass>mashiah555</AndroidSigningStorePass>
+		<AndroidSigningKeyPass>mashiah555</AndroidSigningKeyPass>
+	</PropertyGroup>
 
 </Project>
