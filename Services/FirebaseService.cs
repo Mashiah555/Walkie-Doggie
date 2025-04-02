@@ -170,11 +170,14 @@ public class FirebaseService
     }
 
     // ➤ Get a Walk Record
-    public async Task<WalkModel?> GetWalkAsync(int walkId)
+    public async Task<WalkModel?> GetWalkAsync(int? walkId)
     {
+        if (walkId == null)
+            return null;
+
         DocumentSnapshot snapshot = await _firestoreDb!
             .Collection(WalksCollection)
-            .Document(walkId.ToString())
+            .Document(walkId!.ToString())
             .GetSnapshotAsync();
 
         if (snapshot.Exists)

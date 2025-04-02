@@ -122,8 +122,7 @@ public class WalkViewModel : INotifyPropertyChanged
     {
         _db = new FirebaseService();
 
-        signedUser = LocalService.GetUsername() ?? string.Empty;
-        walkId = LocalService.GetWalk();
+        walkId = -1;
         walkerName = string.Empty;
         walkDate = DateTime.Today;
         walkTime = DateTime.Now;
@@ -131,32 +130,53 @@ public class WalkViewModel : INotifyPropertyChanged
         isPayback = null;
         isPooped = true;
         notes = string.Empty;
-        users = new List<string> { signedUser };
 
-        InitializeAsync(WalkId);
+        try
+        {
+            signedUser = LocalService.GetUsername() ?? string.Empty;
+            //walkId = LocalService.GetWalk();
+            users = new List<string> { signedUser };
 
-        PaybackCommand = new Command((_) => OpenUsersPopup(true));
-        FavorCommand = new Command((_) => OpenUsersPopup(false));
-        SaveCommand = new Command(SaveWalk);
-        CancelCommand = new Command(CloseView);
+            InitializeAsync(WalkId);
+
+            PaybackCommand = new Command((_) => OpenUsersPopup(true));
+            FavorCommand = new Command((_) => OpenUsersPopup(false));
+            SaveCommand = new Command(SaveWalk);
+            CancelCommand = new Command(CloseView);
+        }
+        catch (Exception ex)
+        {
+            Application.Current!.MainPage!.DisplayAlert(
+                "WalkViewModel Error", "WalkViewModel failed to initialize: \n\n" +
+                ex.Message, "סגירה", FlowDirection.RightToLeft);
+        }
     }
 
     private async void InitializeAsync(int? id)
     {
-        Users = await _db.GetAllUsernamesAsync();
+        try
+        {
+            Users = await _db.GetAllUsernamesAsync();
 
-        if (id == null) return;
+            if (id == null) return;
 
-        WalkModel? walk = await _db.GetWalkAsync(id ?? -1);
-        if (walk == null) return;
+            WalkModel? walk = await _db.GetWalkAsync(id);
+            if (walk == null) return;
 
-        WalkerName = walk.WalkerName;
-        WalkDate = walk.WalkTime.ToDateTime().Date;
-        WalkTime = walk.WalkTime.ToDateTime().ToLocalTime();
-        InDebtName = walk.InDebtName;
-        IsPayback = walk.IsPayback;
-        IsPooped = walk.IsPooped;
-        Notes = walk.Notes ?? string.Empty;
+            WalkerName = walk.WalkerName;
+            WalkDate = walk.WalkTime.ToDateTime().Date;
+            WalkTime = walk.WalkTime.ToDateTime().ToLocalTime();
+            InDebtName = walk.InDebtName;
+            IsPayback = walk.IsPayback;
+            IsPooped = walk.IsPooped;
+            Notes = walk.Notes ?? string.Empty;
+        }
+        catch (Exception ex)
+        {
+            await Application.Current!.MainPage!.DisplayAlert(
+                "WalkViewModel Error", "InitializeAsync failed: \n\n" +
+                ex.Message, "סגירה", FlowDirection.RightToLeft);
+        }
     }
 
     private async void OpenUsersPopup(bool payback)
