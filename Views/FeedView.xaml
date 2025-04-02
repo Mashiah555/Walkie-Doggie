@@ -6,13 +6,13 @@
              xmlns:vm="clr-namespace:Walkie_Doggie.ViewModels"
              x:DataType="vm:FeedViewModel"
              FlowDirection="RightToLeft"
-             Title="FeedView">
+             Title="שמירת פרטי ארוחה">
     <ContentPage.BindingContext>
         <vm:FeedViewModel />
     </ContentPage.BindingContext>
     
     <VerticalStackLayout>
-        <Label Text="ארוחה מספר - היום"
+        <Label Text="ארוחה מספר # היום"
        Style="{StaticResource Context}"
        Margin="12,-10,4,35"/>
 

@@ -97,6 +97,11 @@ public class WalkViewModel : INotifyPropertyChanged
     public int? WalkId
     {
         get => walkId;
+        private set
+        {
+            walkId = value;
+            OnPropertyChanged(nameof(WalkId));
+        }
     }
 
     List<string> users;
@@ -134,7 +139,7 @@ public class WalkViewModel : INotifyPropertyChanged
         try
         {
             signedUser = LocalService.GetUsername() ?? string.Empty;
-            //walkId = LocalService.GetWalk();
+            WalkId = LocalService.GetWalk();
             users = new List<string> { signedUser };
 
             InitializeAsync(WalkId);

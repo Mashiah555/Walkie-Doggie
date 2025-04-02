@@ -62,8 +62,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\AppIcon\newappicon.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <EmbeddedResource Include="Resources\Raw\AboutAssets.txt" />
 	  <EmbeddedResource Include="Resources\Raw\firebase-adminsdk.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiIcon Include="Resources\AppIcon\newappicon.png" />
 	</ItemGroup>
 
 	<ItemGroup>

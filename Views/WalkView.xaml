@@ -51,6 +51,7 @@
             
                 <Button Grid.Row="0" Grid.Column="0"
                         Text="החזרת חוב"
+                        Style="{StaticResource Hollow}"
                         Command="{Binding PaybackCommand}"/>
 
                 <Button Grid.Row="0" Grid.Column="1"
