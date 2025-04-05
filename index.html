@@ -474,6 +474,10 @@
                 padding: 3rem 5%;
             }
 
+            .tabs {
+                display: none; /* Hide the tabs section on mobile */
+            }
+
             .github-corner:hover .octo-arm {
                 animation: none;
             }
@@ -504,6 +508,10 @@
 
             .d-none {
                 display: none;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr; /* Single column layout */
             }
         }
 
@@ -586,33 +594,6 @@
                     mobileMenu.classList.remove('active');
                 });
             });
-
-            // Tab functionality
-            const tabLinks = document.querySelectorAll('.nav-link');
-
-            tabLinks.forEach(tabLink => {
-                tabLink.addEventListener('click', function (e) {
-                    e.preventDefault();
-
-                    // Remove active class from all tabs
-                    tabLinks.forEach(link => link.classList.remove('active', 'show'));
-
-                    // Add active class to clicked tab
-                    this.classList.add('active', 'show');
-
-                    // Get the target tab pane
-                    const targetId = this.getAttribute('data-bs-target');
-                    const targetPane = document.querySelector(targetId);
-
-                    // Hide all tab panes
-                    document.querySelectorAll('.tab-pane').forEach(pane => {
-                        pane.classList.remove('active', 'show');
-                    });
-
-                    // Show the target tab pane
-                    targetPane.classList.add('active', 'show');
-                });
-            });
         });
     </script>
 </head>
@@ -658,102 +639,43 @@
             <h2>Track Your Dog's Walks with Ease</h2>
             <p>Walkie Doggie is your perfect companion for logging and organizing your pet's walks & feedings. Achieve control and put an end for the family fights!</p>
 
-            <!-- Tab Bar Section -->
-            <section id="tabs" class="tabs">
-                <div class="container">
-                    <ul class="nav nav-tabs row">
-                        <li class="nav-item col-6">
-                            <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#tab-1">
-                                <i class="bi bi-credit-card-fill"></i>
-                                <h4 class="d-none d-lg-block">Cards</h4>
-                            </a>
-                        </li>
-                        <li class="nav-item col-6">
-                            <a class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-2">
-                                <i class="bi bi-bank2"></i>
-                                <h4 class="d-none d-lg-block">Banks</h4>
-                            </a>
-                        </li>
-                    </ul>
-
-                    <div class="tab-content">
-                        <div class="tab-pane active show" id="tab-1">
-                            <div class="row">
-                                <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
-                                    <h3>Manage your cards</h3>
-                                    <p>
-                                        Easily add, view, or delete your stored cards with enhanced security and convenience.
-                                    </p>
-                                    <a href="https://github.com/Mashiah555/Walkie-Doggie/releases/latest/download/Walkie-Doggie.apk" class="download-btn download-link">
-                                        <i class="fab fa-android"></i> Download for Android
-                                    </a>
-                                </div>
-                                <div class="col-lg-6 order-1 order-lg-2 text-center">
-                                    <img src="/api/placeholder/300/200" alt="Cards interface" class="img-fluid">
-                                </div>
-                            </div>
+            <!-- Simplified Content for Mobile -->
+            <section id="features">
+                <h2>What Can Walkie Doggie Do?</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fa-solid fa-paw" style="color: #007378;"></i>
                         </div>
-
-                        <div class="tab-pane" id="tab-2">
-                            <div class="row">
-                                <div class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
-                                    <h3>Manage your bank info</h3>
-                                    <p>
-                                        Keep track of your bank accounts securely and access your financial details in one place.
-                                    </p>
-                                    <a href="#" class="download-btn">
-                                        <i class="fab fa-windows"></i> Download for Windows
-                                    </a>
-                                </div>
-                                <div class="col-lg-6 order-1 order-lg-2 text-center">
-                                    <img src="/api/placeholder/300/200" alt="Banks interface" class="img-fluid">
-                                </div>
-                            </div>
-                        </div>
+                        <div class="feature-title">GPS Walk Tracking</div>
+                        <p class="feature-description">Track routes, distance, and duration of every walk with your furry friend.</p>
                     </div>
 
-                    <div class="version-info">
-                        Latest Version: <span class="version-number">1.0.0</span>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="feature-title">Schedule Reminders</div>
+                        <p class="feature-description">Never miss a walk with customizable reminders and notifications.</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="feature-title">Walk Statistics</div>
+                        <p class="feature-description">Get insights into your dog's exercise patterns and health trends.</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-paw"></i>
+                        </div>
+                        <div class="feature-title">Multi-Pet Support</div>
+                        <p class="feature-description">Manage walking schedules for all your pets in one convenient app.</p>
                     </div>
                 </div>
             </section>
-        </section>
-
-        <section id="features">
-            <h2>What Can Walkie Doggie Do?</h2>
-            <div class="features-grid">
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fa-solid fa-paw" style="color: #007378;"></i>
-                    </div>
-                    <div class="feature-title">GPS Walk Tracking</div>
-                    <p class="feature-description">Track routes, distance, and duration of every walk with your furry friend.</p>
-                </div>
-
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <div class="feature-title">Schedule Reminders</div>
-                    <p class="feature-description">Never miss a walk with customizable reminders and notifications.</p>
-                </div>
-
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div class="feature-title">Walk Statistics</div>
-                    <p class="feature-description">Get insights into your dog's exercise patterns and health trends.</p>
-                </div>
-
-                <div class="feature-item">
-                    <div class="feature-icon">
-                        <i class="fas fa-paw"></i>
-                    </div>
-                    <div class="feature-title">Multi-Pet Support</div>
-                    <p class="feature-description">Manage walking schedules for all your pets in one convenient app.</p>
-                </div>
-            </div>
         </section>
 
         <section id="how-it-works" class="how-it-works">
