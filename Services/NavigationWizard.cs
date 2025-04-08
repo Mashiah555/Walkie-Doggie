@@ -1,8 +1,7 @@
-﻿using System.Diagnostics;
-using Walkie_Doggie.Pages;
+﻿using Walkie_Doggie.Pages;
 using Walkie_Doggie.Views;
 
-namespace Walkie_Doggie.Helpers;
+namespace Walkie_Doggie.Services;
 
 public static class NavigationWizard
 {

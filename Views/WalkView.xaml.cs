@@ -10,4 +10,11 @@ public partial class WalkView : ContentPage
 
         BindingContext = new WalkViewModel();
     }
+
+    public static TaskCompletionSource<bool>? CompletionSource;
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        CompletionSource?.TrySetResult(true);
+    }
 }

@@ -83,12 +83,20 @@ public partial class DogPage : ContentPage
     #region Button Click Events
     private async void ButtonWalk_Clicked(object sender, EventArgs e)
     {
+        WalkView.CompletionSource = new TaskCompletionSource<bool>();
         await Shell.Current.GoToAsync(nameof(WalkView), true);
+        await WalkView.CompletionSource.Task; // Holds position until WalkView is closed
+
+        InitializeLastWalkData();
     }
 
     private async void ButtonFeed_Clicked(object sender, EventArgs e)
     {
+        FeedView.CompletionSource = new TaskCompletionSource<bool>();
         await Shell.Current.GoToAsync(nameof(FeedView), true);
+        await FeedView.CompletionSource.Task; // Holds position until FeedView is closed
+
+        InitializeLastFeedData();
     }
 
     #endregion Button Click Events

@@ -10,4 +10,11 @@ public partial class FeedView : ContentPage
 
         BindingContext = new FeedViewModel();
     }
+
+    public static TaskCompletionSource<bool>? CompletionSource;
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        CompletionSource?.TrySetResult(true);
+    }
 }

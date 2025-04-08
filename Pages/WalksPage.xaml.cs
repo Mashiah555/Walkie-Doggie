@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Maui.Views;
 using Google.Cloud.Firestore;
 using System.Diagnostics;
-using Walkie_Doggie.Helpers;
+using Walkie_Doggie.Services;
 using Walkie_Doggie.Popups;
 using Walkie_Doggie.Views;
 using static Walkie_Doggie.Helpers.Converters;
@@ -16,7 +16,11 @@ public partial class WalksPage : ContentPage
 		InitializeComponent();
         _db = new FirebaseService();
 
+        // Initialize the app and check if the user is logged in,
+        // and if they have a dog registered.
+        // If not, navigate to the appropriate page.
         NavigationWizard.InitializeAppAsync();
+
         InitializeLastWalkData();
     } 
 

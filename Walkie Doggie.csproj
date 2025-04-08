@@ -96,9 +96,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Navigation.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Popups\UsersPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
