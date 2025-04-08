@@ -4,7 +4,7 @@ namespace Walkie_Doggie.Views;
 
 public partial class WalkView : ContentPage
 {
-    public WalkView()
+	public WalkView()
 	{
 		InitializeComponent();
 

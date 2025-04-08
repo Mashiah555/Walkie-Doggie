@@ -9,7 +9,6 @@ public class WalkViewModel : INotifyPropertyChanged
     private readonly FirebaseService _db;
 
     #region View Model Properties
-
     string signedUser;
     public string SignedUser
     {
@@ -93,17 +92,6 @@ public class WalkViewModel : INotifyPropertyChanged
         }
     }
 
-    int? walkId;
-    public int? WalkId
-    {
-        get => walkId;
-        private set
-        {
-            walkId = value;
-            OnPropertyChanged(nameof(WalkId));
-        }
-    }
-
     List<string> users;
     public List<string> Users
     {
@@ -127,7 +115,7 @@ public class WalkViewModel : INotifyPropertyChanged
     {
         _db = new FirebaseService();
 
-        walkId = -1;
+        signedUser = LocalService.GetUsername() ?? string.Empty;
         walkerName = string.Empty;
         walkDate = DateTime.Today;
         walkTime = DateTime.Now;
@@ -135,46 +123,33 @@ public class WalkViewModel : INotifyPropertyChanged
         isPayback = null;
         isPooped = true;
         notes = string.Empty;
+        users = new List<string> { signedUser };
 
-        try
-        {
-            signedUser = LocalService.GetUsername() ?? string.Empty;
-            WalkId = LocalService.GetWalk();
-            users = new List<string> { signedUser };
+        InitializeAsync();
 
-            InitializeAsync(WalkId);
-
-            PaybackCommand = new Command((_) => OpenUsersPopup(true));
-            FavorCommand = new Command((_) => OpenUsersPopup(false));
-            SaveCommand = new Command(SaveWalk);
-            CancelCommand = new Command(CloseView);
-        }
-        catch (Exception ex)
-        {
-            Application.Current!.MainPage!.DisplayAlert(
-                "WalkViewModel Error", "WalkViewModel failed to initialize: \n\n" +
-                ex.Message, "סגירה", FlowDirection.RightToLeft);
-        }
+        PaybackCommand = new Command((_) => OpenUsersPopup(true));
+        FavorCommand = new Command((_) => OpenUsersPopup(false));
+        SaveCommand = new Command(SaveWalk);
+        CancelCommand = new Command(CloseView);
     }
-
-    private async void InitializeAsync(int? id)
+    private async void InitializeAsync()
     {
         try
         {
             Users = await _db.GetAllUsernamesAsync();
 
-            if (id == null) return;
+            //if (id == null) return;
 
-            WalkModel? walk = await _db.GetWalkAsync(id);
-            if (walk == null) return;
+            //WalkModel? walk = await _db.GetWalkAsync(id);
+            //if (walk == null) return;
 
-            WalkerName = walk.WalkerName;
-            WalkDate = walk.WalkTime.ToDateTime().Date;
-            WalkTime = walk.WalkTime.ToDateTime().ToLocalTime();
-            InDebtName = walk.InDebtName;
-            IsPayback = walk.IsPayback;
-            IsPooped = walk.IsPooped;
-            Notes = walk.Notes ?? string.Empty;
+            //WalkerName = walk.WalkerName;
+            //WalkDate = walk.WalkTime.ToDateTime().Date;
+            //WalkTime = walk.WalkTime.ToDateTime().ToLocalTime();
+            //InDebtName = walk.InDebtName;
+            //IsPayback = walk.IsPayback;
+            //IsPooped = walk.IsPooped;
+            //Notes = walk.Notes ?? string.Empty;
         }
         catch (Exception ex)
         {
@@ -186,17 +161,6 @@ public class WalkViewModel : INotifyPropertyChanged
 
     private async void OpenUsersPopup(bool payback)
     {
-        //UsersSheet sheet = new((result) =>
-        //{
-        //    this.InDebtName = result;
-        //});
-        //sheet.Dismissed += (s, e) =>
-        //{
-        //    OnPropertyChanged(nameof(InDebtName));
-        //};
-        //await sheet.ShowAsync();
-        //await sheet.DismissAsync();
-
         string result = await MauiPopup.PopupAction.DisplayPopup(new UsersPopup());
         if (!string.IsNullOrEmpty(result))
         {
@@ -207,7 +171,7 @@ public class WalkViewModel : INotifyPropertyChanged
 
     public async void SaveWalk()
     {
-        await _db.AddWalkAsync(WalkerName, WalkTime, IsPooped, Notes, InDebtName, IsPayback);
+        await _db.AddWalkAsync(WalkerName, WalkTime, isPooped, Notes, inDebtName, IsPayback);
 
         await Shell.Current.GoToAsync("..", true);
     }

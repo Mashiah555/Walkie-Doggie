@@ -6,19 +6,15 @@
              xmlns:vm="clr-namespace:Walkie_Doggie.ViewModels"
              x:DataType="vm:WalkViewModel"
              FlowDirection="RightToLeft"
-             Title="שמירת פרטי טיול">
+             Title="WalkView">
     <ContentPage.BindingContext>
         <vm:WalkViewModel />
     </ContentPage.BindingContext>
-    
-    <VerticalStackLayout>
-        <!--<Label Text="שמירת פרטי טיול"
-               Style="{StaticResource Header}" 
-               Margin="10,20,4,3"/>-->
 
-        <Label Text="טיול מספר להגדיר"
+    <VerticalStackLayout>
+        <Label Text="טיול מספר # היום"
                Style="{StaticResource Context}"
-               Margin="12,-10,4,35"/>
+               Margin="12,-10,4,20"/>
 
         <Grid ColumnDefinitions="*,*">
 
@@ -37,18 +33,17 @@
             FloatingLabel="שם המטייל/ת"
             ItemsSource="{Binding Users}"
             SelectedItem="{Binding WalkerName}"
-            GroupName="Users2"
-            DefaultItem="{Binding SignedUser}"
-            Description="הטיול ישמר במערכת על שם המטייל/ת הנבחר/ת"/>
+            GroupName="UsersWalk"
+            DefaultItem="{Binding SignedUser}"/>
 
         <Label Style="{StaticResource SubHeader}" 
                Text="חובות וטובות"
                Margin="10,7,10,0"/>
-        
+
         <Border Style="{StaticResource RoundedBorder}"
                 Margin="5,0,5,20">
             <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,*">
-            
+
                 <Button Grid.Row="0" Grid.Column="0"
                         Text="החזרת חוב"
                         Style="{StaticResource Hollow}"
@@ -61,8 +56,7 @@
 
                 <Label Grid.Row="1" Grid.ColumnSpan="2"
                        Text="{Binding InDebtName, Mode=TwoWay}"
-                       Style="{StaticResource SubHeader}"
-                       IsVisible="{StaticResource ConvertToBoolKey}"/>
+                       Style="{StaticResource SubHeader}"/>
 
             </Grid>
         </Border>
@@ -75,19 +69,19 @@
         </StackLayout>
 
         <pack:EntryPack 
-            FloatingLabel="הערות"
-            Description="תיבה לכתיבת מידע נוסף לגבי הטיול"
-            Placeholder="פרטים על הטיול"
-            Text="{Binding Notes}"/>
+        FloatingLabel="הערות"
+        Description="תיבה לכתיבת מידע נוסף לגבי הטיול"
+        Placeholder="פרטים על הטיול"
+        Text="{Binding Notes}"/>
 
         <Button Text="שמירה"
-        Command="{Binding SaveCommand}"
-        Margin="10,20,10,0"/>
+            Command="{Binding SaveCommand}"
+            Margin="10,20,10,0"/>
 
         <Button Text="ביטול"
-                Style="{StaticResource Hollow}"
-                Command="{Binding CancelCommand}"
-                Margin="10"/>
+            Style="{StaticResource Hollow}"
+            Command="{Binding CancelCommand}"
+            Margin="10"/>
 
     </VerticalStackLayout>
 </ContentPage>

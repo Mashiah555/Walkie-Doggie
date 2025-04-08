@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Windows.Input;
-using Walkie_Doggie.Popups;
 
 namespace Walkie_Doggie.ViewModels;
 

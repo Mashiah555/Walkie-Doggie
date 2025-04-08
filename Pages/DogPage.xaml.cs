@@ -43,8 +43,8 @@ public partial class DogPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("InitializeLastWalkData", 
-                ex.Message, "סגירה", FlowDirection.RightToLeft);
+            //await DisplayAlert("InitializeLastWalkData", 
+            //    ex.Message, "סגירה", FlowDirection.RightToLeft);
         }
     }
 
@@ -74,8 +74,8 @@ public partial class DogPage : ContentPage
         }
         catch (Exception ex)
         {
-            await DisplayAlert("InitializeLastFeedData",
-                ex.Message, "סגירה", FlowDirection.RightToLeft);
+            //await DisplayAlert("InitializeLastFeedData",
+            //    ex.Message, "סגירה", FlowDirection.RightToLeft);
         }
     }
     #endregion Data Initialization
