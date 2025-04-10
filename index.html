@@ -4,310 +4,165 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Walkie Doggie</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/kTcN9gZV3ZT1Y8U4J+6pvhj8EVN5D/U3zkC4gJ9+1ddPjU6oIDuQ5Wy6EK1fW3Do0zZlHxjQ+j8kg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* Modern Reset */
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-
         body {
             margin: 0;
-            font-family: sans-serif;
-            line-height: 1.6;
-            background-color: #f4f4f4;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            padding-bottom: 0;
-        }
-
-        header {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #1e1e1e;
+            color: white;
             text-align: center;
-            margin-bottom: 30px;
         }
 
         h1 {
             color: #007378;
-            margin-bottom: 10px;
+            font-size: 2.5em;
+            margin-top: 20px;
         }
 
-        .github-link {
-            display: inline-block;
-            margin-top: 10px;
+        .paw-icon {
+            font-size: 3em;
+            color: #007378;
         }
 
-        .github-logo {
-            width: 32px;
-            height: 32px;
-            vertical-align: middle;
+        .tagline {
+            font-size: 1.2em;
+            margin: 10px auto 20px;
+            max-width: 90%;
         }
 
-        .download-section {
-            background-color: #fff;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+        .download-box {
+            border: 2px solid #007378;
+            margin: 20px auto;
+            width: 300px;
             padding: 20px;
-            margin-bottom: 30px;
-            text-align: center;
-            width: 90%; /* Responsive width */
-            max-width: 500px; /* Maximum width on larger screens */
         }
 
         .download-button {
             display: inline-block;
+            padding: 10px 20px;
             background-color: #007378;
             color: white;
-            padding: 15px 30px;
+            font-size: 1.2em;
             text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 10px 0;
+            border: 2px solid #007378;
         }
 
-            .download-button:hover {
-                background-color: #005a5e;
-            }
-
-        .version {
-            margin-top: 10px;
-            color: #777;
-            font-size: 0.9em;
+        .version-label {
+            color: gray;
+            margin-top: 5px;
         }
 
-        .features-section, .release-notes-section {
-            margin-bottom: 30px;
+        a.section-link, a.readme-link, a.issue-link {
+            color: #00aaff;
+            text-decoration: none;
+        }
+
+        section {
+            margin: 40px 20px;
+        }
+
+        .features-box {
+            border: 2px solid #007378;
+            margin: 15px auto;
             width: 90%;
-            max-width: 600px;
-        }
-
-            .features-section h2, .release-notes-section h2 {
-                color: #007378;
-                margin-bottom: 15px;
-                text-align: center;
-            }
-
-        .features-list {
-            list-style: none;
-            padding: 0;
-        }
-
-            .features-list li {
-                padding: 8px 0;
-                border-bottom: 1px solid #eee;
-            }
-
-                .features-list li:last-child {
-                    border-bottom: none;
-                }
-
-        .release-notes-section {
-            background-color: #fff;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            padding: 20px;
-        }
-
-        .release-notes-content {
+            max-width: 500px;
+            padding: 10px;
             text-align: left;
-            overflow-wrap: break-word;
         }
 
-            .release-notes-content h3 {
-                color: #007378;
-                margin-top: 0;
-            }
-
-        .loading-indicator {
-            text-align: center;
-            color: #777;
-            font-style: italic;
+        .release-notes {
+            border: 2px solid #007378;
+            padding: 10px;
+            margin: 10px auto;
+            width: 90%;
+            max-width: 500px;
+            background-color: #2b2b2b;
+            text-align: left;
+            white-space: pre-wrap;
         }
 
         footer {
-            text-align: center;
-            padding-top: 20px;
+            margin-top: 60px;
             padding-bottom: 20px;
-            background-color: #007378;
+        }
+
+        .footer-links a {
+            color: #00aaff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .social-icons a {
+            margin: 0 10px;
             color: white;
-            width: 100%;
-            margin-top: 20px;
+            font-size: 1.5em;
         }
 
         .copyright {
-            font-size: 0.8em;
-            margin-top: 15px;
-        }
-
-        .useful-links {
-            margin-bottom: 10px;
-        }
-
-            .useful-links h3 {
-                color: white;
-                margin-bottom: 10px;
-            }
-
-            .useful-links ul {
-                list-style: none;
-                padding: 0;
-            }
-
-            .useful-links li {
-                margin: 5px 0;
-                display: inline-block;
-                margin: 0 10px;
-            }
-
-            .useful-links a {
-                color: #00B;
-                text-decoration: none;
-            }
-
-                .useful-links a:hover {
-                    text-decoration: underline;
-                }
-
-        /* Responsive Design */
-        @media (min-width: 768px) {
-            .download-section {
-                padding: 30px;
-            }
-
-            .release-notes-section {
-                padding: 30px;
-            }
+            color: gray;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Walkie Doggie</h1>
-        <a href="https://github.com/Mashiah555/Walkie-Doggie" class="github-link" target="_blank" rel="noopener noreferrer">
-            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo" class="github-logo">
-            View on GitHub
-        </a>
-    </header>
+    <h1>Walkie Doggie</h1>
+    <div class="paw-icon">🐾</div>
+    <div class="tagline">
+        Log & track your dog’s activity effortlessly with live-sync across devices.
+    </div>
 
-    <section class="download-section">
-        <h2>Download the Latest Version</h2>
-        <a href="https://github.com/Mashiah555/Walkie-Doggie/releases/latest/download/Walkie-Doggie.apk" class="download-button">
-            Download for Android
-        </a>
-        <p class="version">Loading latest version...</p>
+    <div class="download-box">
+        <div style="font-size: 1.2em;">Download the Latest Version</div>
+        <a class="download-button" href="#">Download for Android</a>
+        <div class="version-label">Version: 1.1.0</div>
+        <div><a class="section-link" href="#whats-new">What's new on this version</a></div>
+    </div>
+
+    <section>
+        <h2>Overview</h2>
+        <p>
+            Walkie Doggie is an application for dog owner’s families to keep track of their dog’s status and activities of the family members.<br>
+            The app is supported on Android, iOS, and Windows using .NET MAUI for C# and XAML applications.<br>
+            It uses a cloud database to store all of the information in order to achieve instant cross-devices sync, with auto backup.
+            <a class="readme-link" href="https://github.com/YuvalMashiach/Walkie-Doggie#readme">Learn More</a>
+        </p>
     </section>
 
-    <section class="release-notes-section">
-        <h2>Latest Release Notes</h2>
-        <div class="release-notes-content">
-            <p class="loading-indicator">Loading release notes...</p>
+    <section>
+        <h2>Features</h2>
+        <div class="features-box">👤 Each family member has their own user space on the app</div>
+        <div class="features-box">📝 Log a walk or a feeding for your dog with all the necessary details.</div>
+        <div class="features-box">🔄 Instant syncing enables seemless update of content as a change is made, across devices.</div>
+        <div class="features-box">📊 Analize your dog's and other family members' activities using in-app statistics tab.</div>
+        <div class="features-box">✴️ Customize your experience to fit your will and needs using the built-in settings tab.</div>
+    </section>
+
+    <section id="whats-new">
+        <h2>What's New</h2>
+        <div class="release-notes">
+            - Added cross-device instant sync<br>
+            - Improved statistics tab<br>
+            - Bug fixes and performance improvements<br>
+            - Updated UI for all platforms<br>
+            - New feature: automatic backup
         </div>
-    </section>
-
-    <section class="features-section">
-        <h2>Key Features</h2>
-        <ul class="features-list">
-            <li>Feature 1: Description of the first key feature.</li>
-            <li>Feature 2: Explanation of the second important functionality.</li>
-            <li>Feature 3: Highlight another great aspect of your app.</li>
-        </ul>
     </section>
 
     <footer>
-        <div class="useful-links">
-            <h3>Walkie Doggie</h3>
-            <ul>
-                <li><a href="https://github.com/Mashiah555/Walkie-Doggie/issues" target="_blank" rel="noopener noreferrer">About</a></li>
-                <li><a href="https://github.com/Mashiah555/Walkie-Doggie/blob/main/README.md" target="_blank" rel="noopener noreferrer">Report an Issue</a></li>
-            </ul>
+        <div class="footer-links">
+            <a class="readme-link" href="https://github.com/YuvalMashiach/Walkie-Doggie#readme">About</a> |
+            <a class="issue-link" href="https://github.com/YuvalMashiach/Walkie-Doggie/issues">Report an Issue</a>
+        </div>
+        <div class="social-icons">
+            <a href="https://github.com/YuvalMashiach/Walkie-Doggie" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
         </div>
         <div class="copyright">
-            &copy; 2025 All Rights Reserved | by Yuval Mashiah
+            ©2025 Walkie Doggie | by Yuval Mashiah
         </div>
     </footer>
-
-    <script>
-        // Function to convert GitHub markdown to HTML (simplified version)
-        function convertMarkdownToHTML(markdown) {
-            if (!markdown) return '';
-
-            // Basic conversion for headers, lists, and paragraphs
-            let html = markdown
-                // Convert headers
-                .replace(/^### (.*$)/gim, '<h4>$1</h4>')
-                .replace(/^## (.*$)/gim, '<h3>$1</h3>')
-                .replace(/^# (.*$)/gim, '<h2>$1</h2>')
-                // Convert lists
-                .replace(/^\* (.*$)/gim, '<li>$1</li>')
-                .replace(/^- (.*$)/gim, '<li>$1</li>')
-                // Convert bold and italic
-                .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
-                .replace(/\*(.*)\*/gim, '<em>$1</em>')
-                // Convert links
-                .replace(/\[([^\]]+)\]\(([^)]+)\)/gim, '<a href="$2" target="_blank">$1</a>');
-
-            // Wrap lists in <ul> tags
-            html = html.replace(/<li>.*?<\/li>/gis, function(match) {
-                return '<ul>' + match + '</ul>';
-            });
-
-            // Fix any nested lists that might be created
-            html = html.replace(/<\/ul>\s*<ul>/g, '');
-
-            // Add paragraph tags to text blocks
-            const blocks = html.split(/\n\n+/);
-            html = '';
-
-            for (let block of blocks) {
-                if (!block.trim()) continue;
-                if (block.startsWith('<h') || block.startsWith('<ul>') || block.startsWith('<li>')) {
-                    html += block + '\n';
-                } else {
-                    html += '<p>' + block + '</p>\n';
-                }
-            }
-
-            return html;
-        }
-
-        // Function to fetch the latest release information from GitHub API
-        async function fetchLatestRelease() {
-            try {
-                const response = await fetch('https://api.github.com/repos/Mashiah555/Walkie-Doggie/releases/latest');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch release data');
-                }
-                const data = await response.json();
-
-                // Update the version text
-                document.querySelector('.version').textContent = `Version: ${data.tag_name || 'Latest'}`;
-
-                // Update the release notes
-                const releaseNotesContent = document.querySelector('.release-notes-content');
-
-                if (data.body) {
-                    // Create release notes header with version and date
-                    const releaseDate = new Date(data.published_at).toLocaleDateString();
-                    const releaseTitle = `<h3>${data.name || data.tag_name} - Released on ${releaseDate}</h3>`;
-
-                    // Convert markdown to HTML and add to the page
-                    const notesHtml = convertMarkdownToHTML(data.body);
-                    releaseNotesContent.innerHTML = releaseTitle + notesHtml;
-                } else {
-                    releaseNotesContent.innerHTML = '<p>No detailed release notes available for this version.</p>';
-                }
-            } catch (error) {
-                console.error('Error fetching release data:', error);
-                document.querySelector('.version').textContent = 'Version: Latest';
-                document.querySelector('.release-notes-content').innerHTML =
-                    '<p>Could not load release notes. Please check the <a href="https://github.com/Mashiah555/Walkie-Doggie/releases" target="_blank">GitHub releases page</a> for details.</p>';
-            }
-        }
-
-        // Call the function when the page loads
-        window.addEventListener('DOMContentLoaded', fetchLatestRelease);
-    </script>
 </body>
 </html>
