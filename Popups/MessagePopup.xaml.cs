@@ -7,9 +7,10 @@ public partial class MessagePopup : BasePopupPage
 	public MessagePopup(
         string header, string msg, 
         ContextImage image = ContextImage.None, 
-        ButtonSet buttons = ButtonSet.Ok, string? special = null)
+        ButtonSet buttons = ButtonSet.Ok, string? custom = null)
 	{
 		InitializeComponent();
+        
 	}
 }
 
@@ -26,6 +27,7 @@ public enum ContextImage
 
 public enum ButtonSet
 {
+    None,
     Ok,
     Close,
     YesNo,

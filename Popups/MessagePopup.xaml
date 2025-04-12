@@ -6,7 +6,7 @@
     xmlns:popup="clr-namespace:MauiPopup.Views;assembly=MauiPopup"
     xmlns:pack="clr-namespace:Walkie_Doggie.PacksKit"
     BackgroundColor="Transparent"
-    IsCloseOnBackgroundClick="True"
+    IsCloseOnBackgroundClick="False"
     ForegroundColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray800}}"
     VerticalOptions="End"
     HorizontalOptions="Fill"

@@ -4,6 +4,8 @@ using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
 using Walkie_Doggie.Helpers;
 using Microsoft.Maui.Networking;
+using Walkie_Doggie.Popups;
+using CommunityToolkit.Maui.Views;
 
 public class FirebaseService
 {
@@ -24,14 +26,18 @@ public class FirebaseService
         }
     }
 
-    private static bool IsConnected()
+    private async static Task<bool> NetworkCheck()
     {
-        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
-        {
-            Shell.Current?.GoToAsync(nameof(MessagePopup), true);
-            return false;
-        }
-        return true;
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            return true;
+
+        await MauiPopup.PopupAction.DisplayPopup(new MessagePopup(
+            "אין חיבור",
+            "נדרש חיבור לאינטרנט על מנת להשתמש באפליקציה",
+            ContextImage.NoInternet,
+            ButtonSet.None));
+
+        return false;
     }
 
 
@@ -62,6 +68,8 @@ public class FirebaseService
     // ➤ Add a User to Firestore
     public async Task AddUserAsync(string name)
     {
+        if (!await NetworkCheck()) return;
+
         await _firestoreDb!
             .Collection(UsersCollection)
             .Document(name)
@@ -76,6 +84,8 @@ public class FirebaseService
     // ➤ Update a User in Firestore
     public async Task UpdateUserAsync(string name, AppTheme appTheme)
     {
+        if (!await NetworkCheck()) return;
+
         await _firestoreDb!
             .Collection(UsersCollection)
             .Document(name)
@@ -85,7 +95,10 @@ public class FirebaseService
     // ➤ Get All Users from Firestore
     public async Task<List<UserModel>> GetAllUsersAsync()
     {
-        var users = new List<UserModel>();
+        List<UserModel> users = new();
+
+        if (!await NetworkCheck()) return users;
+
         QuerySnapshot snapshot = await GetUsersSnapshot();
 
         foreach (var doc in snapshot.Documents)
@@ -97,7 +110,10 @@ public class FirebaseService
     // ➤ Get All Usernames from Firestore
     public async Task<List<String>> GetAllUsernamesAsync()
     {
-        var users = new List<String>();
+        List<String> users = new();
+
+        if (!await NetworkCheck()) return users;
+
         QuerySnapshot snapshot = await GetUsersSnapshot();
 
         foreach (var doc in snapshot.Documents)
@@ -107,8 +123,10 @@ public class FirebaseService
     }
 
     // ➤ Searches for a User in Firestore
-    public async Task<bool> HasUserAsync(string name)
+    public async Task<bool?> HasUserAsync(string name)
     {
+        if (!await NetworkCheck()) return null;
+
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(UsersCollection)
             .WhereEqualTo("Name", name)
@@ -120,6 +138,8 @@ public class FirebaseService
 
     public async Task<UserModel?> GetUserAsync(string name)
     {
+        if (!await NetworkCheck()) return null;
+
         var userSnapshot = await GetUserReference(name).GetSnapshotAsync();
 
         if (userSnapshot.Exists)
@@ -129,6 +149,8 @@ public class FirebaseService
 
     private async Task IncrementTotalWalks(string name)
     {
+        if (!await NetworkCheck()) return;
+
         var userRef = GetUserReference(name);
         var userSnapshot = await userRef.GetSnapshotAsync();
 
@@ -142,6 +164,12 @@ public class FirebaseService
 
     private DocumentReference GetUserReference(string name)
     {
+        //WARNING! Notice:
+        //This method should only be called after verifying a secure
+        //connection to the database, as it does not check for network access.
+        //In order to use this method, be sure to first call NetworkCheck(),
+        //as it is awaited unlike this method.
+
         return _firestoreDb!
             .Collection(UsersCollection)
             .Document(name);
@@ -149,6 +177,12 @@ public class FirebaseService
 
     private async Task<QuerySnapshot> GetUsersSnapshot()
     {
+        //WARNING! Notice:
+        //This method should only be called after verifying a secure
+        //connection to the database, as it does not check for network access.
+        //In order to use this method, be sure to first call NetworkCheck(),
+        //as it is unnecessary to call in here again.
+
         return await _firestoreDb!
             .Collection(UsersCollection)
             .GetSnapshotAsync();
@@ -162,7 +196,10 @@ public class FirebaseService
     public async Task AddWalkAsync(string walkerName, DateTime walkTime, bool isPooped,
         string? notes = null, string? inDebtName = null, bool? isPayback = false)
     {
+        if (!await NetworkCheck()) return;
+
         int walkId = await GetWalksIdAsync(true);
+
         await _firestoreDb!
             .Collection(WalksCollection)
             .Document(walkId.ToString())
@@ -187,6 +224,8 @@ public class FirebaseService
         if (walkId == null)
             return null;
 
+        if (!await NetworkCheck()) return null;
+
         DocumentSnapshot snapshot = await _firestoreDb!
             .Collection(WalksCollection)
             .Document(walkId!.ToString())
@@ -200,6 +239,8 @@ public class FirebaseService
     // ➤ Get the last walk from Firestore
     public async Task<WalkModel> GetLastWalkAsync(string? username = null)
     {
+        if (!await NetworkCheck()) throw new Exception();
+
         Query query = _firestoreDb!
             .Collection(WalksCollection)
             .OrderByDescending("WalkTime");
@@ -217,7 +258,10 @@ public class FirebaseService
     // ➤ Get All Walks from Firestore
     public async Task<List<WalkModel>> GetAllWalksAsync()
     {
-        var walks = new List<WalkModel>();
+        List<WalkModel> walks = new();
+
+        if (!await NetworkCheck()) return walks;
+
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(WalksCollection)
             .OrderBy("WalkTime")
@@ -234,6 +278,8 @@ public class FirebaseService
     // ➤ Add a Feed Record
     public async Task AddFeedAsync(string feederName, DateTime feedTime, int feedAmount, string? notes)
     {
+        if (!await NetworkCheck()) return;
+
         await _firestoreDb!
             .Collection(FeedsCollection)
             .Document($"{feederName}_{feedTime:ddMMyyyy_HHmmss}")
@@ -249,6 +295,8 @@ public class FirebaseService
     // ➤ Get the last walk from Firestore
     public async Task<FeedModel> GetLastFeedAsync()
     {
+        if (!await NetworkCheck()) throw new Exception();
+
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(FeedsCollection)
             .OrderByDescending("FeedTime")
@@ -263,7 +311,10 @@ public class FirebaseService
     // ➤ Get All Walks from Firestore
     public async Task<List<FeedModel>> GetAllFeedsAsync()
     {
-        var feeds = new List<FeedModel>();
+        List<FeedModel> feeds = new();
+
+        if (!await NetworkCheck()) return feeds;
+
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(FeedsCollection)
             .OrderBy("FeedTime")
@@ -280,6 +331,12 @@ public class FirebaseService
     public async Task<bool> AddDogAsync(string name, DateTime birthdate, string breed, 
         double weight, int feedAmount)
     {
+        //WARNING! Notice:
+        //This method should only be called when verifying a secure
+        //connection to the database, as it does not check for network access.
+        //In order to user this method, make sure it first calls HasDog(),
+        //as it contains a check for network unlike this method.
+
         if (await HasDog())
             return false;
 
@@ -310,6 +367,8 @@ public class FirebaseService
     public async Task<bool> UpdateDogAsync(DateTime birthdate, string breed,
         double weight, int feedAmount)
     {
+        if (!await NetworkCheck()) return false;
+
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(DogsCollection)
             .Limit(1)
@@ -330,6 +389,8 @@ public class FirebaseService
     // ➤ Get the last dog from Firestore
     public async Task<DogModel> GetDogAsync()
     {
+        if (!await NetworkCheck()) throw new Exception();
+
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(DogsCollection)
             .Limit(1)
@@ -342,10 +403,13 @@ public class FirebaseService
 
     public async Task<bool> HasDog()
     {
+        if (!await NetworkCheck()) return false;
+
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(DogsCollection)
             .Limit(1)
             .GetSnapshotAsync();
+
         return snapshot.Documents.Count > 0;
     }
 
@@ -353,6 +417,8 @@ public class FirebaseService
     // Throws an exception if there are no dogs saved in the database.
     public async Task<int> GetWalksIdAsync(bool increment = false)
     {
+        if (!await NetworkCheck()) throw new Exception();
+
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(DogsCollection)
             .Limit(1)
