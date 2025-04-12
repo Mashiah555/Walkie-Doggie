@@ -1,5 +1,6 @@
 using MauiPopup;
 using MauiPopup.Views;
+using Walkie_Doggie.Helpers;
 using System.ComponentModel;
 using System.Windows.Input;
 using static Microsoft.Maui.ApplicationModel.Permissions;
@@ -17,15 +18,26 @@ public partial class MessagePopup : BasePopupPage
         ButtonSet buttons = ButtonSet.Ok, string? custom = null)
 	{
 		InitializeComponent();
+        NavigationFlags.IsMessagePopedUp = true;
 
         string? imagePath = image == ContextImage.None ? null :
-            "../Context/" + image.ToString() + ".png";
+            "Context/" + image.ToString().ToLower() + ".png";
 
         if (buttons == ButtonSet.NoneAndForce)
             IsCloseOnBackgroundClick = false;
 
         ViewModel = new MessageViewModel(header, msg, imagePath, buttons, custom);
         BindingContext = ViewModel;
+    }
+
+    private void MessagePopup_Closing(object sender, EventArgs e)
+    {
+        NavigationFlags.IsMessagePopedUp = false;
+    }
+
+    private void MessagePopup_Opening(object sender, EventArgs e)
+    {
+        //NavigationFlags.IsMessagePopedUp = true;
     }
 }
 
@@ -34,7 +46,7 @@ internal class MessageViewModel
     #region View Model Properties
     public string Header { get; set; }
     public string Message { get; set; }
-    public string ImagePath { get; set; }
+    public ImageSource ImagePath { get; set; }
     public string CustomButton { get; set; } = string.Empty;
     #endregion View Model Properties
 
@@ -62,7 +74,7 @@ internal class MessageViewModel
     {
         Header = header;
         Message = msg;
-        ImagePath = path ?? string.Empty;
+        ImagePath = ImageSource.FromFile(path ?? string.Empty);
         CustomButton = custom ?? string.Empty;
 
         YesCommand = new Command(() => PopupAction.ClosePopup(MessageResult.Yes));

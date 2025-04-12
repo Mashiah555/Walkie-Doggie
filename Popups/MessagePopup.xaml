@@ -7,11 +7,15 @@
     xmlns:pack="clr-namespace:Walkie_Doggie.PacksKit"
     BackgroundColor="Transparent"
     IsCloseOnBackgroundClick="True"
-    ForegroundColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray800}}"
+    ForegroundColor="{AppThemeBinding Light={StaticResource Gray700}, Dark={StaticResource Gray600}}"
     VerticalOptions="Center"
-    HorizontalOptions="Center">
+    HorizontalOptions="Center"
+    Disappearing="MessagePopup_Closing"
+    Appearing="MessagePopup_Opening"
+    Margin="10">
 
-    <VerticalStackLayout Spacing="10">
+    <VerticalStackLayout
+        Spacing="10" Padding="10">
         
         <Label Text="{Binding Header}"
                Style="{StaticResource Context}"

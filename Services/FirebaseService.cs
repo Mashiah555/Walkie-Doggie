@@ -6,6 +6,8 @@ using Walkie_Doggie.Helpers;
 using Microsoft.Maui.Networking;
 using Walkie_Doggie.Popups;
 using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
 
 public class FirebaseService
 {
@@ -31,13 +33,27 @@ public class FirebaseService
         if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             return true;
 
-        await MauiPopup.PopupAction.DisplayPopup(new MessagePopup(
-            "אין חיבור",
-            "נדרש חיבור לאינטרנט על מנת להשתמש באפליקציה",
-            ContextImage.NoInternet,
-            ButtonSet.None));
+        if (!NavigationFlags.IsMessagePopedUp)
+        {
+            await MauiPopup.PopupAction.DisplayPopup(new MessagePopup(
+                "אין חיבור",
+                "נדרש חיבור לאינטרנט על מנת להשתמש באפליקציה",
+                ContextImage.NoInternet,
+                ButtonSet.NoneAndForce));
+        }
 
-        return false;
+        while (true)
+        {
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                await MauiPopup.PopupAction.ClosePopup();
+                await Toast.Make("מחובר לאינטרנט", ToastDuration.Short).Show();
+                return true;
+            }
+            await Task.Delay(1000);
+        }
+
+        //return false;
     }
 
 
@@ -123,9 +139,9 @@ public class FirebaseService
     }
 
     // ➤ Searches for a User in Firestore
-    public async Task<bool?> HasUserAsync(string name)
+    public async Task<bool> HasUserAsync(string name)
     {
-        if (!await NetworkCheck()) return null;
+        if (!await NetworkCheck()) return false;
 
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(UsersCollection)

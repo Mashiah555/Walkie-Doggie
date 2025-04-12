@@ -63,6 +63,16 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\AppIcon\newappicon.png" />
+	  <None Remove="Resources\Images\Context\Blocked.png" />
+	  <None Remove="Resources\Images\Context\Confirmation.png" />
+	  <None Remove="Resources\Images\Context\Error.png" />
+	  <None Remove="Resources\Images\Context\Exclamation.png" />
+	  <None Remove="Resources\Images\Context\Info.png" />
+	  <None Remove="Resources\Images\Context\NoInternet.png" />
+	  <None Remove="Resources\Images\Context\NotFound.png" />
+	  <None Remove="Resources\Images\Context\Notification.png" />
+	  <None Remove="Resources\Images\Context\Question.png" />
+	  <None Remove="Resources\Images\Context\Warning.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -72,6 +82,39 @@
 
 	<ItemGroup>
 	  <MauiIcon Include="Resources\AppIcon\newappicon.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\Images\Context\blocked.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </MauiImage>
+	  <MauiImage Include="Resources\Images\Context\confirmation.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </MauiImage>
+	  <MauiImage Include="Resources\Images\Context\error.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </MauiImage>
+	  <MauiImage Include="Resources\Images\Context\exclamation.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </MauiImage>
+	  <MauiImage Include="Resources\Images\Context\info.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </MauiImage>
+	  <MauiImage Include="Resources\Images\Context\nointernet.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </MauiImage>
+	  <MauiImage Include="Resources\Images\Context\notfound.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </MauiImage>
+	  <MauiImage Include="Resources\Images\Context\notification.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </MauiImage>
+	  <MauiImage Include="Resources\Images\Context\question.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </MauiImage>
+	  <MauiImage Include="Resources\Images\Context\warning.png">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </MauiImage>
 	</ItemGroup>
 
 	<ItemGroup>

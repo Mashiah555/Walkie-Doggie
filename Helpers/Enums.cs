@@ -8,14 +8,4 @@ public static class Enums
         Favor,
         Payback
     }
-
-    public enum MessageButton
-    {
-        OK,
-        Close,
-        Cancel,
-        Confirm,
-        Yes,
-        No
-    }
 }
