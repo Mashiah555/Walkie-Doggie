@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
 using Walkie_Doggie.Helpers;
+using Microsoft.Maui.Networking;
 
 public class FirebaseService
 {
@@ -22,6 +23,17 @@ public class FirebaseService
             _firestoreDb = Authenticate();
         }
     }
+
+    private static bool IsConnected()
+    {
+        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+        {
+            Shell.Current?.GoToAsync(nameof(MessagePopup), true);
+            return false;
+        }
+        return true;
+    }
+
 
     private FirestoreDb Authenticate()
     {

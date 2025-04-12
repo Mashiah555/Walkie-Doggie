@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<popup:BasePopupPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Walkie_Doggie.Popups.MessagePopup"
+    xmlns:popup="clr-namespace:MauiPopup.Views;assembly=MauiPopup"
+    xmlns:pack="clr-namespace:Walkie_Doggie.PacksKit"
+    BackgroundColor="Transparent"
+    IsCloseOnBackgroundClick="True"
+    ForegroundColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray800}}"
+    VerticalOptions="End"
+    HorizontalOptions="Fill"
+    Padding="0">
+    
+    <VerticalStackLayout>
+        <Label 
+            Text="Welcome to .NET MAUI!"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        
+    </VerticalStackLayout>
+</popup:BasePopupPage>
