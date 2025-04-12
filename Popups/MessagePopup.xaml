@@ -6,17 +6,65 @@
     xmlns:popup="clr-namespace:MauiPopup.Views;assembly=MauiPopup"
     xmlns:pack="clr-namespace:Walkie_Doggie.PacksKit"
     BackgroundColor="Transparent"
-    IsCloseOnBackgroundClick="False"
+    IsCloseOnBackgroundClick="True"
     ForegroundColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray800}}"
-    VerticalOptions="End"
-    HorizontalOptions="Fill"
-    Padding="0">
-    
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    VerticalOptions="Center"
+    HorizontalOptions="Center">
+
+    <VerticalStackLayout Spacing="10">
         
+        <Label Text="{Binding Header}"
+               Style="{StaticResource Context}"
+               VerticalOptions="Center" 
+               HorizontalOptions="Start" />
+
+        <Image Source="{Binding ImagePath}"
+               HeightRequest="75"
+               WidthRequest="75"
+               IsVisible="{Binding ImagePath, Converter={StaticResource ConvertToBoolKey}}"/>
+
+        <Label Text="{Binding Message}"
+               VerticalOptions="Center" 
+               HorizontalOptions="Start" />
+
+        <StackLayout Orientation="Horizontal"
+                     Margin="0,0,0,10">
+
+            <Button Text="אישור"
+                    Command="{Binding OkCommand}"
+                    IsVisible="{Binding OkVisible}"
+                    WidthRequest="100"/>
+            
+            <Button Text="אישור"
+                    Command="{Binding ConfirmCommand}"
+                    IsVisible="{Binding ConfirmVisible}"
+                    WidthRequest="100"/>
+
+            <Button Text="כן"
+                    Command="{Binding YesCommand}"
+                    IsVisible="{Binding YesVisible}"
+                    WidthRequest="100"/>
+
+            <Button Text="לא"
+                    Command="{Binding NoCommand}"
+                    IsVisible="{Binding NoVisible}"
+                    WidthRequest="100"/>
+
+            <Button Text="ביטול"
+                    Command="{Binding CancelCommand}"
+                    IsVisible="{Binding CancelVisible}"
+                    WidthRequest="100"/>
+
+            <Button Text="סגירה"
+                    Command="{Binding CloseCommand}"
+                    IsVisible="{Binding CloseVisible}"
+                    WidthRequest="100"/>
+
+            <Button Text="{Binding CustomButton}"
+                    Command="{Binding CustomCommand}"
+                    IsVisible="{Binding CustomVisible}"
+                    WidthRequest="100"/>
+
+        </StackLayout>
     </VerticalStackLayout>
 </popup:BasePopupPage>
