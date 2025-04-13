@@ -12,11 +12,26 @@ public partial class DogPage : ContentPage
         InitializeComponent();
         _db = new FirebaseService();
 
+        InitializeDogData();
         InitializeLastWalkData();
         InitializeLastFeedData();
     }
 
     #region Data Initialization
+    private async void InitializeDogData()
+    {
+        try
+        {
+            DogModel dog = await _db.GetDogAsync();
+            DogNameLabel.Text = dog.DogName;
+        }
+        catch (Exception ex)
+        {
+            //await DisplayAlert("InitializeDogData", 
+            //    ex.Message, "סגירה", FlowDirection.RightToLeft);
+        }
+    }
+
     private async void InitializeLastWalkData()
     {
         try
@@ -97,6 +112,11 @@ public partial class DogPage : ContentPage
         await FeedView.CompletionSource.Task; // Holds position until FeedView is closed
 
         InitializeLastFeedData();
+    }
+
+    private async void EditDogButton_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(DogView), true);
     }
 
     #endregion Button Click Events

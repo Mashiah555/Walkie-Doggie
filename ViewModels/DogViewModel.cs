@@ -81,7 +81,9 @@ public class DogViewModel : INotifyPropertyChanged
     }
     #endregion View Model Properties
 
+    #region View Model Commands
     public ICommand SaveCommand { get; }
+    #endregion View Model Commands
 
     public DogViewModel()
     {
