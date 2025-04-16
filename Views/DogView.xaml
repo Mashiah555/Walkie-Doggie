@@ -14,17 +14,18 @@
         <BackButtonBehavior IsEnabled="False" />
     </Shell.BackButtonBehavior>
 
-    <StackLayout>
-        
-        <!--<Label Text="פרטי חיית המחמד"
+    <ScrollView>
+        <StackLayout>
+
+            <!--<Label Text="פרטי חיית המחמד"
                Style="{StaticResource Header}" 
                Margin="10,-20,4,3"/>-->
 
-        <Label Text="יש להגדיר את פרטי חיית המחמד לפני הגישה ליישומון"
+            <Label Text="יש להגדיר את פרטי חיית המחמד לפני הגישה ליישומון"
                Style="{StaticResource Context}"
                Margin="12,-15,4,35"/>
 
-        <pack:EntryPack 
+            <pack:EntryPack 
             Text="{Binding DogName}"
             Placeholder="שם הכלב"
             FloatingLabel="שם חיית המחמד"
@@ -32,13 +33,13 @@
             ImageSource="{AppThemeBinding Light=dog_light, Dark=dog_dark}"
             IsEnabled="{Binding HasDog, Converter={StaticResource ConvertToBoolKey}}"/>
 
-        <pack:DatePickerPack 
+            <pack:DatePickerPack 
             Date="{Binding DogBirthdate}"
             FloatingLabel="תאריך לידה"
             Description="גיל חיית המחמד יחושב על פי תאריך הלידה"
             ImageSource="{AppThemeBinding Light=calendar_light, Dark=calendar_dark}"/>
 
-        <pack:PickerPack 
+            <pack:PickerPack 
             SelectedItem="{Binding DogBreed}"
             ItemsSource="{Binding DogBreeds}"
             PickerTitle="בחר/י את סוג הגזע"
@@ -46,17 +47,17 @@
             Mandatory="True"
             ImageSource="{AppThemeBinding Light=arrow-light, Dark=arrow_dark}"/>
 
-        <!--Weight Slider-->
-        <StackLayout Spacing="0" Margin="0,5">
+            <!--Weight Slider-->
+            <StackLayout Spacing="0" Margin="0,5">
 
-            <Label Style="{StaticResource SubHeader}"
+                <Label Style="{StaticResource SubHeader}"
                    Text="משקל"/>
-            
-            <Slider Value="{Binding DogWeight}"
+
+                <Slider Value="{Binding DogWeight}"
                     Minimum="1.5" Maximum="70"
                     Margin="5,-2"/>
 
-            <Label Style="{StaticResource Context}"
+                <Label Style="{StaticResource Context}"
                    Text="{Binding DogWeight, 
                           Converter={StaticResource ConvertToRoundedStringKey}, 
                           StringFormat='{}{0} ק&quot;ג'}"
@@ -64,19 +65,19 @@
                    HorizontalOptions="End"
                    Margin="0,-7,40,10"/>
 
-        </StackLayout>
+            </StackLayout>
 
-        <!--Feed Slider-->
-        <StackLayout Spacing="0" Margin="0,5">
+            <!--Feed Slider-->
+            <StackLayout Spacing="0" Margin="0,5">
 
-            <Label Style="{StaticResource SubHeader}"
+                <Label Style="{StaticResource SubHeader}"
                    Text="ברירת מחדל לארוחה"/>
 
-            <Slider Value="{Binding DefaultFeedAmount}"
+                <Slider Value="{Binding DefaultFeedAmount}"
                     Minimum="5" Maximum="250"
                     Margin="5,-2"/>
 
-            <Label Style="{StaticResource Context}"
+                <Label Style="{StaticResource Context}"
                    Text="{Binding DefaultFeedAmount, 
                           Converter={StaticResource ConvertToRoundedStringKey}, 
                           StringFormat='{}{0} גרם'}"
@@ -84,12 +85,13 @@
                    HorizontalOptions="End"
                    Margin="0,-7,40,10"/>
 
-        </StackLayout>
+            </StackLayout>
 
-        <Button Text="שמירה"
+            <Button Text="שמירה"
                 Command="{Binding SaveCommand}"
                 Margin="10,20">
-        </Button>
+            </Button>
 
-    </StackLayout>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

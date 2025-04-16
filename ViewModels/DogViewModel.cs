@@ -74,11 +74,6 @@ public class DogViewModel : INotifyPropertyChanged
         get => dogBreeds;
     }
 
-    bool hasDog;
-    public bool HasDog
-    {
-        get => hasDog;
-    }
     #endregion View Model Properties
 
     #region View Model Commands
@@ -91,13 +86,13 @@ public class DogViewModel : INotifyPropertyChanged
 
         dogBreeds = new ObservableCollection<string>
         {
-            "איילירלנד", "אלסקן מלמוט", "בולדוג צרפתי", "ביגל", "בורדר קולי", "בוקסר",
-            "בישון פריזה", "דוברמן", "דלמטי", "האסקי סיבירי", "הרועה הגרמני", "וויפט",
-            "טרייר סקוטי", "לברדור רטריבר", "מלטז", "פודל", "פקינז", "פומרניאן", "פיטבול",
-            "פינצ'ר", "צ'יוואווה", "קוקר ספניאל", "רועה בלגי", "רועה שווייצרי",
+            "איילירלנד", "אלסקן מלמוט", "בולדוג", "ביגל", "בורדר קולי", "בוקסר",
+            "בישון פריזה", "דוברמן", "דלמטי", "האסקי סיבירי", "וויפט", "טרייר סקוטי", 
+            "לברדור רטריבר", "מלטז", "פודל", "פקינז", "פומרניאן", "פיטבול","פינצ'ר", 
+            "צ'יוואווה", "קוקר ספניאל", "רועה בלגי", "רועה גרמני", "רועה שווייצרי",
             "רוטוויילר", "רידג'בק רודזי", "שיצו", "שנאוצר"
-        };
-        dogBreeds = dogBreeds.Order().ToObservableCollection();
+        }
+        .Order().ToObservableCollection();
 
         dogName = string.Empty;
         dogBreed = string.Empty;
@@ -109,24 +104,23 @@ public class DogViewModel : INotifyPropertyChanged
     {
         try
         {
-            hasDog = await _db.HasDog();
-            if (hasDog)
+            if (await _db.HasDog())
             {
                 DogModel dog = await _db.GetDogAsync();
 
-                dogName = dog.DogName;
-                dogBirthdate = dog.DogBirthdate.ToDateTime();
-                dogBreed = dog.DogBreed;
-                dogWeight = dog.DogWeight;
-                defaultFeedAmount = dog.DefaultFeedAmount;
+                DogName = dog.DogName;
+                DogBirthdate = dog.DogBirthdate.ToDateTime();
+                DogBreed = dog.DogBreed;
+                DogWeight = dog.DogWeight;
+                DefaultFeedAmount = dog.DefaultFeedAmount;
             }
             else
             {
-                dogName = string.Empty;
-                dogBirthdate = DateTime.Today;
-                dogBreed = string.Empty;
-                dogWeight = 8;
-                defaultFeedAmount = 75;
+                DogName = string.Empty;
+                DogBirthdate = DateTime.Today;
+                DogBreed = string.Empty;
+                DogWeight = 8;
+                DefaultFeedAmount = 75;
             }
         }
         catch (Exception ex)
