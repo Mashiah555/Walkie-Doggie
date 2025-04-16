@@ -1,11 +1,12 @@
 # **Walkie Doggie**
 
-**Walkie Doggie** is a mobile application that allows users to log and manage their pet dog activities, synced automatically across devices.
+***Walkie Doggie*** is a mobile application that allows users to log and manage their pet dog activities, synced automatically across devices.
     The application is built using .NET MAUI, a cross-platform framework that enables developers to create native applications for Android, iOS, and Windows using C# and XAML.
 
 ## Installation
 
-**Latest Release:** Version 1.0.0 - Beta Release Candidate
+**Latest Release:** Version 1.1.1
+Click Here to download the application for Android devices
 
 ## Database Service
 
