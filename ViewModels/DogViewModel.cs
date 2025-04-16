@@ -74,6 +74,17 @@ public class DogViewModel : INotifyPropertyChanged
         get => dogBreeds;
     }
 
+    bool hasDog;
+    public bool HasDog
+    {
+        get => hasDog;
+        set
+        {
+            hasDog = value;
+            OnPropertyChanged(nameof(HasDog));
+        }
+    }
+
     #endregion View Model Properties
 
     #region View Model Commands
@@ -96,6 +107,7 @@ public class DogViewModel : INotifyPropertyChanged
 
         dogName = string.Empty;
         dogBreed = string.Empty;
+        hasDog = false;
         InitializeAsync();
 
         SaveCommand = new Command(SaveClick);
@@ -108,6 +120,7 @@ public class DogViewModel : INotifyPropertyChanged
             {
                 DogModel dog = await _db.GetDogAsync();
 
+                HasDog = true;
                 DogName = dog.DogName;
                 DogBirthdate = dog.DogBirthdate.ToDateTime();
                 DogBreed = dog.DogBreed;
