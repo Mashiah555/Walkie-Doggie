@@ -37,8 +37,8 @@ public class WalkViewModel : INotifyPropertyChanged
         }
     }
 
-    DateTime walkTime;
-    public DateTime WalkTime
+    TimeSpan walkTime;
+    public TimeSpan WalkTime
     {
         get => walkTime;
         set
@@ -118,7 +118,7 @@ public class WalkViewModel : INotifyPropertyChanged
         signedUser = LocalService.GetUsername() ?? string.Empty;
         walkerName = string.Empty;
         walkDate = DateTime.Today;
-        walkTime = DateTime.Now;
+        walkTime = DateTime.Now.TimeOfDay;
         inDebtName = null;
         isPayback = null;
         isPooped = true;
@@ -171,7 +171,12 @@ public class WalkViewModel : INotifyPropertyChanged
 
     public async void SaveWalk()
     {
-        await _db.AddWalkAsync(WalkerName, WalkTime, isPooped, Notes, inDebtName, IsPayback);
+        DateTime fullTime = WalkDate.Date + WalkTime;
+        await _db.AddWalkAsync(
+            WalkerName, 
+            fullTime, 
+            isPooped, Notes, 
+            inDebtName, IsPayback);
 
         await Shell.Current.GoToAsync("..", true);
     }

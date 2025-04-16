@@ -11,77 +11,79 @@
         <vm:WalkViewModel />
     </ContentPage.BindingContext>
 
-    <VerticalStackLayout>
-        <Label Text="טיול מספר # היום"
+    <ScrollView>
+        <VerticalStackLayout>
+            <Label Text="טיול מספר # היום"
                Style="{StaticResource Context}"
                Margin="12,-10,4,20"/>
 
-        <Grid ColumnDefinitions="*,*">
+            <Grid ColumnDefinitions="*,*">
 
-            <pack:DatePickerPack Grid.Column="0"
+                <pack:DatePickerPack Grid.Column="0"
                 Date="{Binding WalkDate}"
                 FloatingLabel="תאריך הטיול"
                 ImageSource="{AppThemeBinding Light=calendar_light, Dark=calendar_dark}"/>
 
-            <pack:TimePickerPack Grid.Column="1"
+                <pack:TimePickerPack Grid.Column="1"
                 Time="{Binding WalkTime}"
                 FloatingLabel="שעת הטיול"
                 ImageSource="{AppThemeBinding Light=clock_light, Dark=clock_dark}"/>
-        </Grid>
+            </Grid>
 
-        <pack:RadioCollectionPack 
+            <pack:RadioCollectionPack 
             FloatingLabel="שם המטייל/ת"
             ItemsSource="{Binding Users}"
             SelectedItem="{Binding WalkerName}"
             GroupName="UsersWalk"
             DefaultItem="{Binding SignedUser}"/>
 
-        <Label Style="{StaticResource SubHeader}" 
+            <Label Style="{StaticResource SubHeader}" 
                Text="חובות וטובות"
                Margin="10,7,10,0"/>
 
-        <Border Style="{StaticResource RoundedBorder}"
+            <Border Style="{StaticResource RoundedBorder}"
                 Margin="5,0,5,20">
-            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,*">
+                <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,*">
 
-                <Button Grid.Row="0" Grid.Column="0"
+                    <Button Grid.Row="0" Grid.Column="0"
                         Text="החזרת חוב"
                         Style="{StaticResource Hollow}"
                         Command="{Binding PaybackCommand}"/>
 
-                <Button Grid.Row="0" Grid.Column="1"
+                    <Button Grid.Row="0" Grid.Column="1"
                         Text="טובה עבור מישהו"
                         Style="{StaticResource Hollow}"
                         Command="{Binding FavorCommand}"/>
 
-                <Label Grid.Row="1" Grid.ColumnSpan="2"
+                    <Label Grid.Row="1" Grid.ColumnSpan="2"
                        Text="{Binding InDebtName, Mode=TwoWay}"
                        Style="{StaticResource SubHeader}"/>
 
-            </Grid>
-        </Border>
+                </Grid>
+            </Border>
 
-        <StackLayout Orientation="Horizontal" Margin="0,-15,0,0" >
-            <Switch IsToggled="{Binding IsPooped}"
+            <StackLayout Orientation="Horizontal" Margin="0,-15,0,0" >
+                <Switch IsToggled="{Binding IsPooped}"
                     Margin="5,0,-10,0" />
-            <Label Text="לואי חירבן"
+                <Label Text="לואי חירבן"
                    HorizontalOptions="Start"/>
-        </StackLayout>
+            </StackLayout>
 
-        <pack:EntryPack 
+            <pack:EntryPack 
         FloatingLabel="הערות"
         Description="תיבה לכתיבת מידע נוסף לגבי הטיול"
         Placeholder="פרטים על הטיול"
         Text="{Binding Notes}"/>
 
-        <Button Text="שמירה"
+            <Button Text="שמירה"
             Command="{Binding SaveCommand}"
             Margin="10,20,10,0"/>
 
-        <Button Text="ביטול"
+            <Button Text="ביטול"
             Style="{StaticResource Hollow}"
             Command="{Binding CancelCommand}"
             Margin="10"/>
 
-    </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

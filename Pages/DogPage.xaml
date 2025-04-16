@@ -28,6 +28,7 @@
                    Text="B-Day TBD"/>
 
             <Button Grid.Column="3"
+                    Style="{StaticResource Invisible}"
                     ImageSource="info.png"
                     HeightRequest="50"
                     Clicked="EditDogButton_Clicked"/>

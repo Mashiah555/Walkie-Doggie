@@ -5,25 +5,25 @@ public class TimePickerPack : StackLayout
 {
     #region Bindable Properties
     public static readonly BindableProperty TimeProperty =
-        BindableProperty.Create(nameof(Time), typeof(DateTime), typeof(DatePickerPack), DateTime.Now, BindingMode.TwoWay);
+        BindableProperty.Create(nameof(Time), typeof(TimeSpan), typeof(TimePickerPack), DateTime.Now.TimeOfDay, BindingMode.TwoWay);
 
     public static readonly BindableProperty FloatingLabelProperty =
-        BindableProperty.Create(nameof(FloatingLabel), typeof(string), typeof(DatePickerPack), string.Empty);
+        BindableProperty.Create(nameof(FloatingLabel), typeof(string), typeof(TimePickerPack), string.Empty);
 
     public static readonly BindableProperty ImageSourceProperty =
-        BindableProperty.Create(nameof(ImageSource), typeof(ImageSource), typeof(DatePickerPack), default(ImageSource));
+        BindableProperty.Create(nameof(ImageSource), typeof(ImageSource), typeof(TimePickerPack), default(ImageSource));
 
     public static readonly BindableProperty DescriptionProperty =
-        BindableProperty.Create(nameof(Description), typeof(string), typeof(DatePickerPack), string.Empty);
+        BindableProperty.Create(nameof(Description), typeof(string), typeof(TimePickerPack), string.Empty);
 
     public static readonly BindableProperty ContentStateProperty =
-    BindableProperty.Create(nameof(ContentState), typeof(ContentStates), typeof(DatePickerPack), ContentStates.Normal);
+    BindableProperty.Create(nameof(ContentState), typeof(ContentStates), typeof(TimePickerPack), ContentStates.Normal);
     #endregion Bindable Properties
 
     #region Properties
-    public DateTime Time
+    public TimeSpan Time
     {
-        get => (DateTime)GetValue(TimeProperty);
+        get => (TimeSpan)GetValue(TimeProperty);
         set => SetValue(TimeProperty, value);
     }
 
@@ -93,7 +93,7 @@ public class TimePickerPack : StackLayout
         timePicker.SetBinding(
             TimePicker.TimeProperty, new Binding(
                 nameof(Time), source: this, mode: BindingMode.TwoWay));
-        #endregion DatePicker Initialization
+        #endregion TimePicker Initialization
 
         #region Grid & Border Initialization
         var grid = new Grid() { FlowDirection = FlowDirection.RightToLeft };
@@ -141,7 +141,7 @@ public class TimePickerPack : StackLayout
             nameof(ContentState), source: this, converter: new ConvertToColor()));
         #endregion Description Label Initialization
 
-        //Initialize the DatePickerPack's StackLayout with components:
+        //Initialize the TimePickerPack's StackLayout with components:
         Children.Add(floatingLabel);
         Children.Add(border);
         Children.Add(descriptionLabel);
