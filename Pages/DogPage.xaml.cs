@@ -23,7 +23,7 @@ public partial class DogPage : ContentPage
         try
         {
             DogModel dog = await _db.GetDogAsync();
-            DogNameLabel.Text = dog.DogName;
+            //DogNameLabel.Text = dog.DogName;
         }
         catch (Exception ex)
         {
