@@ -426,10 +426,78 @@ public class FirebaseService
     }
     #endregion Dog CRUD Operations
 
-    #region Configuration Operations
-    //public async Task<int> GetVersionId()
-    //{
-    //    if (!await NetworkService.NetworkCheck()) throw new Exception();
-    //}
-    #endregion Configuration Operations
+    #region Configuration CRUD Operations
+    private async Task<bool> CreateConfigAsync()
+    {
+        /*WARNING! Notice:
+        This method should only be called when verifying a secure
+        connection to the database, as it does not check for network access.
+        In order to user this method, make sure it first calls HasConfig(),
+        as it contains a check for network unlike this method.*/
+
+        int.TryParse(AppInfo.BuildString, out int build);
+
+        if (build == 0) // Int parsing failed
+            return false;
+
+        await _firestoreDb!
+            .Collection(ConfigsCollection)
+            .Document(AppInfo.BuildString)
+            .SetAsync(new ConfigurationModel
+            {
+                LatestBuild = build
+            });
+
+        return true;
+    }
+
+    public async Task<bool> UpdateConfigAsync()
+    {
+        if (!await NetworkService.NetworkCheck()) return false;
+
+        QuerySnapshot snapshot = await _firestoreDb!
+            .Collection(ConfigsCollection)
+            .Limit(1)
+            .GetSnapshotAsync();
+
+        if (snapshot.Documents.Count == 0)
+            return await CreateConfigAsync();
+
+        int.TryParse(AppInfo.BuildString, out int build);
+        if (build == 0) // Int parsing failed
+            return false;
+
+        DocumentReference reference = snapshot.Documents[0].Reference;
+        await reference.UpdateAsync("LatestBuild", build);
+
+        return true;
+    }
+
+    // ➤ Get the configuration values from Firestore
+    public async Task<ConfigurationModel> GetConfigAsync()
+    {
+        if (!await NetworkService.NetworkCheck()) throw new Exception();
+
+        QuerySnapshot snapshot = await _firestoreDb!
+            .Collection(ConfigsCollection)
+            .Limit(1)
+            .GetSnapshotAsync();
+
+        return snapshot.Documents.Count > 0 ?
+            snapshot.Documents[0].ConvertTo<ConfigurationModel>() :
+            throw new Exception("There is no config file saved in the database!");
+    }
+
+    public async Task<bool> HasConfig()
+    {
+        if (!await NetworkService.NetworkCheck()) return false;
+
+        QuerySnapshot snapshot = await _firestoreDb!
+            .Collection(ConfigsCollection)
+            .Limit(1)
+            .GetSnapshotAsync();
+
+        return snapshot.Documents.Count > 0;
+    }
+    #endregion Configuration CRUD Operations
 }

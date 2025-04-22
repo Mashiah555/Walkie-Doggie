@@ -57,14 +57,24 @@ public static class VersionService
     {
         try
         {
+            if (!await NetworkService.NetworkCheck())
+                return;
+            if (string.IsNullOrEmpty(AppInfo.BuildString))
+                throw new Exception();
+
             using var client = new HttpClient();
-            var json = await client.GetStringAsync("https://yourdomain.com/version.json");
-
+            var json = await client.GetStringAsync(
+                "https://raw.githubusercontent.com/Mashiah555/Walkie-Doggie/master/Services/version.json");
             var remote = JsonSerializer.Deserialize<VersionInfo>(json);
-            Version latest = new Version(remote!.LatestVersion);
-            Version current = AppInfo.Version;
+            if (remote == null)
+                return;
 
-            if (latest > current)
+            int current = int.Parse(AppInfo.BuildString);
+            int latest = remote.LatestVersion;
+
+            if (latest == 0 || current == 0)
+                throw new Exception("AppInfo.BuildString failed to parse into int");
+            else if (latest > current)
             {
                 //LinkPopup popup = new LinkPopup();
                 bool update = await Shell.Current.DisplayAlert("עדכון זמין", remote.Message, "עדכן", "סגור");
@@ -82,8 +92,9 @@ public static class VersionService
 
     private class VersionInfo
     {
-        public string LatestVersion { get; set; } = string.Empty;
+        public int LatestVersion { get; set; } = int.Parse(AppInfo.BuildString);
         public string Message { get; set; } = string.Empty;
         public string DownloadUrl { get; set; } = string.Empty;
+        public string AboutUrl { get; set; } = string.Empty;
     }
 }
