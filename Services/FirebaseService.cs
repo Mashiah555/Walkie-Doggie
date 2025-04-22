@@ -17,6 +17,7 @@ public class FirebaseService
     private const string WalksCollection = "Walks";
     private const string FeedsCollection = "Feeds";
     private const string DogsCollection = "Dogs";
+    private const string ConfigsCollection = "Configurations";
     #endregion Firestore Properties
 
     #region Firebase Authentication
@@ -27,35 +28,6 @@ public class FirebaseService
             _firestoreDb = Authenticate();
         }
     }
-
-    private async static Task<bool> NetworkCheck()
-    {
-        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
-            return true;
-
-        if (!NavigationFlags.IsMessagePopedUp)
-        {
-            await MauiPopup.PopupAction.DisplayPopup(new MessagePopup(
-                "אין חיבור",
-                "נדרש חיבור לאינטרנט על מנת להשתמש באפליקציה",
-                ContextImage.NoInternet,
-                ButtonSet.NoneAndForce));
-        }
-
-        while (true)
-        {
-            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
-            {
-                await MauiPopup.PopupAction.ClosePopup();
-                await Toast.Make("מחובר לאינטרנט", ToastDuration.Short).Show();
-                return true;
-            }
-            await Task.Delay(1000);
-        }
-
-        //return false;
-    }
-
 
     private FirestoreDb Authenticate()
     {
@@ -84,7 +56,7 @@ public class FirebaseService
     // ➤ Add a User to Firestore
     public async Task AddUserAsync(string name)
     {
-        if (!await NetworkCheck()) return;
+        if (!await NetworkService.NetworkCheck()) return;
 
         await _firestoreDb!
             .Collection(UsersCollection)
@@ -100,7 +72,7 @@ public class FirebaseService
     // ➤ Update a User in Firestore
     public async Task UpdateUserAsync(string name, AppTheme appTheme)
     {
-        if (!await NetworkCheck()) return;
+        if (!await NetworkService.NetworkCheck()) return;
 
         await _firestoreDb!
             .Collection(UsersCollection)
@@ -113,7 +85,7 @@ public class FirebaseService
     {
         List<UserModel> users = new();
 
-        if (!await NetworkCheck()) return users;
+        if (!await NetworkService.NetworkCheck()) return users;
 
         QuerySnapshot snapshot = await GetUsersSnapshot();
 
@@ -128,7 +100,7 @@ public class FirebaseService
     {
         List<String> users = new();
 
-        if (!await NetworkCheck()) return users;
+        if (!await NetworkService.NetworkCheck()) return users;
 
         QuerySnapshot snapshot = await GetUsersSnapshot();
 
@@ -141,7 +113,7 @@ public class FirebaseService
     // ➤ Searches for a User in Firestore
     public async Task<bool> HasUserAsync(string name)
     {
-        if (!await NetworkCheck()) return false;
+        if (!await NetworkService.NetworkCheck()) return false;
 
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(UsersCollection)
@@ -154,7 +126,7 @@ public class FirebaseService
 
     public async Task<UserModel?> GetUserAsync(string name)
     {
-        if (!await NetworkCheck()) return null;
+        if (!await NetworkService.NetworkCheck()) return null;
 
         var userSnapshot = await GetUserReference(name).GetSnapshotAsync();
 
@@ -165,7 +137,7 @@ public class FirebaseService
 
     private async Task IncrementTotalWalks(string name)
     {
-        if (!await NetworkCheck()) return;
+        if (!await NetworkService.NetworkCheck()) return;
 
         var userRef = GetUserReference(name);
         var userSnapshot = await userRef.GetSnapshotAsync();
@@ -212,7 +184,7 @@ public class FirebaseService
     public async Task AddWalkAsync(string walkerName, DateTime walkTime, bool isPooped,
         string? notes = null, string? inDebtName = null, bool? isPayback = false)
     {
-        if (!await NetworkCheck()) return;
+        if (!await NetworkService.NetworkCheck()) return;
 
         int walkId = await GetWalksIdAsync(true);
 
@@ -240,7 +212,7 @@ public class FirebaseService
         if (walkId == null)
             return null;
 
-        if (!await NetworkCheck()) return null;
+        if (!await NetworkService.NetworkCheck()) return null;
 
         DocumentSnapshot snapshot = await _firestoreDb!
             .Collection(WalksCollection)
@@ -255,7 +227,7 @@ public class FirebaseService
     // ➤ Get the last walk from Firestore
     public async Task<WalkModel> GetLastWalkAsync(string? username = null)
     {
-        if (!await NetworkCheck()) throw new Exception();
+        if (!await NetworkService.NetworkCheck()) throw new Exception();
 
         Query query = _firestoreDb!
             .Collection(WalksCollection)
@@ -276,7 +248,7 @@ public class FirebaseService
     {
         List<WalkModel> walks = new();
 
-        if (!await NetworkCheck()) return walks;
+        if (!await NetworkService.NetworkCheck()) return walks;
 
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(WalksCollection)
@@ -294,7 +266,7 @@ public class FirebaseService
     // ➤ Add a Feed Record
     public async Task AddFeedAsync(string feederName, DateTime feedTime, int feedAmount, string? notes)
     {
-        if (!await NetworkCheck()) return;
+        if (!await NetworkService.NetworkCheck()) return;
 
         await _firestoreDb!
             .Collection(FeedsCollection)
@@ -311,7 +283,7 @@ public class FirebaseService
     // ➤ Get the last walk from Firestore
     public async Task<FeedModel> GetLastFeedAsync()
     {
-        if (!await NetworkCheck()) throw new Exception();
+        if (!await NetworkService.NetworkCheck()) throw new Exception();
 
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(FeedsCollection)
@@ -329,7 +301,7 @@ public class FirebaseService
     {
         List<FeedModel> feeds = new();
 
-        if (!await NetworkCheck()) return feeds;
+        if (!await NetworkService.NetworkCheck()) return feeds;
 
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(FeedsCollection)
@@ -383,7 +355,7 @@ public class FirebaseService
     public async Task<bool> UpdateDogAsync(DateTime birthdate, string breed,
         double weight, int feedAmount)
     {
-        if (!await NetworkCheck()) return false;
+        if (!await NetworkService.NetworkCheck()) return false;
 
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(DogsCollection)
@@ -405,7 +377,7 @@ public class FirebaseService
     // ➤ Get the last dog from Firestore
     public async Task<DogModel> GetDogAsync()
     {
-        if (!await NetworkCheck()) throw new Exception();
+        if (!await NetworkService.NetworkCheck()) throw new Exception();
 
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(DogsCollection)
@@ -419,7 +391,7 @@ public class FirebaseService
 
     public async Task<bool> HasDog()
     {
-        if (!await NetworkCheck()) return false;
+        if (!await NetworkService.NetworkCheck()) return false;
 
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(DogsCollection)
@@ -433,7 +405,7 @@ public class FirebaseService
     // Throws an exception if there are no dogs saved in the database.
     public async Task<int> GetWalksIdAsync(bool increment = false)
     {
-        if (!await NetworkCheck()) throw new Exception();
+        if (!await NetworkService.NetworkCheck()) throw new Exception();
 
         QuerySnapshot snapshot = await _firestoreDb!
             .Collection(DogsCollection)
@@ -453,4 +425,11 @@ public class FirebaseService
         return dog.TotalWalks;
     }
     #endregion Dog CRUD Operations
+
+    #region Configuration Operations
+    //public async Task<int> GetVersionId()
+    //{
+    //    if (!await NetworkService.NetworkCheck()) throw new Exception();
+    //}
+    #endregion Configuration Operations
 }

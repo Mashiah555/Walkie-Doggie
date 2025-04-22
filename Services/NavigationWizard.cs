@@ -1,4 +1,5 @@
-﻿using Walkie_Doggie.Pages;
+﻿using Walkie_Doggie.Helpers;
+using Walkie_Doggie.Pages;
 using Walkie_Doggie.Views;
 
 namespace Walkie_Doggie.Services;
@@ -15,5 +16,8 @@ public static class NavigationWizard
             else if (!(await _db.HasDog()))
                 await Shell.Current.GoToAsync(nameof(DogView), true);
         }
+
+        // Check for updates
+        await VersionService.CheckForUpdatesAsync();
     }
 }
