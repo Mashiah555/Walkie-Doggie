@@ -27,8 +27,8 @@
 		<ApplicationId>com.mashiah.WalkieDoggie</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationDisplayVersion>1.1.1</ApplicationDisplayVersion>
 		<Version>1.1.1</Version>
+		<ApplicationDisplayVersion>1.1.1</ApplicationDisplayVersion>
 		<ApplicationVersion>5</ApplicationVersion>
 
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
@@ -163,7 +163,6 @@
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
 		<PackageReference Include="Plugin.Maui.Popup" Version="1.0.5" />
-		<PackageReference Include="The49.Maui.BottomSheet" Version="8.0.3" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -183,9 +182,6 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Popups\UsersPopup.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Popups\UsersSheet.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\DogView.xaml">

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using CommunityToolkit.Maui;
-using The49.Maui.BottomSheet;
 
 namespace Walkie_Doggie
 {
@@ -12,7 +11,6 @@ namespace Walkie_Doggie
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
-                .UseBottomSheet()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

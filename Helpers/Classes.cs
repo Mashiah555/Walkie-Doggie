@@ -51,7 +51,15 @@ public class NetworkService
 
 public static class VersionService
 {
-    public static Version CurrentVersion { get; } = AppInfo.Version;
+    public static string CurrentVersion
+    {
+        get
+        {
+            // Convert Major.Minor.Build.Revision to Major.Minor.Build
+            string[] parts = AppInfo.VersionString.Split('.');
+            return string.Join('.', parts.Take(3));
+        }
+    }
 
     public static async Task CheckForUpdatesAsync()
     {
@@ -62,37 +70,41 @@ public static class VersionService
             if (string.IsNullOrEmpty(AppInfo.BuildString))
                 throw new Exception();
 
-            using var client = new HttpClient();
-            var json = await client.GetStringAsync(
+            using HttpClient client = new();
+            string json = await client.GetStringAsync(
                 "https://raw.githubusercontent.com/Mashiah555/Walkie-Doggie/master/Services/version.json");
-            var remote = JsonSerializer.Deserialize<VersionInfo>(json);
+            JsonSerializerOptions options = new() { PropertyNameCaseInsensitive = true };
+
+            VersionInfo? remote = JsonSerializer.Deserialize<VersionInfo>(json, options);
             if (remote == null)
                 return;
 
             int current = int.Parse(AppInfo.BuildString);
             int latest = remote.LatestVersion;
 
-            if (latest == 0 || current == 0)
+            if (current == 0)
                 throw new Exception("AppInfo.BuildString failed to parse into int");
-            else if (latest > current)
-            {
-                //LinkPopup popup = new LinkPopup();
-                bool update = await Shell.Current.DisplayAlert("עדכון זמין", remote.Message, "עדכן", "סגור");
-                if (update)
-                {
-                    await Launcher.OpenAsync(remote.DownloadUrl);
-                }
-            }
+            if (latest == 0)
+                throw new Exception("Failed to deserialize the json's url");
+            if (latest <= current)
+                return;
+
+            //LinkPopup popup = new LinkPopup();
+            bool update = await Shell.Current.DisplayAlert("עדכון זמין", remote.Message, "עדכון", "מה חדש");
+            await Launcher.OpenAsync(update ? remote.DownloadUrl : remote.AboutUrl);
+
         }
-        catch
+        catch (Exception ex)
         {
-            // Optionally log or ignore errors silently
+            await Shell.Current.DisplayAlert("שגיאה", ex.Message, "סגור");
         }
     }
 
     private class VersionInfo
     {
-        public int LatestVersion { get; set; } = int.Parse(AppInfo.BuildString);
+        /* version.json Structural Properties.
+           Must match the JSON properties to deserialize correctly. */
+        public int LatestVersion { get; set; }
         public string Message { get; set; } = string.Empty;
         public string DownloadUrl { get; set; } = string.Empty;
         public string AboutUrl { get; set; } = string.Empty;

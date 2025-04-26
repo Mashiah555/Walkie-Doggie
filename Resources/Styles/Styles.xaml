@@ -246,6 +246,16 @@
         <Setter Property="FlowDirection" Value="RightToLeft"/>
     </Style>
 
+    <Style TargetType="Frame" x:Key="FloatingFrame">
+        <Setter Property="HasShadow" Value="True" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
+        <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray900}}" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Padding" Value="8" />
+        <Setter Property="Margin" Value="1" />
+        <Setter Property="FlowDirection" Value="RightToLeft"/>
+    </Style>
+
     <Style TargetType="Frame" x:Key="SelectableFrame">
         <Setter Property="HasShadow" Value="False" />
         <Setter Property="Padding" Value="3" />
