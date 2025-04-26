@@ -28,20 +28,20 @@ public partial class LoginPage : ContentPage
 
     private async void ButtonSignUp_Clicked(object sender, EventArgs e)
     {
-        var result = await this.ShowPopupAsync(new Popups.EntryPopup(
+        string? msg = null;
+        string result = await MauiPopup.PopupAction.DisplayPopup(new Popups.EntryPopup(
             "הקלד/י את שמך הפרטי בתיבה.\nהשם הזה ישמש אותך במהלך השימוש במערכת.",
             "שם פרטי",
             Keyboard.Default,
             "הרשמה", "ביטול"));
 
-        string? msg = null;
         if (result is null)
-            msg = "ההרשמה בוטלה";
-        else if (string.IsNullOrEmpty((string)result))
             msg = "ההרשמה נכשלה. נסה להירשם שוב";
-        else if (LocalService.GetUsername() is not null)
+        else if (string.IsNullOrEmpty(result))
+            msg = "הרשמה בוטלה";
+        else if (!string.IsNullOrEmpty(LocalService.GetUsername()))
             msg = "אתה כבר רשום במערכת";
-        else if (await _db.HasUserAsync((string)result))
+        else if (await _db.HasUserAsync(result))
             msg = "השם הזה כבר קיים במערכת";
 
         if (msg is not null)

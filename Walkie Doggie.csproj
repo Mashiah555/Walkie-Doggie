@@ -213,6 +213,10 @@
 	  </MauiXaml>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Interfaces\" />
+	</ItemGroup>
+
 	<PropertyGroup Condition="$(TargetFramework.Contains('-android')) and '$(Configuration)'=='Release'">
 		<AndroidKeyStore>True</AndroidKeyStore>
 		<AndroidSigningKeyStore>walkiedoggiekey.keystore</AndroidSigningKeyStore>

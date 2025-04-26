@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-               x:Class="Walkie_Doggie.Popups.EntryPopup">
+<popup:BasePopupPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="Walkie_Doggie.Popups.EntryPopup"
+    xmlns:popup="clr-namespace:MauiPopup.Views;assembly=MauiPopup"
+    xmlns:pack="clr-namespace:Walkie_Doggie.PacksKit"
+    BackgroundColor="Transparent"
+    ForegroundColor="Transparent"
+    IsCloseOnBackgroundClick="False"
+    VerticalOptions="Center"
+    HorizontalOptions="Center"
+    Margin="10">
 
-    <Border>
+    <Frame Style="{StaticResource FloatingFrame}">
         <StackLayout>
 
             <Label x:Name="MessageContent"
                    MaximumWidthRequest="320" Margin="10"
                    VerticalOptions="Center" HorizontalOptions="Center" />
 
-            <Entry x:Name="ValueEntry"
-                   Placeholder="כתוב כאן" Keyboard="Default"
-                   Margin="20,5" />
+            <pack:EntryPack
+                x:Name="ValueEntry"
+                Placeholder="הקלידו כאן"
+                KeyboardStyle="Default"
+                Margin="20,5" />
 
             <StackLayout Grid.Row="1" Grid.ColumnSpan="2"
                          Orientation="Horizontal">
@@ -25,5 +35,6 @@
 
             </StackLayout>
         </StackLayout>
-    </Border>
-</toolkit:Popup>
+        
+    </Frame>
+</popup:BasePopupPage>

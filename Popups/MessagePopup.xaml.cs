@@ -3,7 +3,6 @@ using MauiPopup.Views;
 using Walkie_Doggie.Helpers;
 using System.ComponentModel;
 using System.Windows.Input;
-using static Microsoft.Maui.ApplicationModel.Permissions;
 
 namespace Walkie_Doggie.Popups;
 

@@ -1,8 +1,9 @@
-using CommunityToolkit.Maui.Views;
+using MauiPopup;
+using MauiPopup.Views;
 
 namespace Walkie_Doggie.Popups;
 
-public partial class EntryPopup : Popup
+public partial class EntryPopup : BasePopupPage
 {
     public EntryPopup(string msg, string placeholder, Keyboard keyboard, string saveButton, string cancelButton)
 	{
@@ -10,18 +11,18 @@ public partial class EntryPopup : Popup
 
         MessageContent.Text = msg;
         ValueEntry.Placeholder = placeholder;
-        ValueEntry.Keyboard = keyboard;
+        ValueEntry.KeyboardStyle = keyboard;
         ButtonSave.Text = saveButton;
         ButtonCancel.Text = cancelButton;
     }
 
     private void ButtonSave_Clicked(object sender, EventArgs e)
     {
-        Close(ValueEntry.Text);
+        PopupAction.ClosePopup(ValueEntry.Text);
     }
 
     private void ButtonCancel_Clicked(object sender, EventArgs e)
     {
-        Close(null);
+        PopupAction.ClosePopup(string.Empty);
     }
 }

@@ -8,6 +8,9 @@ public class EntryPack : StackLayout
     public static readonly BindableProperty TextProperty =
         BindableProperty.Create(nameof(Text), typeof(string), typeof(EntryPack), string.Empty, BindingMode.TwoWay);
 
+    public static readonly BindableProperty KeyboardProperty =
+        BindableProperty.Create(nameof(KeyboardStyle), typeof(Keyboard), typeof(EntryPack), Keyboard.Default);
+
     public static readonly BindableProperty PlaceholderProperty =
         BindableProperty.Create(nameof(Placeholder), typeof(string), typeof(EntryPack), string.Empty);
 
@@ -32,6 +35,12 @@ public class EntryPack : StackLayout
     {
         get => (string)GetValue(TextProperty);
         set => SetValue(TextProperty, value);
+    }
+
+    public Keyboard KeyboardStyle
+    {
+        get => (Keyboard)GetValue(KeyboardProperty);
+        set => SetValue(KeyboardProperty, value);
     }
 
     public string Placeholder
@@ -115,6 +124,8 @@ public class EntryPack : StackLayout
                 nameof(Text), source: this, mode: BindingMode.TwoWay));
         entry.SetBinding(
             Entry.PlaceholderProperty, new Binding(nameof(Placeholder), source: this));
+        entry.SetBinding(
+            Entry.KeyboardProperty, new Binding(nameof(KeyboardStyle), source: this));
         entry.TextChanged += Entry_TextChanged;
         entry.Unfocused += Entry_Unfocused;
         #endregion Entry Initialization
