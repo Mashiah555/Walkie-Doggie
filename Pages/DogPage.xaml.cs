@@ -42,7 +42,7 @@ public partial class DogPage : ContentPage
                 ConvertToString(lastWalk.WalkTime);
 
             LastWalkPassedTime.Text = "עברו מאז " + ConvertToString(
-                DateTime.UtcNow - ConvertToDateTime(lastWalk.WalkTime)) + " שעות";
+                DateTime.UtcNow - lastWalk.WalkTime.ToDateTime()) + " שעות";
 
             LastWalkPooped.Text = lastWalk.IsPooped ? "לואי עשה קקי בטיול" : "לואי לא עשה קקי";
 

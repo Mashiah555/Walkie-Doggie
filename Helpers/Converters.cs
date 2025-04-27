@@ -1,9 +1,11 @@
-﻿using Google.Cloud.Firestore;
+﻿using Google.Api.Gax.ResourceNames;
+using Google.Cloud.Firestore;
 using System.Globalization;
 namespace Walkie_Doggie.Helpers;
 
 public static class Converters
 {
+    #region Time Converters
     private static readonly TimeZoneInfo IsraelTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Israel Standard Time");
 
     /// <summary>
@@ -22,6 +24,7 @@ public static class Converters
     {
         return TimeZoneInfo.ConvertTimeFromUtc(timestamp.ToDateTime(), IsraelTimeZone);
     }
+    #endregion Time Converters
 
     /// <summary>
     /// Converts values to string form.
@@ -66,7 +69,28 @@ public static class Converters
             return false;
         return true;
     }
+
+    /// <summary>
+    /// Converts Database's Model-Objects to a string for the required document's name.
+    /// </summary>
+    public static string ToDocumentName(object value)
+    {
+        if (value is DogModel dog)
+            return dog.DogName;
+
+        if (value is UserModel user)
+            return user.Name;
+
+        if (value is WalkModel walk)
+            return walk.WalkId.ToString();
+
+        if (value is FeedModel feed)
+            return $"{feed.FeederName}_{feed.FeedTime:ddMMyyyy_HHmmss}";
+
+        return string.Empty;
+    }
 }
+
 
 class ConvertToBool : IValueConverter
 {

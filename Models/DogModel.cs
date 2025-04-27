@@ -19,5 +19,8 @@ public class DogModel
     public int DefaultFeedAmount { get; set; }
 
     [FirestoreProperty]
+    public bool HasBags { get; set; }
+
+    [FirestoreProperty]
     public int TotalWalks { get; set; }
 }

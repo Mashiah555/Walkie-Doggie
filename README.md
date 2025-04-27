@@ -61,6 +61,20 @@ The toolkit implements some modernized controls and components for the designing
   - **Reference the toolkit in the code-behinds:**
     - Add the following using statement to the required page's code-behind:
       - using CommunityToolkit.Maui
+
+### Popup Pages Plugin
+The Plugin.Maui.Popup library allows the use of popups and modals in the application, which can be used for displaying information, alerts, or custom content.
+  - Right Click the Dependencies in the Solution Explorer → Choose Manage NuGet Packages
+  - Download the following NuGet package:
+    - Plugin.Maui.Popup
+  - **Reference the plugin in xaml files:**
+    - Add the following namespace to the required page inside it's xaml file declarations:
+      - xmlns:popup="clr-namespace:Plugin.Maui.Popup;assembly=Plugin.Maui.Popup"
+    - Write "popup:" before stating the name of a desired popup component.
+  - **Reference the plugin in the code-behinds:**
+    - Add the following using statement to the required page's code-behind:
+      - using Plugin.Maui.Popup;
+  - [Click here](https://xamarincodingtutorial.blogspot.com/2022/09/pluginmauipopup.html) to learn about the plugin and how to use it functionallities.
      
 ## Features
   - The application features a theme-specific unified color schemes, defined in the [Colors file](https://github.com/Mashiah555/Walkie-Doggie/blob/master/Resources/Styles/Colors.xaml), located inside Resources/Styles folder.

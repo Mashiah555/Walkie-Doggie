@@ -1,11 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Walkie_Doggie.Popups;
 
 namespace Walkie_Doggie.Helpers;
@@ -20,37 +15,58 @@ public class NetworkService
     public static bool IsConnected() => 
         Connectivity.Current.NetworkAccess == NetworkAccess.Internet;
 
-    public async static Task<bool> NetworkCheck()
+    public async static Task NetworkCheck(TimeSpan? timeout = null)
     {
         if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
-            return true;
+            return;
 
         if (!NavigationFlags.IsMessagePopedUp)
         {
+            NavigationFlags.IsMessagePopedUp = true;
             await MauiPopup.PopupAction.DisplayPopup(new MessagePopup(
                 "אין חיבור",
-                "נדרש חיבור לאינטרנט על מנת להשתמש באפליקציה",
+                "!נדרש חיבור לאינטרנט על מנת להשתמש באפליקציה" +
+                "\nהאפליקציה תחזור לפעול כשמכשיר זה יחובר לרשת.",
                 ContextImage.NoInternet,
                 ButtonSet.NoneAndForce));
         }
 
-        while (true)
+    Recheck:
+        DateTime startTime = DateTime.UtcNow;
+        timeout ??= TimeSpan.FromSeconds(60);
+
+        while (DateTime.UtcNow - startTime < timeout)
         {
             if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             {
                 await MauiPopup.PopupAction.ClosePopup();
+                NavigationFlags.IsMessagePopedUp = false;
                 await Toast.Make("מחובר לאינטרנט", ToastDuration.Short).Show();
-                return true;
+                return;
             }
             await Task.Delay(1500);
         }
 
-        //return false;
+        bool recheck = false;
+        var snack = Snackbar.Make(
+            "החיבור לרשת נכשל, האפליקציה תיסגר.",
+            () => { recheck = true; },
+            "נסה שוב",
+            TimeSpan.FromSeconds(3));
+        await snack.Show();
+        await Task.Delay(3000);
+
+        if (recheck) goto Recheck;
+
+        await Toast.Make("החיבור לאינטרנט נכשל", ToastDuration.Short).Show();
+        AppService.QuitApp();
+        return;
     }
 }
 
-public static class VersionService
+public static class AppService
 {
+    #region Version Diagnostics
     public static string CurrentVersion
     {
         get
@@ -65,8 +81,8 @@ public static class VersionService
     {
         try
         {
-            if (!await NetworkService.NetworkCheck())
-                return;
+            await NetworkService.NetworkCheck();
+
             if (string.IsNullOrEmpty(AppInfo.BuildString))
                 throw new Exception();
 
@@ -109,4 +125,29 @@ public static class VersionService
         public string DownloadUrl { get; set; } = string.Empty;
         public string AboutUrl { get; set; } = string.Empty;
     }
+    #endregion Version Diagnostics
+
+    #region App Configuration
+    public static void QuitApp()
+    {
+#if ANDROID
+        Android.OS.Process.KillProcess(Android.OS.Process.MyPid());
+#elif WINDOWS
+       System.Diagnostics.Process.GetCurrentProcess().Kill();  
+#else
+       // For unsupported platforms:
+       Application.Current!.Quit();
+       Environment.Exit(0);
+#endif
+    }
+    public static void ReloadApp()
+    {
+        //WIP (Work In Progress)
+    }
+    #endregion App Configuration
+}
+
+interface I1
+{
+
 }
