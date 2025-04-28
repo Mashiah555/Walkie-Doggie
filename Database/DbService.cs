@@ -5,25 +5,23 @@ using System.Reflection;
 
 namespace Walkie_Doggie.Database;
 
-public class DbService
+public static class DbService
 {
-    private static FirestoreDb? _db;
-    public IUser Users { get; }
-    public IWalk Walks { get; }
-    public IFeed Feeds { get; }
-    public IDog Dogs { get; }
+    private static FirestoreDb _db = Authenticate();
+    public static IUser Users { get; }
+    public static IWalk Walks { get; }
+    public static IFeed Feeds { get; }
+    public static IDog Dogs { get; }
 
-    public DbService()
+    static DbService()
     {
-        _db ??= Authenticate();
-
         Dogs = new DogImplementation(_db);
         Users = new UserImplementation(_db);
         Walks = new WalkImplementation(_db);
         Feeds = new FeedImplementation(_db);
     }
 
-    private FirestoreDb Authenticate()
+    private static FirestoreDb Authenticate()
     {
         var assembly = Assembly.GetExecutingAssembly();
         var resourceName = "Walkie_Doggie.Resources.Raw.firebase-adminsdk.json";

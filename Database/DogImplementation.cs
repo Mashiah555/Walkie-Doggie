@@ -32,16 +32,28 @@ public class DogImplementation : AbstractCRUD<DogModel, string>, Interfaces.IDog
     public override async Task AddAsync(DogModel item)
     {
         if (await HasDogAsync())
-            await base.DeleteAllAsync();
+            await DeleteAllAsync();
 
         try
         {
-            WalkImplementation walkImplementation = new WalkImplementation(_db);
-            WalkModel lastWalk = await walkImplementation.GetLastWalkAsync();
+            WalkModel lastWalk = await DbService.Walks.GetLastWalkAsync();
             item.TotalWalks = lastWalk.WalkId;
         }
         catch { item.TotalWalks = 0; }
 
         await base.AddAsync(item);
+    }
+
+    public async Task AddAsync(string name, DateTime birthdate, string breed, double weight, int feedAmount)
+    {
+        await AddAsync(new DogModel
+        {
+            DogName = name,
+            DogBirthdate = Converters.ConvertToTimestamp(birthdate),
+            DogBreed = breed,
+            DogWeight = weight,
+            DefaultFeedAmount = feedAmount,
+            TotalWalks = 0
+        });
     }
 }

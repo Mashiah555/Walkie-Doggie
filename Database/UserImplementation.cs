@@ -1,5 +1,6 @@
 ﻿using Google.Cloud.Firestore;
 using Walkie_Doggie.Helpers;
+using Walkie_Doggie.Interfaces;
 
 namespace Walkie_Doggie.Database;
 
@@ -29,7 +30,17 @@ public class UserImplementation : AbstractCRUD<UserModel, string>, Interfaces.IU
         UserModel? user = await base.GetAsync(name);
         if (user == null) return;
 
-        user.TotalWalks++;
+        user.WalksCount++;
         await base.UpdateAsync(user);
+    }
+
+    public async Task AddAsync(string name)
+    {
+        await base.AddAsync(new UserModel
+        {
+            Name = name,
+            WalksCount = 0,
+            Theme = AppTheme.Unspecified
+        });
     }
 }

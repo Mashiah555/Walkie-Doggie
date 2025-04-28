@@ -7,7 +7,7 @@ public class UserModel
     public required string Name { get; set; }
 
     [FirestoreProperty]
-    public int TotalWalks { get; set; }
+    public int WalksCount { get; set; }
 
     [FirestoreProperty]
     public AppTheme Theme { get; set; }

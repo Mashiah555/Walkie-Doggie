@@ -25,8 +25,21 @@ public class WalkImplementation : AbstractCRUD<WalkModel, int>, Interfaces.IWalk
     {
         await base.AddAsync(item);
 
-        // Increment the walk count for the dog
-        UserImplementation userImplementation = new UserImplementation(_db);
-        await userImplementation.IncrementWalkCountAsync(item.WalkerName);
+        // Increment the walk count for the walker
+        await DbService.Users.IncrementWalkCountAsync(item.WalkerName);
+    }
+
+    public async Task AddAsync(string walkerName, DateTime walkTime, bool isPooped, string? notes = null, string? inDebtName = null, bool? isPayback = false)
+    {
+        await AddAsync(new WalkModel
+        {
+            WalkId = await DbService.Dogs.GetTotalWalksAsync(true),
+            WalkerName = walkerName,
+            WalkTime = Timestamp.FromDateTime(walkTime),
+            IsPooped = isPooped,
+            Notes = notes,
+            InDebtName = inDebtName,
+            IsPayback = isPayback
+        });
     }
 }

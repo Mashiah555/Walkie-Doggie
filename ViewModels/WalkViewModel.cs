@@ -7,7 +7,6 @@ namespace Walkie_Doggie.ViewModels;
 
 public class WalkViewModel : INotifyPropertyChanged
 {
-    private readonly FirebaseService _db;
 
     #region View Model Properties
     string signedUser;
@@ -93,8 +92,8 @@ public class WalkViewModel : INotifyPropertyChanged
         }
     }
 
-    List<string> users;
-    public List<string> Users
+    IEnumerable<string> users;
+    public IEnumerable<string> Users
     {
         get => users;
         set
@@ -114,8 +113,6 @@ public class WalkViewModel : INotifyPropertyChanged
 
     public WalkViewModel()
     {
-        _db = new FirebaseService();
-
         signedUser = LocalService.GetUsername() ?? string.Empty;
         walkerName = string.Empty;
         walkDate = DateTime.Today;
@@ -137,7 +134,7 @@ public class WalkViewModel : INotifyPropertyChanged
     {
         try
         {
-            Users = await _db.GetAllUsernamesAsync();
+            Users = await DbService.Users.GetAllUsernamesAsync();
 
             //if (id == null) return;
 
@@ -173,7 +170,7 @@ public class WalkViewModel : INotifyPropertyChanged
     public async void SaveWalk()
     {
         DateTime fullTime = WalkDate.Date + WalkTime;
-        await _db.AddWalkAsync(
+        await DbService.Walks.AddAsync(
             WalkerName, 
             fullTime, 
             isPooped, Notes, 

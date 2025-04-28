@@ -58,7 +58,7 @@ public class FirebaseService
             .SetAsync(new UserModel
             {
                 Name = name,
-                TotalWalks = 0,
+                WalksCount = 0,
                 Theme = AppTheme.Unspecified
             });
     }
@@ -122,7 +122,7 @@ public class FirebaseService
         if (userSnapshot.Exists)
         {
             var user = userSnapshot.ConvertTo<UserModel>();
-            user.TotalWalks += 1;
+            user.WalksCount += 1;
             await userRef.SetAsync(user);
         }
     }

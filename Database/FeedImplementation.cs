@@ -1,4 +1,6 @@
-﻿using Google.Cloud.Firestore;
+﻿using Google.Api.Gax.ResourceNames;
+using Google.Cloud.Firestore;
+using Walkie_Doggie.Helpers;
 
 namespace Walkie_Doggie.Database;
 
@@ -18,5 +20,16 @@ public class FeedImplementation : AbstractCRUD<FeedModel, int>, Interfaces.IFeed
 
         return latestFeed ??
             throw new Exception("There are no saved feeds yet!");
+    }
+
+    public async Task AddAsync(string feederName, DateTime feedTime, int feedAmount, string? notes)
+    {
+        await base.AddAsync(new FeedModel
+            {
+                FeederName = feederName,
+                FeedTime = Converters.ConvertToTimestamp(feedTime),
+                FeedAmount = feedAmount,
+                Notes = notes
+            });
     }
 }
