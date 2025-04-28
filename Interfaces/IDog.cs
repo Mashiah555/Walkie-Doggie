@@ -3,5 +3,5 @@
 public interface IDog : ICRUD<DogModel, string>
 {
     Task<bool> HasDogAsync();
-    Task<IEnumerable<string>> GetWalksIdAsync();
+    Task<int> GetTotalWalksAsync(bool increment = false);
 }

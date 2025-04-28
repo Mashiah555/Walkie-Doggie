@@ -1,53 +1,17 @@
 ﻿using Google.Cloud.Firestore;
 using Walkie_Doggie.Helpers;
-using static Java.Util.Jar.Attributes;
 
 namespace Walkie_Doggie.Database;
 
-class UserImplementation : Interfaces.IUser
+public class UserImplementation : AbstractCRUD<UserModel, string>, Interfaces.IUser
 {
-    public async Task AddAsync(string name)
-    {
-        await AddAsync(new UserModel { Name = name});
-    }
-    public async Task AddAsync(UserModel user)
-    {
-        await NetworkService.NetworkCheck();
+    public UserImplementation(FirestoreDb dbContext) 
+        : base(dbContext, "Users") {}
 
-        await _firestoreDb!
-            .Collection(UsersCollection)
-            .Document(user.Name)
-            .SetAsync(user);
-    }
-
-    public Task DeleteAll()
+    public async Task<IEnumerable<string>> GetAllUsernamesAsync()
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> DeleteAsync(string id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<IEnumerable<UserModel>> GetAllAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<IEnumerable<string>> GetAllUsernamesAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<UserModel?> GetAsync(string id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public DocumentReference GetUserReference(string name)
-    {
-        throw new NotImplementedException();
+        return (await base.GetAllAsync())
+            .Select(user => user.Name).ToList();
     }
 
     public Task<QuerySnapshot> GetUsersSnapshot()
@@ -55,18 +19,17 @@ class UserImplementation : Interfaces.IUser
         throw new NotImplementedException();
     }
 
-    public Task<bool> HasUserAsync(string name)
+    public async Task<bool> HasUserAsync(string name)
     {
-        throw new NotImplementedException();
+        return await base.GetAsync(name) != null;
     }
 
-    public Task IncrementTotalWalks(string name)
+    public async Task IncrementWalkCountAsync(string name)
     {
-        throw new NotImplementedException();
-    }
+        UserModel? user = await base.GetAsync(name);
+        if (user == null) return;
 
-    public Task<bool> UpdateAsync(UserModel item)
-    {
-        throw new NotImplementedException();
+        user.TotalWalks++;
+        await base.UpdateAsync(user);
     }
 }

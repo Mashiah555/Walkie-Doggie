@@ -1,44 +1,47 @@
-﻿namespace Walkie_Doggie.Database;
+﻿using Google.Cloud.Firestore;
+using Walkie_Doggie.Helpers;
 
-class DogImplementation : Interfaces.IDog
+namespace Walkie_Doggie.Database;
+
+public class DogImplementation : AbstractCRUD<DogModel, string>, Interfaces.IDog
 {
-    public Task<bool> AddAsync(DogModel item)
+    public DogImplementation(FirestoreDb dbContext)
+        : base(dbContext, "Dogs") { }
+
+    public async Task<bool> HasDogAsync()
     {
-        throw new NotImplementedException();
+        IEnumerable<DogModel> dogs = await base.GetAllAsync();
+
+        return dogs.FirstOrDefault() != null;
     }
 
-    public Task DeleteAll()
+    public async Task<int> GetTotalWalksAsync(bool increment = false)
     {
-        throw new NotImplementedException();
+        IEnumerable<DogModel> dogs = await base.GetAllAsync();
+        DogModel dog = dogs.FirstOrDefault() ?? 
+            throw new DirectoryNotFoundException("There are no saved dogs yet!");
+
+        if (increment)
+        {
+            dog.TotalWalks++;
+            await base.UpdateAsync(dog);
+        }
+        return dog.TotalWalks; // returns the newly incremented value
     }
 
-    public Task<bool> DeleteAsync(string id)
+    public override async Task AddAsync(DogModel item)
     {
-        throw new NotImplementedException();
-    }
+        if (await HasDogAsync())
+            await base.DeleteAllAsync();
 
-    public Task<IEnumerable<DogModel>> GetAllAsync()
-    {
-        throw new NotImplementedException();
-    }
+        try
+        {
+            WalkImplementation walkImplementation = new WalkImplementation(_db);
+            WalkModel lastWalk = await walkImplementation.GetLastWalkAsync();
+            item.TotalWalks = lastWalk.WalkId;
+        }
+        catch { item.TotalWalks = 0; }
 
-    public Task<DogModel?> GetAsync(string id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<IEnumerable<string>> GetWalksIdAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> HasDogAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> UpdateAsync(DogModel item)
-    {
-        throw new NotImplementedException();
+        await base.AddAsync(item);
     }
 }

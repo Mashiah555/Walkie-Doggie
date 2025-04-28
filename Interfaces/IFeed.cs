@@ -2,5 +2,5 @@
 
 public interface IFeed : ICRUD<FeedModel, int>
 {
-    Task<FeedModel> GetLastFeedAsync();
+    Task<FeedModel> GetLastFeedAsync(string? username = null);
 }

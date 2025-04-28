@@ -1,39 +1,22 @@
-﻿namespace Walkie_Doggie.Database;
+﻿using Google.Cloud.Firestore;
 
-class FeedImplementation : Interfaces.IFeed
+namespace Walkie_Doggie.Database;
+
+public class FeedImplementation : AbstractCRUD<FeedModel, int>, Interfaces.IFeed
 {
-    public Task<bool> AddAsync(FeedModel item)
-    {
-        throw new NotImplementedException();
-    }
+    public FeedImplementation(FirestoreDb dbContext)
+        : base(dbContext, "Feeds") { }
 
-    public Task DeleteAll()
+    public async Task<FeedModel> GetLastFeedAsync(string? username = null)
     {
-        throw new NotImplementedException();
-    }
+        IEnumerable<FeedModel> feeds = await base.GetAllAsync();
+        if (!string.IsNullOrEmpty(username))
+            feeds = feeds.Where(feed => feed.FeederName == username);
 
-    public Task<bool> DeleteAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
+        FeedModel? latestFeed= feeds
+            .OrderByDescending(feed => feed.FeedTime).FirstOrDefault();
 
-    public Task<IEnumerable<FeedModel>> GetAllAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<FeedModel?> GetAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<FeedModel> GetLastFeedAsync()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> UpdateAsync(FeedModel item)
-    {
-        throw new NotImplementedException();
+        return latestFeed ??
+            throw new Exception("There are no saved feeds yet!");
     }
 }

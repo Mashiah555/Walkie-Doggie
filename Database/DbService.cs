@@ -1,94 +1,46 @@
-﻿using Google.Cloud.Firestore;
-using Walkie_Doggie.Helpers;
-using Walkie_Doggie.Interfaces;
+﻿using Walkie_Doggie.Interfaces;
+using Google.Apis.Auth.OAuth2;
+using Google.Cloud.Firestore;
+using System.Reflection;
 
 namespace Walkie_Doggie.Database;
 
-public abstract class DbService<TModel, TVariable> : ICRUD<TModel, TVariable>
-    where TModel : class
+public class DbService
 {
-    protected readonly FirestoreDb _db;
-    protected readonly string _collection;
-    public DbService(FirestoreDb dbContext, string collectionName)
+    private static FirestoreDb? _db;
+    public IUser Users { get; }
+    public IWalk Walks { get; }
+    public IFeed Feeds { get; }
+    public IDog Dogs { get; }
+
+    public DbService()
     {
-        _db = dbContext;
-        _collection = collectionName;
+        _db ??= Authenticate();
+
+        Dogs = new DogImplementation(_db);
+        Users = new UserImplementation(_db);
+        Walks = new WalkImplementation(_db);
+        Feeds = new FeedImplementation(_db);
     }
 
-    public virtual async Task AddAsync(TModel item)
+    private FirestoreDb Authenticate()
     {
-        await NetworkService.NetworkCheck();
+        var assembly = Assembly.GetExecutingAssembly();
+        var resourceName = "Walkie_Doggie.Resources.Raw.firebase-adminsdk.json";
 
-        await _db
-            .Collection(_collection)
-            .Document(Converters.ToDocumentName(item))
-            .SetAsync(item);
-    }
-
-    public virtual async Task<TModel?> GetAsync(TVariable id)
-    {
-        await NetworkService.NetworkCheck();
-
-        var snapshot = await _db
-            .Collection(_collection)
-            .Document(id!.ToString())
-            .GetSnapshotAsync();
-
-        return snapshot.Exists ? 
-            snapshot.ConvertTo<TModel>() : null;
-    }
-
-    public virtual async Task<IEnumerable<TModel>> GetAllAsync()
-    {
-        await NetworkService.NetworkCheck();
-
-        var snapshot = await _db
-            .Collection(_collection)
-            .GetSnapshotAsync();
-
-        return snapshot == null ? new List<TModel>() : 
-            snapshot.Documents.Select(doc => doc.ConvertTo<TModel>());
-    }
-
-    public virtual async Task<bool> UpdateAsync(TModel item)
-    {
-        try
+        using (var stream = assembly.GetManifestResourceStream(resourceName))
         {
-            await AddAsync(item);
-        }
-        catch
-        {
-            return false;
-        }
-        return true;
-    }
+            if (stream == null)
+                throw new Exception($"Resource {resourceName} not found.");
 
-    public virtual async Task<bool> DeleteAsync(TVariable id)
-    {
-        await NetworkService.NetworkCheck();
+            GoogleCredential credential = GoogleCredential.FromStream(stream);
 
-        try
-        {
-            await _db
-                .Collection(_collection)
-                .Document(id!.ToString())
-                .DeleteAsync();
-        }
-        catch
-        {
-            return false;
-        }
-        return true;
-    }
-
-    public virtual async Task DeleteAll()
-    {
-        foreach (var item in await GetAllAsync())
-        {
-            await _db
-                .Collection(_collection)
-                .Document(Converters.ToDocumentName(item))
-                .DeleteAsync();
+            return new FirestoreDbBuilder
+            {
+                ProjectId = "walkiedoggiedb-mashiah",
+                Credential = credential,
+                EmulatorDetection = Google.Api.Gax.EmulatorDetection.None // Ensure it's using the live Firestore
+            }.Build();
         }
     }
 }
