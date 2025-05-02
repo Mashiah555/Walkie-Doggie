@@ -1,4 +1,6 @@
-﻿namespace Walkie_Doggie.Interfaces;
+﻿using Google.Cloud.Firestore;
+
+namespace Walkie_Doggie.Interfaces;
 
 public interface IWalk : ICRUD<WalkModel, int>
 {

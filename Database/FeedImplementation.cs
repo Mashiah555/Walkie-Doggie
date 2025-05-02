@@ -4,7 +4,7 @@ using Walkie_Doggie.Helpers;
 
 namespace Walkie_Doggie.Database;
 
-public class FeedImplementation : AbstractCRUD<FeedModel, int>, Interfaces.IFeed
+public class FeedImplementation : GenericCRUD<FeedModel, int>, Interfaces.IFeed
 {
     public FeedImplementation(FirestoreDb dbContext)
         : base(dbContext, "Feeds") { }

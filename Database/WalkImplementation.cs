@@ -1,9 +1,10 @@
 ﻿using Google.Cloud.Firestore;
 using Walkie_Doggie.Helpers;
+using Walkie_Doggie.Services;
 
 namespace Walkie_Doggie.Database;
 
-public class WalkImplementation : AbstractCRUD<WalkModel, int>, Interfaces.IWalk
+public class WalkImplementation : GenericCRUD<WalkModel, int>, Interfaces.IWalk
 {
     public WalkImplementation(FirestoreDb dbContext)
         : base(dbContext, "Walks") { }

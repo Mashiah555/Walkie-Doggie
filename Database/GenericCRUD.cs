@@ -4,12 +4,12 @@ using Walkie_Doggie.Interfaces;
 
 namespace Walkie_Doggie.Database;
 
-public abstract class AbstractCRUD<TModel, TVariable> : ICRUD<TModel, TVariable>
+public abstract class GenericCRUD<TModel, TVariable> : ICRUD<TModel, TVariable>
     where TModel : class
 {
     protected readonly FirestoreDb _db;
     protected readonly string _collection;
-    public AbstractCRUD(FirestoreDb dbContext, string collectionName)
+    public GenericCRUD(FirestoreDb dbContext, string collectionName)
     {
         _db = dbContext;
         _collection = collectionName;

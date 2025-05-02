@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using System.Text;
 using System.Text.Json;
 using Walkie_Doggie.Popups;
 
@@ -145,9 +146,4 @@ public static class AppService
         //WIP (Work In Progress)
     }
     #endregion App Configuration
-}
-
-interface I1
-{
-
 }

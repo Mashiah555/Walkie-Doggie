@@ -4,7 +4,7 @@ using Walkie_Doggie.Interfaces;
 
 namespace Walkie_Doggie.Database;
 
-public class UserImplementation : AbstractCRUD<UserModel, string>, Interfaces.IUser
+public class UserImplementation : GenericCRUD<UserModel, string>, Interfaces.IUser
 {
     public UserImplementation(FirestoreDb dbContext) 
         : base(dbContext, "Users") {}
@@ -13,11 +13,6 @@ public class UserImplementation : AbstractCRUD<UserModel, string>, Interfaces.IU
     {
         return (await base.GetAllAsync())
             .Select(user => user.Name).ToList();
-    }
-
-    public Task<QuerySnapshot> GetUsersSnapshot()
-    {
-        throw new NotImplementedException();
     }
 
     public async Task<bool> HasUserAsync(string name)

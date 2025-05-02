@@ -1,9 +1,10 @@
 ﻿using Google.Cloud.Firestore;
 using Walkie_Doggie.Helpers;
+using Walkie_Doggie.Services;
 
 namespace Walkie_Doggie.Database;
 
-public class DogImplementation : AbstractCRUD<DogModel, string>, Interfaces.IDog
+public class DogImplementation : GenericCRUD<DogModel, string>, Interfaces.IDog
 {
     public DogImplementation(FirestoreDb dbContext)
         : base(dbContext, "Dogs") { }

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Input;
-using Walkie_Doggie.Database;
 using Walkie_Doggie.Popups;
+using Walkie_Doggie.Services;
 
 namespace Walkie_Doggie.ViewModels;
 

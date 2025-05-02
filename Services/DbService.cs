@@ -2,12 +2,16 @@
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
 using System.Reflection;
+using System.Text;
+using Google.Cloud.Firestore.V1;
+using Walkie_Doggie.Database;
 
-namespace Walkie_Doggie.Database;
+namespace Walkie_Doggie.Services;
 
 public static class DbService
 {
     private static FirestoreDb _db = Authenticate();
+    public static DbInsights Insights { get; }
     public static IUser Users { get; }
     public static IWalk Walks { get; }
     public static IFeed Feeds { get; }
@@ -15,6 +19,7 @@ public static class DbService
 
     static DbService()
     {
+        Insights = new DbInsights();
         Dogs = new DogImplementation(_db);
         Users = new UserImplementation(_db);
         Walks = new WalkImplementation(_db);
