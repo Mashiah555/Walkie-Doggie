@@ -1,69 +1,7 @@
 ﻿using CommunityToolkit.Maui.Alerts;
-using CommunityToolkit.Maui.Core;
-using System.Text;
 using System.Text.Json;
-using Walkie_Doggie.Popups;
 
-namespace Walkie_Doggie.Helpers;
-
-public static class NavigationFlags
-{
-    public static bool IsMessagePopedUp = false;
-}
-
-public class NetworkService
-{
-    public static bool IsConnected() => 
-        Connectivity.Current.NetworkAccess == NetworkAccess.Internet;
-
-    public async static Task NetworkCheck(TimeSpan? timeout = null)
-    {
-        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
-            return;
-
-        if (!NavigationFlags.IsMessagePopedUp)
-        {
-            NavigationFlags.IsMessagePopedUp = true;
-            await MauiPopup.PopupAction.DisplayPopup(new MessagePopup(
-                "אין חיבור",
-                "!נדרש חיבור לאינטרנט על מנת להשתמש באפליקציה" +
-                "\nהאפליקציה תחזור לפעול כשמכשיר זה יחובר לרשת.",
-                ContextImage.NoInternet,
-                ButtonSet.NoneAndForce));
-        }
-
-    Recheck:
-        DateTime startTime = DateTime.UtcNow;
-        timeout ??= TimeSpan.FromSeconds(60);
-
-        while (DateTime.UtcNow - startTime < timeout)
-        {
-            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
-            {
-                await MauiPopup.PopupAction.ClosePopup();
-                NavigationFlags.IsMessagePopedUp = false;
-                await Toast.Make("מחובר לאינטרנט", ToastDuration.Short).Show();
-                return;
-            }
-            await Task.Delay(1500);
-        }
-
-        bool recheck = false;
-        var snack = Snackbar.Make(
-            "החיבור לרשת נכשל, האפליקציה תיסגר.",
-            () => { recheck = true; },
-            "נסה שוב",
-            TimeSpan.FromSeconds(3));
-        await snack.Show();
-        await Task.Delay(3000);
-
-        if (recheck) goto Recheck;
-
-        await Toast.Make("החיבור לאינטרנט נכשל", ToastDuration.Short).Show();
-        AppService.QuitApp();
-        return;
-    }
-}
+namespace Walkie_Doggie.Services;
 
 public static class AppService
 {
@@ -106,10 +44,21 @@ public static class AppService
             if (latest <= current)
                 return;
 
-            //LinkPopup popup = new LinkPopup();
-            bool update = await Shell.Current.DisplayAlert("עדכון זמין", remote.Message, "עדכון", "מה חדש");
+            bool update = false;
+            if (!remote.IsMandatory)
+                await Snackbar.Make(
+                    "עדכון חדש זמין",
+                    () => { update = true; },
+                    "עדכן",
+                    TimeSpan.FromSeconds(8)).Show();
+            if (!update) return;
+
+        UpdatePopup:
+            update = await Shell.Current.DisplayAlert("עדכון זמין", remote.Message, "עדכון", "מה חדש");
             await Launcher.OpenAsync(update ? remote.DownloadUrl : remote.AboutUrl);
 
+            if (remote.IsMandatory)
+                goto UpdatePopup;
         }
         catch (Exception ex)
         {
@@ -122,6 +71,7 @@ public static class AppService
         /* version.json Structural Properties.
            Must match the JSON properties to deserialize correctly. */
         public int LatestVersion { get; set; }
+        public bool IsMandatory { get; set; } = false;
         public string Message { get; set; } = string.Empty;
         public string DownloadUrl { get; set; } = string.Empty;
         public string AboutUrl { get; set; } = string.Empty;
@@ -134,7 +84,7 @@ public static class AppService
 #if ANDROID
         Android.OS.Process.KillProcess(Android.OS.Process.MyPid());
 #elif WINDOWS
-       System.Diagnostics.Process.GetCurrentProcess().Kill();  
+        System.Diagnostics.Process.GetCurrentProcess().Kill();
 #else
        // For unsupported platforms:
        Application.Current!.Quit();

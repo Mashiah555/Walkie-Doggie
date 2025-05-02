@@ -1,6 +1,7 @@
 ﻿using Google.Cloud.Firestore;
 using Walkie_Doggie.Helpers;
 using Walkie_Doggie.Interfaces;
+using Walkie_Doggie.Services;
 
 namespace Walkie_Doggie.Database;
 
@@ -63,7 +64,7 @@ public abstract class GenericCRUD<TModel, TVariable> : ICRUD<TModel, TVariable>
         return true;
     }
 
-    public virtual async Task<bool> DeleteAsync(TVariable id)
+    public virtual async Task<bool> DeleteAsync(TModel item)
     {
         await NetworkService.NetworkCheck();
 
@@ -71,7 +72,7 @@ public abstract class GenericCRUD<TModel, TVariable> : ICRUD<TModel, TVariable>
         {
             await _db
                 .Collection(_collection)
-                .Document(id!.ToString())
+                .Document(Converters.ToDocumentName(item))
                 .DeleteAsync();
         }
         catch

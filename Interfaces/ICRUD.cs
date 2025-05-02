@@ -6,6 +6,6 @@ public interface ICRUD<TModel, TVariable> where TModel : class
     Task<TModel?> GetAsync(TVariable id);
     Task<IEnumerable<TModel>> GetAllAsync();
     Task<bool> UpdateAsync(TModel item);
-    Task<bool> DeleteAsync(TVariable id);
+    Task<bool> DeleteAsync(TModel item);
     Task DeleteAllAsync();
 }

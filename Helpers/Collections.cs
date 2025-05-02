@@ -1,4 +1,6 @@
-﻿namespace Walkie_Doggie.Helpers;
+﻿using Walkie_Doggie.Services;
+
+namespace Walkie_Doggie.Helpers;
 
 public static class Collections
 {

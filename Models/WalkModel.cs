@@ -23,4 +23,10 @@ public class WalkModel
 
     [FirestoreProperty]
     public string? Notes { get; set; }       // Optional notes about the walk
+
+    public static WalkModel Default => new WalkModel
+    {
+        WalkId = 0,
+        WalkerName = string.Empty,
+    };
 }

@@ -14,4 +14,9 @@ public class FeedModel
 
     [FirestoreProperty]
     public string? Notes { get; set; }       // Optional notes about the feeding
+
+    public static FeedModel Default => new FeedModel
+    {
+        FeederName = string.Empty,
+    };
 }

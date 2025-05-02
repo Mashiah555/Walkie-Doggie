@@ -1,4 +1,4 @@
-﻿using Walkie_Doggie.Helpers;
+﻿using Walkie_Doggie.Database;
 using Walkie_Doggie.Pages;
 using Walkie_Doggie.Views;
 
@@ -18,6 +18,9 @@ public static class NavigationWizard
         }
 
         // Check for updates
-        await VersionService.CheckForUpdatesAsync();
+        await AppService.CheckForUpdatesAsync(); //todo: option to force or not force updating
+
+        // Detect and clean full storage space of the cloud database
+        await DbService.Operations.FreeStorageSpaceAsync();
     }
 }

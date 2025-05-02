@@ -2,6 +2,7 @@
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
 using Walkie_Doggie.Helpers;
+using Walkie_Doggie.Services;
 
 public class FirebaseService
 {
