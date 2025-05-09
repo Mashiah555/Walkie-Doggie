@@ -39,14 +39,16 @@ public static class AppService
 
             bool update = false;
             if (!remote.IsMandatory)
+            {
                 await Snackbar.Make(
                     "עדכון חדש זמין",
                     () => { update = true; },
                     "עדכן",
                     TimeSpan.FromSeconds(6)).Show();
-            await Task.Delay(6000);
-            if (!update)
-                return;
+                await Task.Delay(6000);
+                if (!update)
+                    return;
+            }
 
         UpdatePopup:
             update = await Shell.Current.DisplayAlert("עדכון זמין", remote.Message, "עדכון", "מה חדש");

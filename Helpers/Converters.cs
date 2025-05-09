@@ -6,15 +6,13 @@ namespace Walkie_Doggie.Helpers;
 public static class Converters
 {
     #region Time Converters
-    private static readonly TimeZoneInfo IsraelTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Israel Standard Time");
 
     /// <summary>
     /// Converts local DateTime to Firestore Timestamp (stored in UTC).
     /// </summary>
     public static Timestamp ConvertToTimestamp(DateTime dateTime)
     {
-        DateTime israelTime = TimeZoneInfo.ConvertTime(dateTime, IsraelTimeZone);
-        return Timestamp.FromDateTime(israelTime.ToUniversalTime());
+        return Timestamp.FromDateTime(dateTime);
     }
 
     /// <summary>
@@ -22,7 +20,7 @@ public static class Converters
     /// </summary>
     public static DateTime ConvertToDateTime(Timestamp timestamp)
     {
-        return TimeZoneInfo.ConvertTimeFromUtc(timestamp.ToDateTime(), IsraelTimeZone);
+        return timestamp.ToDateTime();
     }
     #endregion Time Converters
 

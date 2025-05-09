@@ -12,7 +12,7 @@ namespace Walkie_Doggie.Services;
 
 public static class DbService
 {
-    private static FirestoreDb _db = Authenticate();
+    private static readonly FirestoreDb _db = Authenticate();
     public static IUser Users { get; }
     public static IWalk Walks { get; }
     public static IFeed Feeds { get; }
@@ -23,7 +23,6 @@ public static class DbService
         #region Properties
         private const int MaxBytes = 1000000000; // 1 GB free cloud storage space limit
         private const int MetadataBytes = 32; // Estimated 32 bytes of metadata per document
-        public static int DbBytes { get; private set; } = GetEstimatedBytesAsync().Result;
         #endregion Properties
 
         public static async Task<bool> FreeStorageSpaceAsync(bool forceCleanup = false, int maxPercentage = 90)
@@ -43,7 +42,7 @@ public static class DbService
                     maxPercentage = 90; // Set a default value if out of range
 
                 // returns indication of whether the method even tried to clean up space
-                if (!forceCleanup && !IsDbFullAsync(maxPercentage))
+                if (!forceCleanup && !(await IsDbFullAsync(maxPercentage)))
                     return false;
                 /* Although IsDbFullAsync() set maxPercentage to 95% by default,
                  * the default at this method is 90%.
@@ -63,9 +62,9 @@ public static class DbService
                     GetEstimatedBytesAsync()) - (int)GetBytesLimit(maxPercentage);
                 int cleanedBytes = 0;
 
-                List<WalkModel> walks = (await DbService.Walks.GetAllAsync())
+                List<WalkModel> walks = (await Walks.GetAllAsync())
                     .OrderBy(walk => walk.WalkTime).ToList();
-                List<FeedModel> feeds = (await DbService.Feeds.GetAllAsync())
+                List<FeedModel> feeds = (await Feeds.GetAllAsync())
                     .OrderBy(feed => feed.FeedTime).ToList();
 
                 while (cleanedBytes < excessiveBytes && (walks.Count > 0 || feeds.Count > 0))
@@ -90,9 +89,6 @@ public static class DbService
                     }
                 }
 
-                // Update the database size after cleanup
-                DbBytes -= cleanedBytes;
-
                 // Inform the user about the cleanup
                 if (forceCleanup)
                     await Toast.Make($"נוקו {cleanedBytes} ג\"ב מהאחסון של מאגר המידע",
@@ -104,9 +100,9 @@ public static class DbService
             return true;
         }
 
-        public static bool IsDbFullAsync(int percentageLimit = 95)
+        public static async Task<bool> IsDbFullAsync(int percentageLimit = 95)
         {
-            return DbBytes >= GetBytesLimit(percentageLimit);
+            return await GetEstimatedBytesAsync() >= GetBytesLimit(percentageLimit);
         }
 
         #region Private Helper Methods
