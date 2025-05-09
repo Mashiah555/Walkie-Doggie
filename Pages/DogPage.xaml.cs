@@ -21,7 +21,8 @@ public partial class DogPage : ContentPage
     {
         try
         {
-            DogModel dog = await DbService.Dogs.GetAsync();
+            DogModel dog = await DbService.Dogs.GetAsync() ?? 
+                throw new DirectoryNotFoundException("There is no saved dog");
             //DogNameLabel.Text = dog.DogName;
         }
         catch (Exception ex)

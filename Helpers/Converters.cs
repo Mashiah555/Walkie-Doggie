@@ -12,7 +12,8 @@ public static class Converters
     /// </summary>
     public static Timestamp ConvertToTimestamp(DateTime dateTime)
     {
-        return Timestamp.FromDateTime(dateTime);
+        return Timestamp.FromDateTime(dateTime.ToUniversalTime());
+
     }
 
     /// <summary>
@@ -20,7 +21,7 @@ public static class Converters
     /// </summary>
     public static DateTime ConvertToDateTime(Timestamp timestamp)
     {
-        return timestamp.ToDateTime();
+        return TimeZoneInfo.ConvertTimeFromUtc(timestamp.ToDateTime(), TimeZoneInfo.Local);
     }
     #endregion Time Converters
 

@@ -5,8 +5,14 @@ namespace Walkie_Doggie.Helpers;
 public static class Collections
 {
     public static IEnumerable<string> Usernames { get; private set; } = new List<string>();
-    public static DogModel? Dog { get; set; }
     public static bool IsMessagePopedUp { get; set; } = false;
+
+    //private static DogModel _dog;
+    //public static DogModel Dog
+    //{
+    //    get => _dog;
+    //    set => _dog = value;
+    //}
 
     static Collections()
     {
@@ -16,6 +22,6 @@ public static class Collections
     private static async Task InitializeAsync()
     {
         Usernames = await DbService.Users.GetAllUsernamesAsync();
-        Dog = await DbService.Dogs.GetAsync();
+        //Dog = await DbService.Dogs.GetAsync();
     }
 }

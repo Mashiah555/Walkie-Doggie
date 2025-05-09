@@ -36,7 +36,7 @@ public class WalkImplementation : GenericCRUD<WalkModel, int>, Interfaces.IWalk
         {
             WalkId = await DbService.Dogs.GetTotalWalksAsync(true),
             WalkerName = walkerName,
-            WalkTime = Timestamp.FromDateTime(walkTime),
+            WalkTime = Converters.ConvertToTimestamp(walkTime),
             IsPooped = isPooped,
             Notes = notes,
             InDebtName = inDebtName,

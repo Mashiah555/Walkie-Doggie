@@ -54,7 +54,7 @@ public class DogImplementation : GenericCRUD<DogModel, string>, Interfaces.IDog
         catch { item.TotalWalks = 0; }
 
         await base.AddAsync(item);
-        Collections.Dog = item;
+        //Collections.Dog = item;
     }
 
     public async Task AddAsync(string name, DateTime birthdate, string breed, double weight, int feedAmount)
