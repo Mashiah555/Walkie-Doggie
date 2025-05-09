@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using Microsoft.VisualBasic;
 using Walkie_Doggie.Helpers;
 using Walkie_Doggie.Popups;
 
@@ -15,9 +16,9 @@ public static class NetworkService
         if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             return;
 
-        if (!NavigationFlags.IsMessagePopedUp)
+        if (!Collections.IsMessagePopedUp)
         {
-            NavigationFlags.IsMessagePopedUp = true;
+            Collections.IsMessagePopedUp = true;
             await MauiPopup.PopupAction.DisplayPopup(new MessagePopup(
                 "אין חיבור",
                 "!נדרש חיבור לאינטרנט על מנת להשתמש באפליקציה" +
@@ -35,7 +36,7 @@ public static class NetworkService
             if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             {
                 await MauiPopup.PopupAction.ClosePopup();
-                NavigationFlags.IsMessagePopedUp = false;
+                Collections.IsMessagePopedUp = false;
                 await Toast.Make("מחובר לאינטרנט", ToastDuration.Short).Show();
                 return;
             }

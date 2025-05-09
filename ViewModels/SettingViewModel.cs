@@ -4,14 +4,13 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using Walkie_Doggie.Pages;
+using Walkie_Doggie.Services;
 using Walkie_Doggie.Views;
 
 namespace Walkie_Doggie.ViewModels;
 
 class SettingViewModel : INotifyPropertyChanged
 {
-    private readonly FirebaseService _db;
-
     #region View Model Properties
     string name;
     public string Name
@@ -65,8 +64,6 @@ class SettingViewModel : INotifyPropertyChanged
 
     public SettingViewModel()
     {
-        _db = new FirebaseService();
-
         themes = new ObservableCollection<string> { "ברירת המחדל של המערכת", "בהיר", "כהה" };
         name = LocalService.GetUsername() ?? string.Empty;
         theme = LocalService.GetTheme();
@@ -97,7 +94,7 @@ class SettingViewModel : INotifyPropertyChanged
 
     private async void SyncSettings()
     {
-        await _db.UpdateUserAsync(Name, Theme);
+        await DbService.Users.UpdateAsync(Name, Theme);
         IsSynced = true;
         LocalService.SetSyncState(true);
     }

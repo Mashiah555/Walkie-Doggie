@@ -6,14 +6,13 @@ namespace Walkie_Doggie.Services;
 
 public static class NavigationWizard
 {
-    private static readonly FirebaseService _db = new();
     public static async void InitializeAppAsync()
     {
         if (Shell.Current != null)
         {
             if (string.IsNullOrEmpty(LocalService.GetUsername()))
                 await Shell.Current.GoToAsync(nameof(LoginPage), true);
-            else if (!(await _db.HasDog()))
+            else if (!(await DbService.Dogs.HasDogAsync()))
                 await Shell.Current.GoToAsync(nameof(DogView), true);
         }
 

@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Windows.Input;
+using Walkie_Doggie.Helpers;
+using Walkie_Doggie.Services;
 
 namespace Walkie_Doggie.ViewModels;
 
 public class FeedViewModel : INotifyPropertyChanged
 {
-    private readonly FirebaseService _db;
-
     #region View Model Properties
     string signedUser;
     public string SignedUser
@@ -69,8 +69,8 @@ public class FeedViewModel : INotifyPropertyChanged
         }
     }
 
-    List<string> users;
-    public List<string> Users
+    IEnumerable<string> users;
+    public IEnumerable<string> Users
     {
         get => users;
         set
@@ -88,15 +88,13 @@ public class FeedViewModel : INotifyPropertyChanged
 
     public FeedViewModel()
     {
-        _db = new FirebaseService();
-
         signedUser = LocalService.GetUsername() ?? string.Empty;
+        users = Collections.Usernames;
         feederName = string.Empty;
         feedDate = DateTime.Today;
         feedTime = DateTime.Now;
         feedAmount = 0;
         notes = string.Empty;
-        users = new List<string> { signedUser };
 
         InitializeAsync();
 
@@ -105,15 +103,13 @@ public class FeedViewModel : INotifyPropertyChanged
     }
     private async void InitializeAsync()
     {
-        Users = await _db.GetAllUsernamesAsync();
-
-        DogModel dog = await _db.GetDogAsync();
-        FeedAmount = dog.DefaultFeedAmount;
+        DogModel? dog = await DbService.Dogs.GetAsync();
+        FeedAmount = dog is null ? 0 : dog.DefaultFeedAmount;
     }
 
     public async void SaveFeed()
     {
-        await _db.AddFeedAsync(FeederName, FeedTime, FeedAmount, Notes);
+        await DbService.Feeds.AddAsync(FeederName, FeedTime, FeedAmount, Notes);
 
         await Shell.Current.GoToAsync("..", true);
     }

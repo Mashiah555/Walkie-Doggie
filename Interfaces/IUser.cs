@@ -8,4 +8,5 @@ public interface IUser : ICRUD<UserModel, string>
     Task<IEnumerable<string>> GetAllUsernamesAsync();
     Task IncrementWalkCountAsync(string name);
     Task AddAsync(string name);
+    Task<bool> UpdateAsync(string name, AppTheme theme);
 }

@@ -1,20 +1,21 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Views;
+using Walkie_Doggie.Services;
 using Walkie_Doggie.ViewModels;
 using Walkie_Doggie.Views;
 namespace Walkie_Doggie.Pages;
 
 public partial class LoginPage : ContentPage
 {
-    private readonly FirebaseService _db;
+    
     public UserViewModel ViewModel { get; set; }
 
     public LoginPage()
     {
         InitializeComponent();
 
-        _db = new FirebaseService();
+        
         ViewModel = new UserViewModel();
         BindingContext = ViewModel;
 
@@ -23,7 +24,7 @@ public partial class LoginPage : ContentPage
 
     private async void QueryCollection()
     {
-        UsersCollection.ItemsSource = await _db.GetAllUsersAsync();
+        UsersCollection.ItemsSource = await DbService.Users.GetAllAsync();
     }
 
     private async void ButtonSignUp_Clicked(object sender, EventArgs e)
@@ -41,14 +42,14 @@ public partial class LoginPage : ContentPage
             msg = "הרשמה בוטלה";
         else if (!string.IsNullOrEmpty(LocalService.GetUsername()))
             msg = "אתה כבר רשום במערכת";
-        else if (await _db.HasUserAsync(result))
+        else if (await DbService.Users.HasUserAsync(result))
             msg = "השם הזה כבר קיים במערכת";
 
         if (msg is not null)
             await Toast.Make(msg, ToastDuration.Long).Show();
         else if (result is not null)
         {
-            await _db.AddUserAsync((string)result);
+            await DbService.Users.AddAsync((string)result);
             Login((string)result);
         }
     }
@@ -73,7 +74,7 @@ public partial class LoginPage : ContentPage
         LocalService.SetUsername(username);
         await Toast.Make("ההרשמה הצליחה", ToastDuration.Short).Show();
 
-        if (!await _db.HasDog())
+        if (!await DbService.Dogs.HasDogAsync())
         {
             await Shell.Current.GoToAsync(nameof(DogView), true);
             Shell.Current.Navigation.RemovePage(this);

@@ -11,9 +11,7 @@ public class DogImplementation : GenericCRUD<DogModel, string>, Interfaces.IDog
 
     public async Task<bool> HasDogAsync()
     {
-        IEnumerable<DogModel> dogs = await base.GetAllAsync();
-
-        return dogs.FirstOrDefault() != null;
+        return await GetAsync() != null;
     }
 
     public async Task<int> GetTotalWalksAsync(bool increment = false)
@@ -30,6 +28,19 @@ public class DogImplementation : GenericCRUD<DogModel, string>, Interfaces.IDog
         return dog.TotalWalks; // returns the newly incremented value
     }
 
+    public async Task<DogModel?> GetAsync()
+    {
+        await NetworkService.NetworkCheck();
+
+        var snapshot = await _db
+            .Collection(_collection)
+            .Limit(1)
+            .GetSnapshotAsync();
+
+        return snapshot.Count > 0 ?
+            snapshot.Documents[0].ConvertTo<DogModel>() : null;
+    }
+
     public override async Task AddAsync(DogModel item)
     {
         if (await HasDogAsync())
@@ -43,6 +54,7 @@ public class DogImplementation : GenericCRUD<DogModel, string>, Interfaces.IDog
         catch { item.TotalWalks = 0; }
 
         await base.AddAsync(item);
+        Collections.Dog = item;
     }
 
     public async Task AddAsync(string name, DateTime birthdate, string breed, double weight, int feedAmount)
@@ -56,5 +68,22 @@ public class DogImplementation : GenericCRUD<DogModel, string>, Interfaces.IDog
             DefaultFeedAmount = feedAmount,
             TotalWalks = 0
         });
+    }
+
+    public async Task<bool> UpdateAsync(DateTime birthdate, string breed, double weight, int feedAmount)
+    {
+        DogModel? dog = await GetAsync();
+        if (dog == null)
+            return false;
+
+        await UpdateAsync(new DogModel
+        {
+            DogName = dog.DogName,
+            DogBirthdate = Converters.ConvertToTimestamp(birthdate),
+            DogBreed = breed,
+            DogWeight = weight,
+            DefaultFeedAmount = feedAmount
+        });
+        return true;
     }
 }

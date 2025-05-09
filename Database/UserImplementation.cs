@@ -38,4 +38,15 @@ public class UserImplementation : GenericCRUD<UserModel, string>, Interfaces.IUs
             Theme = AppTheme.Unspecified
         });
     }
+
+    public async Task<bool> UpdateAsync(string name, AppTheme theme)
+    {
+        UserModel? user = await GetAsync(name);
+        if (user == null)
+            return false;
+
+        user.Theme = theme;
+        await base.UpdateAsync(user);
+        return true;
+    }
 }

@@ -9,12 +9,10 @@ namespace Walkie_Doggie.Pages;
 
 public partial class WalksPage : ContentPage
 {
-    private readonly FirebaseService _db;
-
     public WalksPage()
 	{
 		InitializeComponent();
-        _db = new FirebaseService();
+        
 
         // Initialize the app and check if the user is logged in,
         // and if they have a dog registered.
@@ -28,7 +26,7 @@ public partial class WalksPage : ContentPage
     {
         try
         {
-            WalkModel lastWalk = await _db.GetLastWalkAsync(LocalService.GetUsername());
+            WalkModel lastWalk = await DbService.Walks.GetLastWalkAsync(LocalService.GetUsername());
 
             LastWalkTime.Text = "טייל בפעם האחרונה בשעה " +
                 ConvertToString(lastWalk.WalkTime);

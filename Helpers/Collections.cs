@@ -4,9 +4,9 @@ namespace Walkie_Doggie.Helpers;
 
 public static class Collections
 {
-    private static readonly FirebaseService _db = new FirebaseService();
-
-    public static ICollection<string> Users { get; private set; } = new List<string>();
+    public static IEnumerable<string> Usernames { get; private set; } = new List<string>();
+    public static DogModel? Dog { get; set; }
+    public static bool IsMessagePopedUp { get; set; } = false;
 
     static Collections()
     {
@@ -15,8 +15,7 @@ public static class Collections
 
     private static async Task InitializeAsync()
     {
-        await NetworkService.NetworkCheck();
-
-        Users = await _db.GetAllUsernamesAsync();
+        Usernames = await DbService.Users.GetAllUsernamesAsync();
+        Dog = await DbService.Dogs.GetAsync();
     }
 }

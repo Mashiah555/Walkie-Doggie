@@ -5,12 +5,12 @@ using Google.Cloud.Firestore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using Walkie_Doggie.Services;
 
 namespace Walkie_Doggie.ViewModels;
 
 public class DogViewModel : INotifyPropertyChanged
 {
-    private readonly FirebaseService _db;
 
     #region View Model Properties
     string dogName;
@@ -93,8 +93,6 @@ public class DogViewModel : INotifyPropertyChanged
 
     public DogViewModel()
     {
-        _db = new FirebaseService();
-
         dogBreeds = new ObservableCollection<string>
         {
             "איילירלנד", "אלסקן מלמוט", "בולדוג", "ביגל", "בורדר קולי", "בוקסר",
@@ -116,9 +114,10 @@ public class DogViewModel : INotifyPropertyChanged
     {
         try
         {
-            if (await _db.HasDog())
+            if (await DbService.Dogs.HasDogAsync())
             {
-                DogModel dog = await _db.GetDogAsync();
+                DogModel dog = await DbService.Dogs.GetAsync() ?? 
+                    throw new Exception("There are no saved dogs yet!");
 
                 HasDog = true;
                 DogName = dog.DogName;
@@ -152,9 +151,9 @@ public class DogViewModel : INotifyPropertyChanged
             return;
         }
 
-        if (await _db.HasDog())
+        if (await DbService.Dogs.HasDogAsync())
         {
-            await _db.UpdateDogAsync(dogBirthdate, dogBreed,
+            await DbService.Dogs.UpdateAsync(dogBirthdate, dogBreed,
                 Math.Floor(dogWeight * 2 + 0.5) / 2, defaultFeedAmount);
 
             await Toast.Make("השינויים נשמרו", ToastDuration.Short).Show();
@@ -162,7 +161,7 @@ public class DogViewModel : INotifyPropertyChanged
         }
         else
         {
-            await _db.AddDogAsync(dogName, dogBirthdate, dogBreed,
+            await DbService.Dogs.AddAsync(dogName, dogBirthdate, dogBreed,
                 Math.Floor(dogWeight * 2 + 0.5) / 2, defaultFeedAmount);
 
             await Toast.Make("השינויים נשמרו", ToastDuration.Short).Show();

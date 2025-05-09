@@ -1,8 +1,9 @@
 using MauiPopup;
 using MauiPopup.Views;
-using Walkie_Doggie.Helpers;
 using System.ComponentModel;
 using System.Windows.Input;
+using Walkie_Doggie.Helpers;
+using Walkie_Doggie.Services;
 
 namespace Walkie_Doggie.Popups;
 
@@ -17,7 +18,7 @@ public partial class MessagePopup : BasePopupPage
         ButtonSet buttons = ButtonSet.Ok, string? custom = null)
 	{
 		InitializeComponent();
-        NavigationFlags.IsMessagePopedUp = true;
+        Collections.IsMessagePopedUp = true;
 
         string? imagePath = image == ContextImage.None ? null :
             "Context/" + image.ToString().ToLower() + ".png";
@@ -31,7 +32,7 @@ public partial class MessagePopup : BasePopupPage
 
     private void MessagePopup_Closing(object sender, EventArgs e)
     {
-        NavigationFlags.IsMessagePopedUp = false;
+        Collections.IsMessagePopedUp = false;
     }
 
     private void MessagePopup_Opening(object sender, EventArgs e)

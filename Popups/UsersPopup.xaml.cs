@@ -2,6 +2,7 @@ using MauiPopup;
 using MauiPopup.Views;
 using System.ComponentModel;
 using Walkie_Doggie.PacksKit;
+using Walkie_Doggie.Services;
 
 namespace Walkie_Doggie.Popups;
 
@@ -18,8 +19,6 @@ public partial class UsersPopup : BasePopupPage
 
 internal class UsersPopupViewModel : INotifyPropertyChanged
 {
-    private readonly FirebaseService _db;
-
     #region View Model Properties
 
     List<ItemPack>? usersList;
@@ -53,15 +52,13 @@ internal class UsersPopupViewModel : INotifyPropertyChanged
 
     public UsersPopupViewModel()
     {
-        _db = new FirebaseService();
-
         selectedItem = null;
         InitializeAsync();
     }
     private async void InitializeAsync()
     {
         List<ItemPack> usersConverter = new();
-        List<UserModel> usersAsync = await _db.GetAllUsersAsync();
+        IEnumerable<UserModel> usersAsync = await DbService.Users.GetAllAsync();
 
         foreach (var user in usersAsync)
         {

@@ -8,11 +8,10 @@ namespace Walkie_Doggie
 {
     public partial class AppShell : Shell
     {
-        private readonly FirebaseService _db;
         public AppShell()
         {
             InitializeComponent();
-            _db = new FirebaseService();
+            
 
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(DogView), typeof(DogView));

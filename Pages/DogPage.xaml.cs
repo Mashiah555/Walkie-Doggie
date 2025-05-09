@@ -1,16 +1,15 @@
 ﻿using System.Threading.Tasks;
+using Walkie_Doggie.Services;
 using Walkie_Doggie.Views;
 using static Walkie_Doggie.Helpers.Converters;
 namespace Walkie_Doggie.Pages;
 
 public partial class DogPage : ContentPage
 {
-    private readonly FirebaseService _db;
-
     public DogPage()
     {
         InitializeComponent();
-        _db = new FirebaseService();
+        
 
         InitializeDogData();
         InitializeLastWalkData();
@@ -22,7 +21,7 @@ public partial class DogPage : ContentPage
     {
         try
         {
-            DogModel dog = await _db.GetDogAsync();
+            DogModel dog = await DbService.Dogs.GetAsync();
             //DogNameLabel.Text = dog.DogName;
         }
         catch (Exception ex)
@@ -36,7 +35,7 @@ public partial class DogPage : ContentPage
     {
         try
         {
-            WalkModel lastWalk = await _db.GetLastWalkAsync();
+            WalkModel lastWalk = await DbService.Walks.GetLastWalkAsync();
 
             LastWalkTime.Text = "טייל בפעם האחרונה בשעה " +
                 ConvertToString(lastWalk.WalkTime);
@@ -67,7 +66,7 @@ public partial class DogPage : ContentPage
     {
         try
         {
-            FeedModel? lastFeed = await _db.GetLastFeedAsync();
+            FeedModel? lastFeed = await DbService.Feeds.GetLastFeedAsync();
 
             LastFeedTime.Text = "קיבל אוכל בפעם האחרונה בשעה " +
                 ConvertToString(lastFeed.FeedTime);
